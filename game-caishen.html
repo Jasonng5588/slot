@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>财神到 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a0000;
+            color: #fff;
+            font-family: 'SimSun', 'KaiTi', serif;
+            overflow-x: hidden;
+        }
+
+        /* 财神主题 - 红金中国风 */
+        .caishen-container {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #2a0000 0%, #4a0000 30%, #3a0000 60%, #1a0000 100%);
+            position: relative;
+        }
+
+        .caishen-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 70%, rgba(255, 0, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 70%, rgba(255, 0, 0, 0.1) 0%, transparent 40%);
+        }
+
+        /* 灯笼装饰 */
+        .lantern-left,
+        .lantern-right {
+            position: fixed;
+            top: 80px;
+            font-size: 4rem;
+            z-index: 1;
+            animation: lanternSwing 3s ease-in-out infinite;
+        }
+
+        .lantern-left {
+            left: 30px;
+        }
+
+        .lantern-right {
+            right: 30px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes lanternSwing {
+
+            0%,
+            100% {
+                transform: rotate(-5deg);
+            }
+
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        /* 金币飘落 */
+        .gold-rain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .gold-coin {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: goldFall 6s linear infinite;
+        }
+
+        @keyframes goldFall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(180deg, rgba(139, 0, 0, 0.8), transparent);
+            border-bottom: 4px solid #ffd700;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .balance-display {
+            background: rgba(40, 0, 0, 0.9);
+            padding: 10px 25px;
+            border-radius: 10px;
+            border: 3px solid #ffd700;
+        }
+
+        .balance-amount {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .title-section {
+            text-align: center;
+            padding: 25px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #ffd700, #ff8c00, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+        }
+
+        .sub-title {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            letter-spacing: 15px;
+            margin-top: 10px;
+        }
+
+        .slot-main {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slot-frame {
+            background: linear-gradient(180deg, #3a0000, #2a0000, #1a0000);
+            border: 6px solid #ffd700;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
+        }
+
+        .reels-area {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(180deg, #1a0000, #2a0000);
+            border-radius: 15px;
+            padding: 15px;
+            border: 3px solid #8b0000;
+        }
+
+        .reel {
+            width: 105px;
+            height: 290px;
+            background: linear-gradient(180deg, rgba(40, 0, 0, 0.95), rgba(60, 0, 0, 0.9));
+            border: 2px solid #8b0000;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reel::before,
+        .reel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 50px;
+            z-index: 5;
+        }
+
+        .reel::before {
+            top: 0;
+            background: linear-gradient(180deg, rgba(40, 0, 0, 1), transparent);
+        }
+
+        .reel::after {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(40, 0, 0, 1), transparent);
+        }
+
+        .reel-inner {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reel.spinning .reel-inner {
+            animation: caishenSpin 0.1s linear infinite;
+        }
+
+        @keyframes caishenSpin {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-96px);
+            }
+        }
+
+        /* 财神符号 - 中国风 */
+        .symbol {
+            width: 105px;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .symbol-inner {
+            width: 78px;
+            height: 78px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .sym-caishen {
+            background: linear-gradient(145deg, #ffd700, #ff8c00);
+            border: 4px solid #fff;
+            font-size: 2rem;
+            color: #8b0000;
+            font-weight: 900;
+        }
+
+        .sym-yuanbao {
+            background: linear-gradient(145deg, #ffd700, #daa520);
+            border: 3px solid #fff;
+        }
+
+        .sym-yuanbao::after {
+            content: '🥇';
+        }
+
+        .sym-hongbao {
+            background: linear-gradient(145deg, #ff0000, #cc0000);
+            border: 3px solid #ffd700;
+        }
+
+        .sym-hongbao::after {
+            content: '🧧';
+        }
+
+        .sym-fu {
+            background: linear-gradient(145deg, #ff0000, #8b0000);
+            border: 3px solid #ffd700;
+            font-size: 2.5rem;
+            color: #ffd700;
+            font-weight: 900;
+        }
+
+        .sym-firecracker {
+            background: linear-gradient(145deg, #ff4500, #cc0000);
+            border: 3px solid #ffd700;
+        }
+
+        .sym-firecracker::after {
+            content: '🧨';
+        }
+
+        .sym-coin {
+            background: linear-gradient(145deg, #ffd700, #b8860b);
+            border: 3px solid #fff;
+            border-radius: 50%;
+        }
+
+        .sym-coin::after {
+            content: '🪙';
+        }
+
+        .sym-dragon {
+            background: linear-gradient(145deg, #ffd700, #ff6b00);
+            border: 3px solid #fff;
+        }
+
+        .sym-dragon::after {
+            content: '🐲';
+        }
+
+        .sym-knot {
+            background: linear-gradient(145deg, #ff0000, #cc0000);
+            border: 3px solid #ffd700;
+        }
+
+        .sym-knot::after {
+            content: '🎀';
+            filter: hue-rotate(0deg);
+        }
+
+        .symbol.winning .symbol-inner {
+            animation: caishenWin 0.3s ease infinite;
+            box-shadow: 0 0 40px #ffd700;
+        }
+
+        @keyframes caishenWin {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .controls-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #3a0000, #2a0000);
+            border-radius: 15px;
+            margin-top: 15px;
+            border: 3px solid #8b0000;
+        }
+
+        .info-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 12px 20px;
+            background: rgba(40, 0, 0, 0.8);
+            border: 2px solid #8b0000;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            color: #ff6b6b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .info-value.win {
+            color: #00ff00;
+        }
+
+        .bet-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bet-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #cc0000, #8b0000);
+            border: 2px solid #ffd700;
+            color: #ffd700;
+            font-size: 1.5rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .bet-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .bet-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffd700;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .spin-btn {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: linear-gradient(145deg, #ffd700, #ff8c00, #ffd700);
+            border: 5px solid #fff;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #8b0000;
+        }
+
+        .spin-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+        }
+
+        .auto-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            background: rgba(40, 0, 0, 0.8);
+            border: 2px solid #cc0000;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .auto-btn.active {
+            background: linear-gradient(145deg, #cc0000, #8b0000);
+            color: #fff;
+        }
+
+        .paytable {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pay-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(40, 0, 0, 0.8);
+            border: 1px solid #8b0000;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #ffd700;
+        }
+
+        .win-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(40, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .win-overlay.active {
+            display: flex;
+        }
+
+        .win-title {
+            font-size: 4rem;
+            background: linear-gradient(180deg, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: caishenPulse 0.5s infinite;
+        }
+
+        @keyframes caishenPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .win-amount {
+            font-size: 5rem;
+            color: #ffd700;
+            margin: 30px 0;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            padding: 10px 20px;
+            background: rgba(40, 0, 0, 0.8);
+            border: 1px solid #ffd700;
+            border-radius: 20px;
+            color: #ffd700;
+            text-decoration: none;
+            z-index: 20;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="caishen-container">
+        <div class="caishen-bg"></div>
+        <div class="gold-rain" id="goldRain"></div>
+        <div class="lantern-left">🏮</div>
+        <div class="lantern-right">🏮</div>
+
+        <header class="game-header">
+            <a href="lobby.html" class="logo"><span style="font-size:2rem">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="balance-display"><span>💰</span><span class="balance-amount" id="balance">$0</span></div>
+        </header>
+        <a href="lobby.html" class="back-btn">返回大厅</a>
+
+        <div class="title-section">
+            <h1 class="main-title">🧧 财神到 🧧</h1>
+            <div class="sub-title">CAI SHEN DAO</div>
+        </div>
+
+        <main class="slot-main">
+            <div class="slot-frame">
+                <div class="reels-area">
+                    <div class="reel" id="reel0">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel1">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel2">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel3">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel4">
+                        <div class="reel-inner"></div>
+                    </div>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="info-group">
+                        <div class="info-box">
+                            <div class="info-label">财富</div>
+                            <div class="info-value" id="gameBalance">$0</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">赢取</div>
+                            <div class="info-value win" id="winAmount">$0</div>
+                        </div>
+                    </div>
+                    <div class="bet-control">
+                        <button class="bet-btn" onclick="changeBet(-1)">−</button>
+                        <div class="bet-amount" id="betAmount">$10</div>
+                        <button class="bet-btn" onclick="changeBet(1)">+</button>
+                    </div>
+                    <button class="spin-btn" id="spinBtn" onclick="spin()">转运</button>
+                    <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">自动 ×10</button>
+                </div>
+
+                <div class="paytable">
+                    <div class="pay-item">财 ×150</div>
+                    <div class="pay-item">🥇 ×100</div>
+                    <div class="pay-item">🧧 ×60</div>
+                    <div class="pay-item">福 ×40</div>
+                    <div class="pay-item">🧨 ×25</div>
+                    <div class="pay-item">🪙 ×15</div>
+                    <div class="pay-item">🐲 ×10</div>
+                    <div class="pay-item">🎀 ×5</div>
+                </div>
+            </div>
+        </main>
+
+        <div class="win-overlay" id="winOverlay">
+            <div class="win-title">恭喜发财!</div>
+            <div class="win-amount" id="bigWinAmount">$0</div>
+            <button class="spin-btn" onclick="closeWin()">继续</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        function createGoldRain() {
+            const container = document.getElementById('goldRain');
+            for (let i = 0; i < 20; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'gold-coin';
+                coin.textContent = ['🪙', '💰', '🧧'][Math.floor(Math.random() * 3)];
+                coin.style.left = Math.random() * 100 + '%';
+                coin.style.animationDuration = (5 + Math.random() * 6) + 's';
+                coin.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(coin);
+            }
+        }
+
+        const SYMBOLS = [
+            { id: 'caishen', class: 'sym-caishen', char: '财', value: 150, weight: 2 },
+            { id: 'yuanbao', class: 'sym-yuanbao', char: '', value: 100, weight: 4 },
+            { id: 'hongbao', class: 'sym-hongbao', char: '', value: 60, weight: 6 },
+            { id: 'fu', class: 'sym-fu', char: '福', value: 40, weight: 10 },
+            { id: 'firecracker', class: 'sym-firecracker', char: '', value: 25, weight: 14 },
+            { id: 'coin', class: 'sym-coin', char: '', value: 15, weight: 18 },
+            { id: 'dragon', class: 'sym-dragon', char: '', value: 10, weight: 22 },
+            { id: 'knot', class: 'sym-knot', char: '', value: 5, weight: 24 }
+        ];
+
+        const NUM_REELS = 5;
+        let user, bet = 10, betOptions = [5, 10, 20, 50, 100], betIndex = 1;
+        let isSpinning = false, autoCount = 0, reels = [];
+
+        async function init() {
+            createGoldRain();
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay(); generateReels(); renderReels();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+        }
+
+        function getRandomSymbol() {
+            const total = SYMBOLS.reduce((a, s) => a + s.weight, 0);
+            let r = Math.random() * total;
+            for (const sym of SYMBOLS) { r -= sym.weight; if (r <= 0) return sym; }
+            return SYMBOLS[SYMBOLS.length - 1];
+        }
+
+        function generateReels() {
+            reels = [];
+            for (let r = 0; r < NUM_REELS; r++) {
+                const reel = [];
+                for (let i = 0; i < 20; i++) reel.push(getRandomSymbol());
+                reels.push(reel);
+            }
+        }
+
+        function renderReels() {
+            for (let r = 0; r < NUM_REELS; r++) {
+                const inner = document.querySelector(`#reel${r} .reel-inner`);
+                inner.innerHTML = reels[r].map(sym => `
+                    <div class="symbol" data-id="${sym.id}">
+                        <div class="symbol-inner ${sym.class}">${sym.char}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function changeBet(dir) {
+            betIndex = Math.max(0, Math.min(betOptions.length - 1, betIndex + dir));
+            bet = betOptions[betIndex];
+            document.getElementById('betAmount').textContent = '$' + bet;
+        }
+
+        async function spin() {
+            if (isSpinning) return;
+            user = await Auth.getCurrentUser();
+            if (parseFloat(user?.balance || 0) < bet) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('winAmount').textContent = '$0';
+
+            await Wallet.updateBalance(user.id, -bet);
+            await Wallet.addVipPoints(user.id, Math.floor(bet));
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            document.querySelectorAll('.reel').forEach(r => r.classList.add('spinning'));
+
+            let spins = 0;
+            const interval = setInterval(() => {
+                generateReels(); renderReels(); spins++;
+                if (spins >= 15) { clearInterval(interval); document.querySelectorAll('.reel').forEach(r => r.classList.remove('spinning')); checkWins(); }
+            }, 100);
+        }
+
+        async function checkWins() {
+            const middleSymbols = [];
+            for (let r = 0; r < NUM_REELS; r++) middleSymbols.push(reels[r][1]);
+
+            let totalWin = 0;
+            for (const sym of SYMBOLS) {
+                let count = 0;
+                for (let i = 0; i < middleSymbols.length; i++) {
+                    if (middleSymbols[i].id === sym.id) count++; else break;
+                }
+                if (count >= 3) {
+                    totalWin = bet * (sym.value / 10) * (count - 2);
+                    document.querySelectorAll('.reel').forEach((reel, idx) => {
+                        if (idx < count) reel.querySelectorAll('.symbol')[1]?.classList.add('winning');
+                    });
+                    break;
+                }
+            }
+
+            if (totalWin > 0) {
+                await Wallet.updateBalance(user.id, totalWin);
+                document.getElementById('winAmount').textContent = '$' + totalWin.toLocaleString();
+                if (totalWin >= bet * 20) {
+                    document.getElementById('bigWinAmount').textContent = '$' + totalWin.toLocaleString();
+                    document.getElementById('winOverlay').classList.add('active');
+                } else Auth.showNotification(`🧧 恭喜发财 $${totalWin}！`, 'success');
+            }
+
+            user = await Auth.getCurrentUser(); updateDisplay();
+            isSpinning = false; document.getElementById('spinBtn').disabled = false;
+
+            if (autoCount > 0) {
+                autoCount--; if (autoCount > 0) setTimeout(spin, 500);
+                else { document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = '自动 ×10'; }
+            }
+        }
+
+        function toggleAuto() {
+            if (autoCount > 0) { autoCount = 0; document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = '自动 ×10'; }
+            else { autoCount = 10; document.getElementById('autoBtn').classList.add('active'); document.getElementById('autoBtn').textContent = '停止'; if (!isSpinning) spin(); }
+        }
+        function closeWin() { document.getElementById('winOverlay').classList.remove('active'); }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

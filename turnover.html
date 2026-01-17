@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 流水记录</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="account.html" class="btn btn-sm btn-outline">返回账户</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="turnover-page">
+        <div class="container">
+            <h1>📊 流水记录</h1>
+
+            <!-- Turnover Summary -->
+            <div class="turnover-summary glass-card">
+                <div class="summary-item">
+                    <div class="summary-icon">🎯</div>
+                    <div class="summary-info">
+                        <div class="summary-label">需完成流水</div>
+                        <div class="summary-value text-gold" id="requiredTurnover">$0</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon">✅</div>
+                    <div class="summary-info">
+                        <div class="summary-label">已完成流水</div>
+                        <div class="summary-value text-green" id="completedTurnover">$0</div>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon">⏳</div>
+                    <div class="summary-info">
+                        <div class="summary-label">剩余流水</div>
+                        <div class="summary-value text-red" id="remainingTurnover">$0</div>
+                    </div>
+                </div>
+                <div class="summary-item progress-item">
+                    <div class="summary-label">完成进度</div>
+                    <div class="turnover-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="turnoverProgress" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text" id="progressPercent">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Bonuses -->
+            <div class="active-bonuses glass-card">
+                <h3>🎁 活跃奖金流水</h3>
+                <table class="bonus-table">
+                    <thead>
+                        <tr>
+                            <th>奖金类型</th>
+                            <th>奖金金额</th>
+                            <th>流水倍数</th>
+                            <th>需完成流水</th>
+                            <th>已完成</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bonusTable">
+                        <!-- Will be populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Turnover History -->
+            <div class="turnover-history glass-card">
+                <h3>📜 流水明细</h3>
+                <div class="history-filters">
+                    <select class="input-field" id="filterGame">
+                        <option value="all">全部游戏</option>
+                        <option value="slots">老虎机</option>
+                        <option value="fishing">捕鱼游戏</option>
+                        <option value="lottery">彩票</option>
+                        <option value="fast">快速游戏</option>
+                    </select>
+                    <select class="input-field" id="filterDate">
+                        <option value="today">今天</option>
+                        <option value="7">最近7天</option>
+                        <option value="30">最近30天</option>
+                    </select>
+                </div>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>游戏名称</th>
+                            <th>投注金额</th>
+                            <th>有效流水</th>
+                        </tr>
+                    </thead>
+                    <tbody id="turnoverHistory">
+                        <!-- Will be populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .turnover-page {
+            padding: 30px 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .turnover-page h1 {
+            margin-bottom: 30px;
+        }
+
+        .turnover-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .summary-icon {
+            font-size: 2.5rem;
+        }
+
+        .summary-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .summary-value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .progress-item {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .turnover-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .turnover-progress .progress-bar {
+            flex: 1;
+            height: 12px;
+        }
+
+        .progress-text {
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+
+        .active-bonuses,
+        .turnover-history {
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .active-bonuses h3,
+        .turnover-history h3 {
+            margin-bottom: 20px;
+        }
+
+        .bonus-table,
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bonus-table th,
+        .bonus-table td,
+        .history-table th,
+        .history-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bonus-table th,
+        .history-table th {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .status-active {
+            color: var(--color-green);
+        }
+
+        .status-completed {
+            color: var(--color-gold);
+        }
+
+        .history-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .history-filters .input-field {
+            width: auto;
+            min-width: 150px;
+        }
+
+        @media (max-width: 900px) {
+            .turnover-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .turnover-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Sample data
+        const bonuses = [
+            { type: '首存奖励 288%', amount: 2880, multiplier: 15, required: 43200, completed: 28500, status: 'active' },
+            { type: '每日签到', amount: 500, multiplier: 3, required: 1500, completed: 1500, status: 'completed' }
+        ];
+
+        const history = [
+            { time: '03:25', game: '龙之财富 Megaways', bet: 100, turnover: 100 },
+            { time: '03:20', game: '幸运777 经典', bet: 50, turnover: 50 },
+            { time: '03:15', game: '凤凰涅槃', bet: 200, turnover: 200 },
+            { time: '03:10', game: '金鲨银鲨', bet: 150, turnover: 150 },
+            { time: '03:05', game: '星际探险', bet: 80, turnover: 80 },
+        ];
+
+        async function initPage() {
+            const user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+
+            document.getElementById('navBalance').textContent = '$' + parseFloat(user.balance || 0).toLocaleString();
+
+            // Calculate totals
+            let required = 0, completed = 0;
+            bonuses.forEach(b => { required += b.required; completed += b.completed; });
+            const remaining = Math.max(0, required - completed);
+            const percent = required > 0 ? Math.min(100, (completed / required) * 100) : 0;
+
+            document.getElementById('requiredTurnover').textContent = '$' + required.toLocaleString();
+            document.getElementById('completedTurnover').textContent = '$' + completed.toLocaleString();
+            document.getElementById('remainingTurnover').textContent = '$' + remaining.toLocaleString();
+            document.getElementById('turnoverProgress').style.width = percent + '%';
+            document.getElementById('progressPercent').textContent = percent.toFixed(1) + '%';
+
+            renderBonuses();
+            renderHistory();
+        }
+
+        function renderBonuses() {
+            const tbody = document.getElementById('bonusTable');
+            tbody.innerHTML = bonuses.map(b => `
+        <tr>
+          <td>${b.type}</td>
+          <td class="text-gold">$${b.amount.toLocaleString()}</td>
+          <td>${b.multiplier}x</td>
+          <td>$${b.required.toLocaleString()}</td>
+          <td>$${b.completed.toLocaleString()}</td>
+          <td class="${b.status === 'active' ? 'status-active' : 'status-completed'}">
+            ${b.status === 'active' ? '进行中' : '已完成'}
+          </td>
+        </tr>
+      `).join('');
+        }
+
+        function renderHistory() {
+            const tbody = document.getElementById('turnoverHistory');
+            tbody.innerHTML = history.map(h => `
+        <tr>
+          <td>今天 ${h.time}</td>
+          <td>${h.game}</td>
+          <td>$${h.bet.toLocaleString()}</td>
+          <td class="text-green">$${h.turnover.toLocaleString()}</td>
+        </tr>
+      `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+    <script src="js/footer.js"></script>
+</body>
+
+</html>

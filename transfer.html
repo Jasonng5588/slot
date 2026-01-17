@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 转账</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="account.html" class="btn btn-sm btn-outline">返回账户</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="transfer-page">
+        <div class="container">
+            <div class="transfer-layout">
+                <div class="transfer-main glass-card">
+                    <h2>🔄 钱包转账</h2>
+
+                    <div class="wallet-summary">
+                        <div class="wallet-item">
+                            <div class="wallet-icon">🎰</div>
+                            <div class="wallet-info">
+                                <div class="wallet-name">主钱包</div>
+                                <div class="wallet-balance" id="mainBalance">$0.00</div>
+                            </div>
+                        </div>
+                        <div class="transfer-arrow">⇄</div>
+                        <div class="wallet-item">
+                            <div class="wallet-icon">🎮</div>
+                            <div class="wallet-info">
+                                <div class="wallet-name">游戏钱包</div>
+                                <div class="wallet-balance" id="gameBalance">$0.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="transfer-form">
+                        <div class="form-group">
+                            <label>转出钱包</label>
+                            <select class="input-field" id="fromWallet">
+                                <option value="main">主钱包</option>
+                                <option value="game">游戏钱包</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>转入钱包</label>
+                            <select class="input-field" id="toWallet">
+                                <option value="game">游戏钱包</option>
+                                <option value="main">主钱包</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>转账金额</label>
+                            <input type="number" class="input-field" id="transferAmount" placeholder="请输入金额" min="1">
+                            <div class="quick-amounts">
+                                <button onclick="setAmount(100)">$100</button>
+                                <button onclick="setAmount(500)">$500</button>
+                                <button onclick="setAmount(1000)">$1000</button>
+                                <button onclick="setAmount('all')">全部</button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-gold btn-lg" onclick="submitTransfer()">确认转账</button>
+                    </div>
+
+                    <div class="transfer-note">
+                        <h4>💡 说明</h4>
+                        <ul>
+                            <li>转账即时到账，无手续费</li>
+                            <li>游戏中正在使用的金额无法转出</li>
+                            <li>部分活动奖金需完成流水后才能转账</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="transfer-history glass-card">
+                    <h3>📜 转账记录</h3>
+                    <div class="history-list" id="transferHistory">
+                        <div class="history-item">
+                            <div class="history-info">
+                                <div class="history-title">主钱包 → 游戏钱包</div>
+                                <div class="history-time">今天 03:15</div>
+                            </div>
+                            <div class="history-amount text-green">$500.00</div>
+                        </div>
+                        <div class="history-item">
+                            <div class="history-info">
+                                <div class="history-title">游戏钱包 → 主钱包</div>
+                                <div class="history-time">昨天 22:30</div>
+                            </div>
+                            <div class="history-amount text-gold">$1,200.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .transfer-page {
+            padding: 30px 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .transfer-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .transfer-main {
+            padding: 30px;
+        }
+
+        .transfer-main h2 {
+            margin-bottom: 25px;
+        }
+
+        .wallet-summary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .wallet-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .wallet-item .wallet-icon {
+            font-size: 2.5rem;
+        }
+
+        .wallet-name {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .wallet-balance {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+
+        .transfer-arrow {
+            font-size: 2rem;
+            color: var(--color-gold);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .quick-amounts {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .quick-amounts button {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-amounts button:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: var(--color-gold);
+        }
+
+        .transfer-note {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+        }
+
+        .transfer-note h4 {
+            margin-bottom: 10px;
+            color: var(--color-cyan);
+        }
+
+        .transfer-note ul {
+            list-style: none;
+        }
+
+        .transfer-note li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .transfer-note li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--color-cyan);
+        }
+
+        .transfer-history {
+            padding: 25px;
+        }
+
+        .transfer-history h3 {
+            margin-bottom: 20px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .history-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .history-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .history-amount {
+            font-weight: 700;
+        }
+
+        @media (max-width: 900px) {
+            .transfer-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script>
+        let userBalance = 0;
+
+        async function initPage() {
+            const user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+
+            userBalance = parseFloat(user.balance || 0);
+            document.getElementById('navBalance').textContent = '$' + userBalance.toLocaleString();
+            document.getElementById('mainBalance').textContent = '$' + userBalance.toLocaleString(undefined, { minimumFractionDigits: 2 });
+            document.getElementById('gameBalance').textContent = '$0.00';
+        }
+
+        function setAmount(val) {
+            if (val === 'all') {
+                document.getElementById('transferAmount').value = Math.floor(userBalance);
+            } else {
+                document.getElementById('transferAmount').value = val;
+            }
+        }
+
+        async function submitTransfer() {
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            if (!amount || amount < 1) {
+                Auth.showNotification('请输入有效金额', 'error');
+                return;
+            }
+            if (amount > userBalance) {
+                Auth.showNotification('余额不足', 'error');
+                return;
+            }
+
+            Auth.showNotification('✅ 转账成功！$' + amount + ' 已转入游戏钱包', 'success');
+            document.getElementById('transferAmount').value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+    <script src="js/footer.js"></script>
+</body>
+
+</html>

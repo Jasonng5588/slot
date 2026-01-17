@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 促销活动</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/promotions.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-left">
+                <span class="current-time" id="currentTime"></span>
+            </div>
+            <div class="top-bar-right">
+                <span class="language-selector">🇨🇳 中文</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <span class="user-greeting">欢迎, <strong id="navUsername">用户</strong></span>
+                <button class="btn btn-sm btn-gold" onclick="location.href='deposit.html'">充值</button>
+                <button class="user-avatar" id="userAvatar" onclick="location.href='account.html'">U</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Category Navigation -->
+    <nav class="category-nav">
+        <div class="container">
+            <div class="category-tabs">
+                <a href="lobby.html" class="category-tab">
+                    <span class="tab-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+                <a href="#" class="category-tab">
+                    <span class="tab-icon">🎰</span>
+                    <span>老虎机</span>
+                </a>
+                <a href="promotions.html" class="category-tab active hot">
+                    <span class="tab-icon">🎁</span>
+                    <span>促销活动</span>
+                </a>
+                <a href="vip.html" class="category-tab">
+                    <span class="tab-icon">💎</span>
+                    <span>VIP</span>
+                </a>
+                <a href="account.html" class="category-tab">
+                    <span class="tab-icon">👤</span>
+                    <span>账户</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">🎁 促销活动</h1>
+            <p class="page-subtitle">精彩优惠等你来拿！每日更新，惊喜不断</p>
+        </div>
+    </section>
+
+    <!-- Promotion Filters -->
+    <section class="promo-filters">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">全部</button>
+                <button class="filter-tab" data-filter="vip">VIP专属</button>
+                <button class="filter-tab" data-filter="new">新会员</button>
+                <button class="filter-tab" data-filter="special">特别优惠</button>
+                <button class="filter-tab" data-filter="slots">老虎机</button>
+                <button class="filter-tab" data-filter="casino">真人娱乐</button>
+                <button class="filter-tab" data-filter="sports">体育博彩</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promotions Grid -->
+    <section class="promos-section">
+        <div class="container">
+            <div class="promos-grid" id="promosGrid">
+
+                <!-- Promo 1: Welcome Bonus -->
+                <div class="promo-card" data-category="new slots">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #ff6b35, #f7931e);">
+                        <div class="promo-visual">
+                            <span class="big-text">288%</span>
+                            <span class="sub-text">超级欢迎礼金</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge new">新会员</span>
+                            <span class="badge slots">老虎机</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">288% 超级欢迎礼金</h3>
+                        <p class="promo-desc">首次存款即可获得高达 288% 的超级奖励！最高可获得 $28,800 奖金!</p>
+                        <div class="promo-details">
+                            <div class="detail-item">
+                                <span class="detail-label">最低存款</span>
+                                <span class="detail-value">$30</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">最高奖金</span>
+                                <span class="detail-value text-gold">$28,800</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">流水要求</span>
+                                <span class="detail-value">25x</span>
+                            </div>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(1)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="applyPromo(1)">立即申请</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo 2: Free Spins -->
+                <div class="promo-card" data-category="new slots special">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <div class="promo-visual">
+                            <span class="big-text">396</span>
+                            <span class="sub-text">免费旋转</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge special">特别优惠</span>
+                            <span class="badge slots">老虎机</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">超级免费旋转</h3>
+                        <p class="promo-desc">注册即送 396 次免费旋转！在热门 Pragmatic Play 游戏中赢取大奖!</p>
+                        <div class="promo-timer">
+                            <span class="timer-label">剩余时间:</span>
+                            <span class="timer-value" id="timer1">345 天 22 小时</span>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(2)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="applyPromo(2)">立即领取</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo 3: Daily Reload -->
+                <div class="promo-card" data-category="special slots casino">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #11998e, #38ef7d);">
+                        <div class="promo-visual">
+                            <span class="big-text">50%</span>
+                            <span class="sub-text">每日充值奖励</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge special">每日</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">每日 50% 充值奖励</h3>
+                        <p class="promo-desc">每天首次充值可获得 50% 奖励，最高 $500！天天都有惊喜!</p>
+                        <div class="promo-details">
+                            <div class="detail-item">
+                                <span class="detail-label">最低存款</span>
+                                <span class="detail-value">$20</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">每日上限</span>
+                                <span class="detail-value text-gold">$500</span>
+                            </div>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(3)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="applyPromo(3)">立即申请</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo 4: VIP Cashback -->
+                <div class="promo-card" data-category="vip">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <div class="promo-visual">
+                            <span class="big-text">3%</span>
+                            <span class="sub-text">VIP 无限返水</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge vip">VIP专属</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">VIP 无限返水计划</h3>
+                        <p class="promo-desc">VIP 会员专享最高 3% 无上限返水！输多少返多少，无流水要求!</p>
+                        <div class="promo-details">
+                            <div class="detail-item">
+                                <span class="detail-label">返水比例</span>
+                                <span class="detail-value text-gold">最高 3%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">流水要求</span>
+                                <span class="detail-value text-green">无</span>
+                            </div>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(4)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="location.href='vip.html'">升级VIP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo 5: Sports Welcome -->
+                <div class="promo-card" data-category="new sports">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #1e3c72, #2a5298);">
+                        <div class="promo-visual">
+                            <span class="big-text">100%</span>
+                            <span class="sub-text">体育欢迎奖金</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge new">新会员</span>
+                            <span class="badge sports">体育</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">100% 体育欢迎奖金</h3>
+                        <p class="promo-desc">首次体育投注存款可获得 100% 奖励，最高 $300!</p>
+                        <div class="promo-details">
+                            <div class="detail-item">
+                                <span class="detail-label">最低存款</span>
+                                <span class="detail-value">$20</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">最高奖金</span>
+                                <span class="detail-value text-gold">$300</span>
+                            </div>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(5)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="applyPromo(5)">立即申请</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo 6: Birthday Bonus -->
+                <div class="promo-card" data-category="special vip">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #ff416c, #ff4b2b);">
+                        <div class="promo-visual">
+                            <span class="big-text">🎂</span>
+                            <span class="sub-text">生日专属礼金</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge special">特别</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">生日专属礼金</h3>
+                        <p class="promo-desc">生日当天登录即可领取专属礼金！VIP 会员最高可获 $888!</p>
+                        <div class="promo-details">
+                            <div class="detail-item">
+                                <span class="detail-label">普通会员</span>
+                                <span class="detail-value">$88</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">VIP会员</span>
+                                <span class="detail-value text-gold">$888</span>
+                            </div>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(6)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="applyPromo(6)">查看详情</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo 7: Refer Friend -->
+                <div class="promo-card" data-category="special">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #4776e6, #8e54e9);">
+                        <div class="promo-visual">
+                            <span class="big-text">$100</span>
+                            <span class="sub-text">邀请好友奖励</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge special">无上限</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">邀请好友，双双得利</h3>
+                        <p class="promo-desc">每成功邀请一位好友即可获得 $100 奖励！好友同享 $50 彩金!</p>
+                        <div class="promo-details">
+                            <div class="detail-item">
+                                <span class="detail-label">您的奖励</span>
+                                <span class="detail-value text-gold">$100/人</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">好友奖励</span>
+                                <span class="detail-value">$50</span>
+                            </div>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(7)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="location.href='referral.html'">立即邀请</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo 8: Weekend Bonus -->
+                <div class="promo-card" data-category="special casino">
+                    <div class="promo-image" style="background: linear-gradient(135deg, #00b09b, #96c93d);">
+                        <div class="promo-visual">
+                            <span class="big-text">25%</span>
+                            <span class="sub-text">周末真人返利</span>
+                        </div>
+                        <div class="promo-badges">
+                            <span class="badge casino">真人娱乐</span>
+                        </div>
+                    </div>
+                    <div class="promo-content">
+                        <h3 class="promo-title">周末真人娱乐返利</h3>
+                        <p class="promo-desc">每周六日在真人娱乐中游戏，可获得投注额 25% 返利!</p>
+                        <div class="promo-details">
+                            <div class="detail-item">
+                                <span class="detail-label">返利比例</span>
+                                <span class="detail-value text-gold">25%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">有效时间</span>
+                                <span class="detail-value">周六-周日</span>
+                            </div>
+                        </div>
+                        <div class="promo-actions">
+                            <button class="btn btn-outline btn-sm" onclick="showPromoDetails(8)">了解更多</button>
+                            <button class="btn btn-gold btn-sm" onclick="applyPromo(8)">立即参与</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Terms Notice -->
+    <section class="terms-notice">
+        <div class="container">
+            <div class="notice-box glass-card">
+                <h4>📋 条款与条件</h4>
+                <ul>
+                    <li>所有优惠活动以 LuckyDragon 官方公布为准</li>
+                    <li>单个账户只能领取一次欢迎礼金</li>
+                    <li>VIP 专属优惠仅限对应等级会员参与</li>
+                    <li>LuckyDragon 保留最终解释权</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 LuckyDragon Casino. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Promo Detail Modal -->
+    <div class="modal-overlay" id="promoModal">
+        <div class="modal promo-modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">促销详情</h3>
+                <button class="modal-close" onclick="closePromoModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-gold" onclick="closePromoModal()">我知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script src="js/supabase-config.js"></script>
+
+
+    <script src="js/auth.js"></script>
+    <script src="js/promotions.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+
+</html>

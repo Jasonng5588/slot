@@ -1,0 +1,299 @@
+/* ============================================
+   LuckyDragon - Promotions Page Styles
+   ============================================ */
+
+/* Page Header */
+.page-header {
+    padding: 40px 0;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.05), transparent);
+}
+
+.page-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.page-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Promotion Filters */
+.promo-filters {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 40px;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-tab {
+    padding: 10px 25px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-tab:hover {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+}
+
+.filter-tab.active {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #000;
+}
+
+/* Promotions Grid */
+.promos-section {
+    padding: 0 0 60px;
+}
+
+.promos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 30px;
+}
+
+/* Promo Card */
+.promo-card {
+    background: var(--color-bg-card);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+}
+
+.promo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.3);
+}
+
+.promo-card.hidden {
+    display: none;
+}
+
+.promo-image {
+    position: relative;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.promo-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.promo-visual .big-text {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 900;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.promo-visual .sub-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.promo-badges {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+.promo-badges .badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.badge.new {
+    background: #ff4444;
+    color: #fff;
+}
+
+.badge.slots {
+    background: #9c27b0;
+    color: #fff;
+}
+
+.badge.casino {
+    background: #00bcd4;
+    color: #fff;
+}
+
+.badge.sports {
+    background: #4caf50;
+    color: #fff;
+}
+
+.badge.special {
+    background: #ff9800;
+    color: #fff;
+}
+
+.badge.vip {
+    background: linear-gradient(135deg, #ffd700, #b8860b);
+    color: #000;
+}
+
+.promo-content {
+    padding: 25px;
+}
+
+.promo-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.promo-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.promo-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    text-align: center;
+}
+
+.detail-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.detail-value {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.promo-timer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.timer-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.timer-value {
+    color: #ff4444;
+    font-weight: 700;
+}
+
+.promo-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.promo-actions .btn {
+    flex: 1;
+}
+
+/* Terms Notice */
+.terms-notice {
+    padding: 40px 0;
+}
+
+.notice-box {
+    padding: 30px;
+}
+
+.notice-box h4 {
+    margin-bottom: 20px;
+    color: var(--color-gold);
+}
+
+.notice-box ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 10px;
+}
+
+.notice-box li {
+    padding-left: 20px;
+    position: relative;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.notice-box li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--color-gold);
+}
+
+/* Promo Modal */
+.promo-modal {
+    max-width: 600px;
+}
+
+.modal-footer {
+    padding: 20px 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .promos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .promo-visual .big-text {
+        font-size: 3rem;
+    }
+
+    .promo-actions {
+        flex-direction: column;
+    }
+}

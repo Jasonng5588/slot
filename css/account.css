@@ -1,0 +1,567 @@
+/* ============================================
+   LuckyDragon - Account Center Styles
+   ============================================ */
+
+/* Account Layout */
+.account-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    min-height: calc(100vh - 80px);
+}
+
+/* Sidebar */
+.account-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-card {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.user-avatar-large {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #000;
+    margin: 0 auto 15px;
+    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+}
+
+.user-name {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.user-vip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 15px;
+    background: linear-gradient(135deg, #cd7f32, #8b4513);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.balance-display {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.balance-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.balance-amount {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-gold);
+}
+
+.quick-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.quick-actions .btn {
+    flex: 1;
+}
+
+/* Account Navigation */
+.account-nav {
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.nav-section {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-section:last-child {
+    border-bottom: none;
+}
+
+.nav-section-title {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.nav-item:hover {
+    background: rgba(255, 215, 0, 0.05);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--color-gold);
+    border-left: 3px solid var(--color-gold);
+}
+
+.nav-icon {
+    font-size: 1.1rem;
+}
+
+.nav-badge {
+    margin-left: auto;
+    padding: 2px 8px;
+    background: var(--color-red);
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status-badge {
+    margin-left: auto;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status-badge.verified {
+    background: rgba(0, 210, 106, 0.2);
+    color: var(--color-green);
+}
+
+.status-badge.pending {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+}
+
+/* Main Content */
+.account-main {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Balance Overview */
+.balance-overview {
+    padding: 25px;
+}
+
+.overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.overview-header h2 {
+    font-size: 1.25rem;
+}
+
+.balance-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.balance-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.balance-card-icon {
+    font-size: 2rem;
+}
+
+.balance-card-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.balance-card-value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* VIP Progress */
+.vip-progress-section {
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.02));
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 12px;
+}
+
+.vip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.vip-current {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vip-icon-large {
+    font-size: 2rem;
+}
+
+.vip-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-gold);
+}
+
+.vip-next {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.vip-progress-bar {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.vip-progress-bar .progress-fill {
+    height: 100%;
+    background: var(--gradient-gold);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.vip-progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Quick Deposit */
+.quick-deposit {
+    padding: 25px;
+}
+
+.quick-deposit h2 {
+    margin-bottom: 20px;
+}
+
+.deposit-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    overflow-x: auto;
+}
+
+.deposit-tab {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.deposit-tab:hover {
+    color: var(--text-primary);
+}
+
+.deposit-tab.active {
+    color: var(--color-gold);
+}
+
+.deposit-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -16px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--color-gold);
+}
+
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.method-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.method-card:hover,
+.method-card.selected {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--color-gold);
+}
+
+.method-icon {
+    font-size: 2rem;
+}
+
+.method-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.bank-list h4 {
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+}
+
+.banks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.bank-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bank-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--color-gold);
+}
+
+.bank-item .status {
+    margin-left: auto;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.bank-item .status.online {
+    background: rgba(0, 210, 106, 0.2);
+    color: var(--color-green);
+}
+
+.bank-item .status.offline {
+    background: rgba(255, 68, 68, 0.2);
+    color: #ff4444;
+}
+
+.deposit-form {
+    max-width: 400px;
+}
+
+.amount-input {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.amount-presets {
+    display: flex;
+    gap: 10px;
+}
+
+.amount-presets button {
+    flex: 1;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.amount-presets button:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--color-gold);
+}
+
+/* Recent Activity */
+.recent-activity {
+    padding: 25px;
+}
+
+.recent-activity h2 {
+    margin-bottom: 20px;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.activity-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.activity-icon.win {
+    background: rgba(0, 210, 106, 0.2);
+}
+
+.activity-icon.bet {
+    background: rgba(139, 92, 246, 0.2);
+}
+
+.activity-icon.deposit {
+    background: rgba(0, 212, 255, 0.2);
+}
+
+.activity-info {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.activity-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.activity-amount {
+    font-family: var(--font-display);
+    font-weight: 700;
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.view-all-link {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--color-gold);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.view-all-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .account-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .account-sidebar {
+        order: 2;
+    }
+
+    .balance-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .account-nav {
+        display: flex;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+
+    .nav-section {
+        display: flex;
+        padding: 0;
+        border: none;
+    }
+
+    .nav-section-title {
+        display: none;
+    }
+
+    .nav-item {
+        flex-direction: column;
+        gap: 5px;
+        white-space: nowrap;
+        padding: 15px;
+        border-left: none !important;
+    }
+
+    .nav-item.active {
+        border-bottom: 3px solid var(--color-gold);
+    }
+}

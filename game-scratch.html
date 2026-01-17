@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刮刮卡 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/games.css">
+    <style>
+        .scratch-game {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .scratch-card {
+            background: linear-gradient(135deg, #1e5631, #0d2818);
+            border: 4px solid var(--color-gold);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .scratch-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .scratch-cell {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #c0c0c0, #a0a0a0);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scratch-cell:hover:not(.revealed) {
+            transform: scale(1.05);
+        }
+
+        .scratch-cell.revealed {
+            background: linear-gradient(145deg, #2a2a4a, #1a1a2e);
+            cursor: default;
+        }
+
+        .scratch-cell.revealed.match {
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.1));
+            border: 2px solid var(--color-gold);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .scratch-cover {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg, #808080, #606060);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .scratch-cell.revealed .scratch-cover {
+            display: none;
+        }
+
+        .prize-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .game-hud {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hud-card {
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .hud-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hud-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+
+        .card-cost {
+            margin: 15px 0;
+            font-size: 1.2rem;
+        }
+
+        .card-cost span {
+            color: var(--color-gold);
+            font-weight: 700;
+        }
+
+        .win-display {
+            font-size: 2.5rem;
+            color: var(--color-green);
+            margin: 20px 0;
+            display: none;
+        }
+
+        .win-display.active {
+            display: block;
+            animation: bounceIn 0.5s;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="lobby.html" class="logo"><span class="logo-icon">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="user-info">
+                <div class="wallet-display"><span class="wallet-icon">💰</span><span class="wallet-amount"
+                        id="balanceDisplay">$0</span></div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top:100px;padding-bottom:40px">
+        <div class="container">
+            <div class="scratch-game">
+                <h1
+                    style="background:var(--gradient-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+                    🎫 幸运刮刮卡</h1>
+
+                <div class="game-hud">
+                    <div class="hud-card">
+                        <div class="hud-label">余额</div>
+                        <div class="hud-value" id="gameBalance">$0</div>
+                    </div>
+                    <div class="hud-card">
+                        <div class="hud-label">总赢取</div>
+                        <div class="hud-value text-green" id="totalWin">$0</div>
+                    </div>
+                </div>
+
+                <div class="scratch-card">
+                    <div class="card-header">
+                        <div class="card-title">🎰 刮开三个相同符号即可获奖！</div>
+                        <div class="card-subtitle">点击格子刮开涂层</div>
+                    </div>
+
+                    <div class="scratch-grid" id="scratchGrid"></div>
+
+                    <div class="win-display" id="winDisplay">🎉 恭喜赢得 <span id="winAmount">$0</span>！</div>
+
+                    <div class="card-cost">卡片价格: <span>$5</span></div>
+                </div>
+
+                <div class="prize-legend">
+                    <div class="legend-item"><span>💎</span> ×100</div>
+                    <div class="legend-item"><span>7️⃣</span> ×50</div>
+                    <div class="legend-item"><span>🍀</span> ×20</div>
+                    <div class="legend-item"><span>⭐</span> ×10</div>
+                    <div class="legend-item"><span>🍒</span> ×5</div>
+                    <div class="legend-item"><span>🍋</span> ×2</div>
+                </div>
+
+                <button class="btn btn-gold btn-lg" id="newCardBtn" onclick="newCard()">🎫 购买新卡片 ($5)</button>
+                <a href="lobby.html" class="btn btn-outline" style="margin-left:15px">返回大厅</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        const SYMBOLS = [
+            { emoji: '💎', mult: 100, weight: 1 },
+            { emoji: '7️⃣', mult: 50, weight: 3 },
+            { emoji: '🍀', mult: 20, weight: 8 },
+            { emoji: '⭐', mult: 10, weight: 15 },
+            { emoji: '🍒', mult: 5, weight: 25 },
+            { emoji: '🍋', mult: 2, weight: 48 }
+        ];
+        const CARD_COST = 5;
+        let user, grid = [], revealedCount = 0, totalWin = 0, cardActive = false;
+
+        async function init() {
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay();
+            await newCard();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balanceDisplay').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('totalWin').textContent = '$' + totalWin.toLocaleString();
+        }
+
+        function getRandomSymbol() {
+            const totalWeight = SYMBOLS.reduce((a, s) => a + s.weight, 0);
+            let r = Math.random() * totalWeight;
+            for (const sym of SYMBOLS) {
+                r -= sym.weight;
+                if (r <= 0) return sym;
+            }
+            return SYMBOLS[SYMBOLS.length - 1];
+        }
+
+        async function newCard() {
+            const balance = parseFloat(user?.balance || 0);
+            if (balance < CARD_COST) {
+                Auth.showNotification('余额不足！', 'error');
+                return;
+            }
+
+            // Deduct cost
+            await Wallet.updateBalance(user.id, -CARD_COST);
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            // Generate new grid
+            grid = [];
+            for (let i = 0; i < 9; i++) {
+                grid.push({ symbol: getRandomSymbol(), revealed: false });
+            }
+
+            revealedCount = 0;
+            cardActive = true;
+            document.getElementById('winDisplay').classList.remove('active');
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('scratchGrid');
+            container.innerHTML = '';
+
+            grid.forEach((cell, idx) => {
+                const el = document.createElement('div');
+                el.className = 'scratch-cell' + (cell.revealed ? ' revealed' : '');
+                el.innerHTML = `
+                    <span>${cell.symbol.emoji}</span>
+                    <div class="scratch-cover">刮开</div>
+                `;
+                if (!cell.revealed && cardActive) {
+                    el.onclick = () => revealCell(idx);
+                }
+                container.appendChild(el);
+            });
+        }
+
+        async function revealCell(idx) {
+            if (!cardActive || grid[idx].revealed) return;
+
+            grid[idx].revealed = true;
+            revealedCount++;
+            renderGrid();
+
+            // Check if all revealed
+            if (revealedCount === 9) {
+                cardActive = false;
+                await checkWin();
+            }
+        }
+
+        async function checkWin() {
+            // Count symbols
+            const counts = {};
+            grid.forEach(cell => {
+                const key = cell.symbol.emoji;
+                counts[key] = (counts[key] || 0) + 1;
+            });
+
+            // Find matching 3+
+            let winAmount = 0;
+            for (const [emoji, count] of Object.entries(counts)) {
+                if (count >= 3) {
+                    const sym = SYMBOLS.find(s => s.emoji === emoji);
+                    if (sym) {
+                        winAmount = CARD_COST * sym.mult;
+
+                        // Highlight matching cells
+                        const cells = document.querySelectorAll('.scratch-cell');
+                        grid.forEach((cell, idx) => {
+                            if (cell.symbol.emoji === emoji) {
+                                cells[idx].classList.add('match');
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+
+            if (winAmount > 0) {
+                await Wallet.updateBalance(user.id, winAmount);
+                totalWin += winAmount;
+                document.getElementById('winAmount').textContent = '$' + winAmount;
+                document.getElementById('winDisplay').classList.add('active');
+                Auth.showNotification(`🎉 恭喜赢得 $${winAmount}！`, 'success');
+            } else {
+                Auth.showNotification('未中奖，再试一次！', 'info');
+            }
+
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

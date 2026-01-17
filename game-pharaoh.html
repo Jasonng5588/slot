@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>法老宝藏 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0a00;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 埃及主题 - 沙漠金色 */
+        .egypt-container {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #1a1000 0%, #2d1f00 30%, #1a1000 60%, #0d0a00 100%);
+            position: relative;
+        }
+
+        .egypt-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(139, 69, 19, 0.2) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 80%, rgba(139, 69, 19, 0.2) 0%, transparent 40%);
+        }
+
+        /* 金字塔装饰 */
+        .pyramid-left,
+        .pyramid-right {
+            position: fixed;
+            bottom: 0;
+            width: 200px;
+            height: 300px;
+            z-index: 1;
+            background: linear-gradient(135deg, #c9a227 0%, #8b6914 50%, #5c4a10 100%);
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+            opacity: 0.3;
+        }
+
+        .pyramid-left {
+            left: -50px;
+        }
+
+        .pyramid-right {
+            right: -50px;
+            transform: scaleX(-1);
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(180deg, rgba(201, 162, 39, 0.3), transparent);
+            border-bottom: 3px solid #c9a227;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #c9a227;
+        }
+
+        .balance-display {
+            background: linear-gradient(145deg, #2d1f00, #1a1000);
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: 2px solid #c9a227;
+        }
+
+        .balance-amount {
+            color: #c9a227;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .title-section {
+            text-align: center;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            background: linear-gradient(180deg, #ffd700, #c9a227, #8b6914);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(201, 162, 39, 0.5);
+        }
+
+        .sub-title {
+            color: #c9a227;
+            font-size: 1rem;
+            letter-spacing: 10px;
+            margin-top: 10px;
+        }
+
+        /* 游戏区域 - 埃及石板风格 */
+        .slot-main {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slot-frame {
+            background: linear-gradient(180deg, #3d2f1a, #2d1f0a, #1d1000);
+            border: 6px solid #c9a227;
+            border-radius: 5px;
+            padding: 25px;
+            box-shadow: 0 0 60px rgba(201, 162, 39, 0.4), inset 0 0 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .slot-frame::before,
+        .slot-frame::after {
+            content: '𓂀';
+            position: absolute;
+            top: -30px;
+            font-size: 2rem;
+            color: #c9a227;
+        }
+
+        .slot-frame::before {
+            left: 30px;
+        }
+
+        .slot-frame::after {
+            right: 30px;
+        }
+
+        .reels-area {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            background: linear-gradient(180deg, #1a1000, #0d0800);
+            border-radius: 10px;
+            padding: 15px;
+            border: 3px solid #8b6914;
+        }
+
+        .reel {
+            width: 110px;
+            height: 300px;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(26, 16, 0, 0.8));
+            border: 2px solid #5c4a10;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reel::before,
+        .reel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 50px;
+            z-index: 5;
+        }
+
+        .reel::before {
+            top: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 1), transparent);
+        }
+
+        .reel::after {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 1), transparent);
+        }
+
+        .reel-inner {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reel.spinning .reel-inner {
+            animation: egyptSpin 0.12s linear infinite;
+        }
+
+        @keyframes egyptSpin {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-100px);
+            }
+        }
+
+        /* 埃及符号 - 宝石与神秘符号 */
+        .symbol {
+            width: 110px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .symbol-inner {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        /* 埃及主题符号 */
+        .sym-pharaoh {
+            background: linear-gradient(145deg, #ffd700, #c9a227);
+            border: 3px solid #fff;
+        }
+
+        .sym-pharaoh::after {
+            content: '👑';
+        }
+
+        .sym-anubis {
+            background: linear-gradient(145deg, #1a1a2e, #0a0a15);
+            border: 3px solid #c9a227;
+            color: #c9a227;
+            font-size: 2rem;
+        }
+
+        .sym-scarab {
+            background: linear-gradient(145deg, #00d4ff, #0077be);
+            border: 3px solid #87ceeb;
+        }
+
+        .sym-scarab::after {
+            content: '🪲';
+        }
+
+        .sym-eye {
+            background: linear-gradient(145deg, #ffd700, #ff8c00);
+            border: 3px solid #fff;
+            font-size: 2rem;
+        }
+
+        .sym-ankh {
+            background: linear-gradient(145deg, #c9a227, #8b6914);
+            border: 3px solid #ffd700;
+            font-size: 2.5rem;
+            color: #1a1000;
+        }
+
+        .sym-ruby {
+            background: linear-gradient(145deg, #ff0040, #8b0020);
+            border: 3px solid #ff6b6b;
+            border-radius: 50%;
+        }
+
+        .sym-ruby::after {
+            content: '💎';
+            filter: hue-rotate(300deg);
+        }
+
+        .sym-emerald {
+            background: linear-gradient(145deg, #00ff00, #008000);
+            border: 3px solid #90ee90;
+            border-radius: 50%;
+        }
+
+        .sym-emerald::after {
+            content: '💎';
+            filter: hue-rotate(100deg);
+        }
+
+        .sym-sapphire {
+            background: linear-gradient(145deg, #0000ff, #000080);
+            border: 3px solid #87ceeb;
+            border-radius: 50%;
+        }
+
+        .sym-sapphire::after {
+            content: '💎';
+        }
+
+        .symbol.winning .symbol-inner {
+            animation: egyptWin 0.4s ease infinite;
+            box-shadow: 0 0 30px #ffd700;
+        }
+
+        @keyframes egyptWin {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
+
+        /* 控制面板 - 石板风格 */
+        .controls-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #2d1f0a, #1d1000);
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 2px solid #8b6914;
+        }
+
+        .info-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 12px 20px;
+            background: linear-gradient(180deg, #1d1000, #0d0800);
+            border: 2px solid #5c4a10;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            color: #8b6914;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #c9a227;
+        }
+
+        .info-value.win {
+            color: #00ff00;
+        }
+
+        .bet-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bet-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #c9a227, #8b6914);
+            border: 2px solid #ffd700;
+            color: #1a1000;
+            font-size: 1.5rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .bet-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .bet-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffd700;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .spin-btn {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: linear-gradient(145deg, #ffd700, #c9a227, #8b6914);
+            border: 5px solid #fff;
+            box-shadow: 0 0 40px rgba(201, 162, 39, 0.6);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #1a1000;
+            letter-spacing: 2px;
+        }
+
+        .spin-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.8);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+        }
+
+        .auto-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            background: linear-gradient(145deg, #2d1f0a, #1d1000);
+            border: 2px solid #c9a227;
+            color: #c9a227;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .auto-btn.active {
+            background: linear-gradient(145deg, #c9a227, #8b6914);
+            color: #1a1000;
+        }
+
+        /* 赔率表 */
+        .paytable {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pay-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(26, 16, 0, 0.8);
+            border: 1px solid #5c4a10;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        /* 大奖弹窗 */
+        .win-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .win-overlay.active {
+            display: flex;
+        }
+
+        .win-title {
+            font-size: 4rem;
+            letter-spacing: 10px;
+            background: linear-gradient(180deg, #ffd700, #c9a227);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: goldPulse 0.5s infinite;
+        }
+
+        @keyframes goldPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+                filter: brightness(1.3);
+            }
+        }
+
+        .win-amount {
+            font-size: 5rem;
+            color: #ffd700;
+            margin: 30px 0;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            padding: 10px 20px;
+            background: rgba(26, 16, 0, 0.8);
+            border: 1px solid #c9a227;
+            border-radius: 20px;
+            color: #c9a227;
+            text-decoration: none;
+            z-index: 20;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="egypt-container">
+        <div class="egypt-bg"></div>
+        <div class="pyramid-left"></div>
+        <div class="pyramid-right"></div>
+
+        <header class="game-header">
+            <a href="lobby.html" class="logo">
+                <span style="font-size:2rem">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="balance-display">
+                <span>💰</span>
+                <span class="balance-amount" id="balance">$0</span>
+            </div>
+        </header>
+        <a href="lobby.html" class="back-btn">返回大厅</a>
+
+        <div class="title-section">
+            <h1 class="main-title">𓂀 PHARAOH'S GOLD 𓂀</h1>
+            <div class="sub-title">法 老 宝 藏</div>
+        </div>
+
+        <main class="slot-main">
+            <div class="slot-frame">
+                <div class="reels-area">
+                    <div class="reel" id="reel0">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel1">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel2">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel3">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel4">
+                        <div class="reel-inner"></div>
+                    </div>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="info-group">
+                        <div class="info-box">
+                            <div class="info-label">CREDIT</div>
+                            <div class="info-value" id="gameBalance">$0</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">WIN</div>
+                            <div class="info-value win" id="winAmount">$0</div>
+                        </div>
+                    </div>
+                    <div class="bet-control">
+                        <button class="bet-btn" onclick="changeBet(-1)">−</button>
+                        <div class="bet-amount" id="betAmount">$10</div>
+                        <button class="bet-btn" onclick="changeBet(1)">+</button>
+                    </div>
+                    <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN</button>
+                    <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">AUTO ×10</button>
+                </div>
+
+                <div class="paytable">
+                    <div class="pay-item">👑 ×100</div>
+                    <div class="pay-item" style="color:#c9a227">𓃭 ×80</div>
+                    <div class="pay-item">🪲 ×50</div>
+                    <div class="pay-item" style="color:#ffd700">𓂀 ×40</div>
+                    <div class="pay-item" style="color:#c9a227">☥ ×30</div>
+                    <div class="pay-item" style="color:#ff0040">💎 ×20</div>
+                    <div class="pay-item" style="color:#00ff00">💎 ×15</div>
+                    <div class="pay-item" style="color:#0000ff">💎 ×10</div>
+                </div>
+            </div>
+        </main>
+
+        <div class="win-overlay" id="winOverlay">
+            <div class="win-title">PHARAOH'S TREASURE!</div>
+            <div class="win-amount" id="bigWinAmount">$0</div>
+            <button class="spin-btn" onclick="closeWin()">继续</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        const SYMBOLS = [
+            { id: 'pharaoh', class: 'sym-pharaoh', char: '', value: 100, weight: 3 },
+            { id: 'anubis', class: 'sym-anubis', char: '𓃭', value: 80, weight: 4 },
+            { id: 'scarab', class: 'sym-scarab', char: '', value: 50, weight: 6 },
+            { id: 'eye', class: 'sym-eye', char: '𓂀', value: 40, weight: 8 },
+            { id: 'ankh', class: 'sym-ankh', char: '☥', value: 30, weight: 10 },
+            { id: 'ruby', class: 'sym-ruby', char: '', value: 20, weight: 15 },
+            { id: 'emerald', class: 'sym-emerald', char: '', value: 15, weight: 18 },
+            { id: 'sapphire', class: 'sym-sapphire', char: '', value: 10, weight: 20 }
+        ];
+
+        const NUM_REELS = 5, ROWS = 3;
+        let user, bet = 10, betOptions = [5, 10, 20, 50, 100], betIndex = 1;
+        let isSpinning = false, autoCount = 0, reels = [];
+
+        async function init() {
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay(); generateReels(); renderReels();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+        }
+
+        function getRandomSymbol() {
+            const total = SYMBOLS.reduce((a, s) => a + s.weight, 0);
+            let r = Math.random() * total;
+            for (const sym of SYMBOLS) { r -= sym.weight; if (r <= 0) return sym; }
+            return SYMBOLS[SYMBOLS.length - 1];
+        }
+
+        function generateReels() {
+            reels = [];
+            for (let r = 0; r < NUM_REELS; r++) {
+                const reel = [];
+                for (let i = 0; i < 20; i++) reel.push(getRandomSymbol());
+                reels.push(reel);
+            }
+        }
+
+        function renderReels() {
+            for (let r = 0; r < NUM_REELS; r++) {
+                const inner = document.querySelector(`#reel${r} .reel-inner`);
+                inner.innerHTML = reels[r].map(sym => `
+                    <div class="symbol" data-id="${sym.id}">
+                        <div class="symbol-inner ${sym.class}">${sym.char}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function changeBet(dir) {
+            betIndex = Math.max(0, Math.min(betOptions.length - 1, betIndex + dir));
+            bet = betOptions[betIndex];
+            document.getElementById('betAmount').textContent = '$' + bet;
+        }
+
+        async function spin() {
+            if (isSpinning) return;
+            user = await Auth.getCurrentUser();
+            if (parseFloat(user?.balance || 0) < bet) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('winAmount').textContent = '$0';
+
+            await Wallet.updateBalance(user.id, -bet);
+            await Wallet.addVipPoints(user.id, Math.floor(bet));
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            document.querySelectorAll('.reel').forEach(r => r.classList.add('spinning'));
+
+            let spins = 0;
+            const interval = setInterval(() => {
+                generateReels(); renderReels(); spins++;
+                if (spins >= 15) { clearInterval(interval); document.querySelectorAll('.reel').forEach(r => r.classList.remove('spinning')); checkWins(); }
+            }, 100);
+        }
+
+        async function checkWins() {
+            const middleSymbols = [];
+            for (let r = 0; r < NUM_REELS; r++) middleSymbols.push(reels[r][1]);
+
+            let totalWin = 0;
+            for (const sym of SYMBOLS) {
+                let count = 0;
+                for (let i = 0; i < middleSymbols.length; i++) {
+                    if (middleSymbols[i].id === sym.id) count++; else break;
+                }
+                if (count >= 3) {
+                    totalWin = bet * (sym.value / 10) * (count - 2);
+                    document.querySelectorAll('.reel').forEach((reel, idx) => {
+                        if (idx < count) reel.querySelectorAll('.symbol')[1]?.classList.add('winning');
+                    });
+                    break;
+                }
+            }
+
+            if (totalWin > 0) {
+                await Wallet.updateBalance(user.id, totalWin);
+                document.getElementById('winAmount').textContent = '$' + totalWin.toLocaleString();
+                if (totalWin >= bet * 20) {
+                    document.getElementById('bigWinAmount').textContent = '$' + totalWin.toLocaleString();
+                    document.getElementById('winOverlay').classList.add('active');
+                } else Auth.showNotification(`🏆 赢得 $${totalWin}！`, 'success');
+            }
+
+            user = await Auth.getCurrentUser(); updateDisplay();
+            isSpinning = false; document.getElementById('spinBtn').disabled = false;
+
+            if (autoCount > 0) {
+                autoCount--; if (autoCount > 0) setTimeout(spin, 500);
+                else { document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = 'AUTO ×10'; }
+            }
+        }
+
+        function toggleAuto() {
+            if (autoCount > 0) { autoCount = 0; document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = 'AUTO ×10'; }
+            else { autoCount = 10; document.getElementById('autoBtn').classList.add('active'); document.getElementById('autoBtn').textContent = 'STOP'; if (!isSpinning) spin(); }
+        }
+        function closeWin() { document.getElementById('winOverlay').classList.remove('active'); }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员登录 - LuckyDragon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a15, #1a1a2e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .login-box {
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            color: #888;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .error {
+            color: #ff4444;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .back-link {
+            color: #888;
+            margin-top: 20px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #ffd700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <div class="logo">🐉</div>
+        <h1 class="title">LuckyDragon</h1>
+        <p class="subtitle">管理后台登录</p>
+        <form onsubmit="return login()">
+            <div class="form-group">
+                <label class="form-label">管理员账号</label>
+                <input type="text" class="form-input" id="username" placeholder="输入账号" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">密码</label>
+                <input type="password" class="form-input" id="password" placeholder="输入密码" required>
+            </div>
+            <button type="submit" class="btn">🔐 登录后台</button>
+        </form>
+        <p class="error" id="error">账号或密码错误</p>
+        <a href="lobby.html" class="back-link">← 返回平台</a>
+    </div>
+    <script>
+        // Admin credentials
+        const ADMIN = { username: 'adminjason', password: '123aBc' };
+
+        function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
+            if (u === ADMIN.username && p === ADMIN.password) {
+                sessionStorage.setItem('adminAuth', 'true');
+                sessionStorage.setItem('adminUser', u);
+                window.location.href = 'admin-panel.html';
+            } else {
+                document.getElementById('error').style.display = 'block';
+            }
+            return false;
+        }
+
+        // Check if already logged in
+        if (sessionStorage.getItem('adminAuth') === 'true') {
+            window.location.href = 'admin-panel.html';
+        }
+    </script>
+</body>
+
+</html>

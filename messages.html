@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 消息中心</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="account.html" class="btn btn-sm btn-outline">返回账户</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages Page -->
+    <div class="messages-page">
+        <div class="container">
+            <div class="messages-layout">
+                <!-- Message Categories -->
+                <aside class="message-sidebar glass-card">
+                    <h3>📬 消息分类</h3>
+                    <nav class="message-nav">
+                        <a href="#" class="message-nav-item active" data-type="all">
+                            <span>📥</span> 全部消息
+                            <span class="count">5</span>
+                        </a>
+                        <a href="#" class="message-nav-item" data-type="system">
+                            <span>🔔</span> 系统通知
+                            <span class="count">2</span>
+                        </a>
+                        <a href="#" class="message-nav-item" data-type="promo">
+                            <span>🎁</span> 优惠活动
+                            <span class="count">2</span>
+                        </a>
+                        <a href="#" class="message-nav-item" data-type="transaction">
+                            <span>💳</span> 交易通知
+                            <span class="count">1</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <!-- Message List -->
+                <main class="message-main glass-card">
+                    <div class="message-header">
+                        <h2>📨 消息中心</h2>
+                        <div class="message-actions">
+                            <button class="btn btn-sm btn-outline" onclick="markAllRead()">全部已读</button>
+                            <button class="btn btn-sm btn-outline" onclick="deleteAll()">清空消息</button>
+                        </div>
+                    </div>
+
+                    <div class="message-list" id="messageList">
+                        <!-- Messages will be rendered here -->
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .messages-page {
+            padding: 30px 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .messages-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .message-sidebar {
+            padding: 25px;
+        }
+
+        .message-sidebar h3 {
+            margin-bottom: 20px;
+        }
+
+        .message-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .message-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .message-nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .message-nav-item.active {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--color-gold);
+        }
+
+        .message-nav-item .count {
+            margin-left: auto;
+            padding: 2px 8px;
+            background: var(--color-red);
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .message-main {
+            padding: 25px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message-item {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .message-item:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .message-item.unread {
+            border-left: 3px solid var(--color-gold);
+        }
+
+        .message-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .message-icon.system {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .message-icon.promo {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .message-icon.transaction {
+            background: rgba(0, 210, 106, 0.2);
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .message-preview {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .message-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .messages-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .message-sidebar {
+                display: none;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script src="js/supabase-config.js"></script>
+
+
+    <script src="js/auth.js"></script>
+    <script>
+        const messages = [
+            {
+                id: 1,
+                type: 'promo',
+                icon: '🎁',
+                title: '🎉 288% 欢迎礼金已激活！',
+                preview: '恭喜您！您的 288% 首存奖励已准备就绪，首次存款即可获得最高 $28,800 奖金！',
+                time: '2分钟前',
+                unread: true
+            },
+            {
+                id: 2,
+                type: 'system',
+                icon: '🔔',
+                title: '账户安全提醒',
+                preview: '为了保护您的账户安全，请及时完成手机和邮箱验证。',
+                time: '1小时前',
+                unread: true
+            },
+            {
+                id: 3,
+                type: 'transaction',
+                icon: '💳',
+                title: '充值成功通知',
+                preview: '您的充值订单已完成，$500.00 已到账。感谢您的支持！',
+                time: '3小时前',
+                unread: false
+            },
+            {
+                id: 4,
+                type: 'promo',
+                icon: '🎰',
+                title: '新游戏上线：龙之财富 Megaways',
+                preview: '全新 Megaways 老虎机现已上线！最高 117,649 种赢法，快来体验吧！',
+                time: '1天前',
+                unread: false
+            },
+            {
+                id: 5,
+                type: 'system',
+                icon: '👑',
+                title: 'VIP 等级升级',
+                preview: '恭喜您升级为 Bronze VIP！享受 0.5% 返水和专属优惠。',
+                time: '2天前',
+                unread: false
+            }
+        ];
+
+        async function initPage() {
+            const user = await Auth.getCurrentUser();
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('navBalance').textContent = '$' + parseFloat(user.balance || 0).toLocaleString();
+            renderMessages();
+        }
+
+        function renderMessages() {
+            const list = document.getElementById('messageList');
+            list.innerHTML = '';
+
+            messages.forEach(msg => {
+                const el = document.createElement('div');
+                el.className = `message-item ${msg.unread ? 'unread' : ''}`;
+                el.innerHTML = `
+          <div class="message-icon ${msg.type}">${msg.icon}</div>
+          <div class="message-content">
+            <div class="message-title">${msg.title}</div>
+            <div class="message-preview">${msg.preview}</div>
+            <div class="message-time">${msg.time}</div>
+          </div>
+        `;
+                el.onclick = () => {
+                    msg.unread = false;
+                    renderMessages();
+                    Auth.showNotification('消息已读', 'info');
+                };
+                list.appendChild(el);
+            });
+        }
+
+        function markAllRead() {
+            messages.forEach(m => m.unread = false);
+            renderMessages();
+            Auth.showNotification('已全部标记为已读', 'success');
+        }
+
+        function deleteAll() {
+            if (confirm('确定要清空所有消息吗？')) {
+                messages.length = 0;
+                renderMessages();
+                Auth.showNotification('消息已清空', 'success');
+            }
+        }
+
+        function filterMessages(type) {
+            document.querySelectorAll('.message-nav-item').forEach(n => n.classList.remove('active'));
+            event.target.closest('.message-nav-item').classList.add('active');
+
+            const list = document.getElementById('messageList');
+            list.innerHTML = '';
+
+            const filtered = type === 'all' ? messages : messages.filter(m => m.type === type);
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<div style="text-align:center;padding:40px;color:#888;">暂无消息</div>';
+                return;
+            }
+
+            filtered.forEach(msg => {
+                const el = document.createElement('div');
+                el.className = `message-item ${msg.unread ? 'unread' : ''}`;
+                el.innerHTML = `
+                    <div class="message-icon ${msg.type}">${msg.icon}</div>
+                    <div class="message-content">
+                        <div class="message-title">${msg.title}</div>
+                        <div class="message-preview">${msg.preview}</div>
+                        <div class="message-time">${msg.time}</div>
+                    </div>
+                `;
+                el.onclick = () => {
+                    msg.unread = false;
+                    filterMessages(type);
+                    Auth.showNotification('消息已读', 'info');
+                };
+                list.appendChild(el);
+            });
+        }
+
+        // Setup navigation
+        document.querySelectorAll('.message-nav-item').forEach(item => {
+            item.onclick = (e) => {
+                e.preventDefault();
+                filterMessages(item.dataset.type);
+            };
+        });
+
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+
+</html>

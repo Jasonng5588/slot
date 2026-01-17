@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4D 彩票 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/games.css">
+    <style>
+        .lottery-game {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .lottery-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .lottery-title {
+            font-size: 2.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .draw-timer {
+            font-size: 1.2rem;
+            color: var(--color-cyan);
+            margin-top: 10px;
+        }
+
+        .number-picker {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .picker-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .number-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .number-box {
+            width: 70px;
+            height: 90px;
+            background: linear-gradient(180deg, #2a2a4a, #1a1a2e);
+            border: 3px solid var(--color-gold);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+
+        .number-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .num-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .num-btn:hover {
+            background: var(--color-gold);
+            color: #000;
+        }
+
+        .bet-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .bet-type {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bet-type:hover,
+        .bet-type.selected {
+            border-color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .bet-type-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .bet-type-odds {
+            color: var(--color-gold);
+            font-size: 0.9rem;
+        }
+
+        .bet-amount-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .amount-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .amount-btn {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .amount-btn:hover,
+        .amount-btn.selected {
+            background: var(--color-gold);
+            color: #000;
+        }
+
+        .quick-pick {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .submit-section {
+            text-align: center;
+        }
+
+        .recent-results {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .results-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .result-date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .result-numbers {
+            display: flex;
+            gap: 8px;
+        }
+
+        .result-num {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="lobby.html" class="logo"><span class="logo-icon">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="user-info">
+                <div class="wallet-display"><span class="wallet-icon">💰</span><span class="wallet-amount"
+                        id="balanceDisplay">$0</span></div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top:100px;padding-bottom:40px">
+        <div class="container">
+            <div class="lottery-game">
+                <div class="lottery-header">
+                    <h1 class="lottery-title">🎱 4D 万字彩票</h1>
+                    <div class="draw-timer">下一期开奖: <span id="countdown">--:--:--</span></div>
+                </div>
+
+                <div class="number-picker glass-card">
+                    <div class="picker-title">选择您的幸运号码</div>
+                    <div class="number-display">
+                        <div class="number-box" id="num1">0</div>
+                        <div class="number-box" id="num2">0</div>
+                        <div class="number-box" id="num3">0</div>
+                        <div class="number-box" id="num4">0</div>
+                    </div>
+                    <div class="number-controls">
+                        <button class="num-btn" onclick="changeNum(0, -1)">−</button>
+                        <button class="num-btn" onclick="changeNum(0, 1)">+</button>
+                        <button class="num-btn" onclick="changeNum(1, -1)">−</button>
+                        <button class="num-btn" onclick="changeNum(1, 1)">+</button>
+                        <button class="num-btn" onclick="changeNum(2, -1)">−</button>
+                        <button class="num-btn" onclick="changeNum(2, 1)">+</button>
+                        <button class="num-btn" onclick="changeNum(3, -1)">−</button>
+                        <button class="num-btn" onclick="changeNum(3, 1)">+</button>
+                    </div>
+                </div>
+
+                <div class="quick-pick">
+                    <button class="btn btn-outline" onclick="quickPick()">🎲 随机选号</button>
+                </div>
+
+                <div class="bet-types">
+                    <div class="bet-type selected" data-type="big" data-odds="2500" onclick="selectBetType(this)">
+                        <div class="bet-type-name">大奖</div>
+                        <div class="bet-type-odds">赔率 1:2500</div>
+                    </div>
+                    <div class="bet-type" data-type="small" data-odds="3500" onclick="selectBetType(this)">
+                        <div class="bet-type-name">小奖</div>
+                        <div class="bet-type-odds">赔率 1:3500</div>
+                    </div>
+                    <div class="bet-type" data-type="starter" data-odds="600" onclick="selectBetType(this)">
+                        <div class="bet-type-name">入围奖</div>
+                        <div class="bet-type-odds">赔率 1:600</div>
+                    </div>
+                    <div class="bet-type" data-type="consolation" data-odds="200" onclick="selectBetType(this)">
+                        <div class="bet-type-name">安慰奖</div>
+                        <div class="bet-type-odds">赔率 1:200</div>
+                    </div>
+                    <div class="bet-type" data-type="box" data-odds="100" onclick="selectBetType(this)">
+                        <div class="bet-type-name">组合</div>
+                        <div class="bet-type-odds">赔率 1:100</div>
+                    </div>
+                    <div class="bet-type" data-type="reverse" data-odds="150" onclick="selectBetType(this)">
+                        <div class="bet-type-name">反向</div>
+                        <div class="bet-type-odds">赔率 1:150</div>
+                    </div>
+                </div>
+
+                <div class="bet-amount-section">
+                    <div>选择投注金额</div>
+                    <div class="amount-options">
+                        <button class="amount-btn" data-amount="1" onclick="selectAmount(this)">$1</button>
+                        <button class="amount-btn selected" data-amount="5" onclick="selectAmount(this)">$5</button>
+                        <button class="amount-btn" data-amount="10" onclick="selectAmount(this)">$10</button>
+                        <button class="amount-btn" data-amount="20" onclick="selectAmount(this)">$20</button>
+                        <button class="amount-btn" data-amount="50" onclick="selectAmount(this)">$50</button>
+                        <button class="amount-btn" data-amount="100" onclick="selectAmount(this)">$100</button>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                    <button class="btn btn-gold btn-lg" onclick="placeBet()">🎫 购买彩票</button>
+                    <button class="btn btn-outline btn-lg" onclick="instantDraw()">⚡ 即时开奖</button>
+                </div>
+
+                <div class="recent-results">
+                    <div class="results-title">📜 最近开奖结果</div>
+                    <div id="resultsContainer"></div>
+                </div>
+
+                <div style="text-align:center;margin-top:25px">
+                    <a href="lobby.html" class="btn btn-outline">返回大厅</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        let user, numbers = [0, 0, 0, 0], betType = 'big', betOdds = 2500, betAmount = 5;
+        const recentResults = [];
+
+        async function init() {
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay();
+            startCountdown();
+            generateResults();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balanceDisplay').textContent = '$' + bal.toLocaleString();
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('num' + (i + 1)).textContent = numbers[i];
+            }
+        }
+
+        function changeNum(idx, dir) {
+            numbers[idx] = (numbers[idx] + dir + 10) % 10;
+            document.getElementById('num' + (idx + 1)).textContent = numbers[idx];
+        }
+
+        function quickPick() {
+            numbers = [0, 1, 2, 3].map(() => Math.floor(Math.random() * 10));
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('num' + (i + 1)).textContent = numbers[i];
+            }
+            Auth.showNotification('🎲 已生成随机号码！', 'info');
+        }
+
+        function selectBetType(el) {
+            document.querySelectorAll('.bet-type').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+            betType = el.dataset.type;
+            betOdds = parseInt(el.dataset.odds);
+        }
+
+        function selectAmount(el) {
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+            betAmount = parseInt(el.dataset.amount);
+        }
+
+        async function placeBet() {
+            const balance = parseFloat(user?.balance || 0);
+            if (balance < betAmount) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            await Wallet.updateBalance(user.id, -betAmount);
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            const ticket = numbers.join('');
+            Auth.showNotification(`🎫 已购买彩票 ${ticket}，等待开奖...`, 'success');
+        }
+
+        async function instantDraw() {
+            const balance = parseFloat(user?.balance || 0);
+            if (balance < betAmount) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            await Wallet.updateBalance(user.id, -betAmount);
+
+            // Generate winning number
+            const winning = [0, 1, 2, 3].map(() => Math.floor(Math.random() * 10));
+            const ticket = numbers.join('');
+            const winNum = winning.join('');
+
+            // Check if won
+            let won = false;
+            if (ticket === winNum) {
+                won = true;
+                const prize = betAmount * betOdds;
+                await Wallet.updateBalance(user.id, prize);
+                Auth.showNotification(`🎉 恭喜中奖！${ticket} = ${winNum}，赢得 $${prize.toLocaleString()}！`, 'success');
+            } else {
+                Auth.showNotification(`开奖号码: ${winNum}，您的号码: ${ticket}，未中奖`, 'info');
+            }
+
+            // Add to results
+            recentResults.unshift({ date: new Date().toLocaleTimeString(), numbers: winning, won });
+            if (recentResults.length > 5) recentResults.pop();
+            renderResults();
+
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+        }
+
+        function generateResults() {
+            for (let i = 0; i < 5; i++) {
+                const h = new Date(); h.setHours(h.getHours() - i - 1);
+                recentResults.push({
+                    date: h.toLocaleTimeString(),
+                    numbers: [0, 1, 2, 3].map(() => Math.floor(Math.random() * 10)),
+                    won: false
+                });
+            }
+            renderResults();
+        }
+
+        function renderResults() {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = recentResults.map(r => `
+                <div class="result-row">
+                    <div class="result-date">${r.date}</div>
+                    <div class="result-numbers">
+                        ${r.numbers.map(n => `<div class="result-num">${n}</div>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function startCountdown() {
+            setInterval(() => {
+                const now = new Date();
+                const next = new Date();
+                next.setMinutes(next.getMinutes() + (5 - next.getMinutes() % 5), 0, 0);
+                const diff = next - now;
+                const m = Math.floor(diff / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                document.getElementById('countdown').textContent = `0${m}:${s.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

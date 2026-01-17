@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幸运转盘 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/games.css">
+    <style>
+        .wheel-game {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 30px auto;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#ff6b35 0deg 45deg, #ffd700 45deg 90deg, #00d26a 90deg 135deg, #00d4ff 135deg 180deg,
+                    #8b5cf6 180deg 225deg, #ff1744 225deg 270deg, #ffc107 270deg 315deg, #4caf50 315deg 360deg);
+            border: 8px solid var(--color-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), inset 0 0 50px rgba(0, 0, 0, 0.3);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+
+        .wheel-segments {
+            position: absolute;
+            inset: 0;
+        }
+
+        .segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 50%;
+            transform-origin: 0% 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 30px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .segment:nth-child(1) {
+            transform: rotate(-67.5deg);
+        }
+
+        .segment:nth-child(2) {
+            transform: rotate(-22.5deg);
+        }
+
+        .segment:nth-child(3) {
+            transform: rotate(22.5deg);
+        }
+
+        .segment:nth-child(4) {
+            transform: rotate(67.5deg);
+        }
+
+        .segment:nth-child(5) {
+            transform: rotate(112.5deg);
+        }
+
+        .segment:nth-child(6) {
+            transform: rotate(157.5deg);
+        }
+
+        .segment:nth-child(7) {
+            transform: rotate(202.5deg);
+        }
+
+        .segment:nth-child(8) {
+            transform: rotate(247.5deg);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid var(--color-gold);
+            z-index: 10;
+            filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.5));
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffd700, #b8860b);
+            border: 4px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #000;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .wheel-center:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .game-hud {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .hud-card {
+            padding: 20px 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .hud-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .hud-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+
+        .bet-section {
+            margin: 30px 0;
+        }
+
+        .bet-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .bet-chip {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffd700, #daa520);
+            border: 4px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .bet-chip:hover {
+            transform: scale(1.15);
+        }
+
+        .bet-chip.selected {
+            box-shadow: 0 0 20px var(--color-gold);
+            transform: scale(1.1);
+        }
+
+        .win-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .win-popup.active {
+            display: flex;
+        }
+
+        .win-title {
+            font-size: 4rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .win-amount {
+            font-size: 5rem;
+            color: #fff;
+            margin: 20px 0;
+        }
+
+        .multipliers {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .mult-badge {
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="lobby.html" class="logo"><span class="logo-icon">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="user-info">
+                <div class="wallet-display"><span class="wallet-icon">💰</span><span class="wallet-amount"
+                        id="balanceDisplay">$0</span></div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top:100px;padding-bottom:40px">
+        <div class="container">
+            <div class="wheel-game">
+                <h1
+                    style="background: var(--gradient-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    🎡 幸运大转盘</h1>
+
+                <div class="game-hud">
+                    <div class="hud-card">
+                        <div class="hud-label">余额</div>
+                        <div class="hud-value" id="gameBalance">$0</div>
+                    </div>
+                    <div class="hud-card">
+                        <div class="hud-label">下注</div>
+                        <div class="hud-value" id="currentBet">$10</div>
+                    </div>
+                    <div class="hud-card">
+                        <div class="hud-label">本轮赢取</div>
+                        <div class="hud-value text-green" id="lastWin">$0</div>
+                    </div>
+                </div>
+
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel" id="wheel">
+                        <div class="wheel-segments">
+                            <div class="segment">×2</div>
+                            <div class="segment">×5</div>
+                            <div class="segment">×1</div>
+                            <div class="segment">×10</div>
+                            <div class="segment">×0</div>
+                            <div class="segment">×3</div>
+                            <div class="segment">×0.5</div>
+                            <div class="segment">×50</div>
+                        </div>
+                    </div>
+                    <div class="wheel-center" id="spinBtn" onclick="spin()">SPIN</div>
+                </div>
+
+                <div class="multipliers">
+                    <div class="mult-badge" style="color:#ff6b35">×2</div>
+                    <div class="mult-badge" style="color:#ffd700">×5</div>
+                    <div class="mult-badge" style="color:#00d26a">×1</div>
+                    <div class="mult-badge" style="color:#00d4ff">×10</div>
+                    <div class="mult-badge" style="color:#8b5cf6">×0</div>
+                    <div class="mult-badge" style="color:#ff1744">×3</div>
+                    <div class="mult-badge" style="color:#ffc107">×0.5</div>
+                    <div class="mult-badge" style="color:#4caf50">×50 🔥</div>
+                </div>
+
+                <div class="bet-section">
+                    <div style="margin-bottom:15px;color:var(--text-secondary)">选择筹码</div>
+                    <div class="bet-options">
+                        <div class="bet-chip" data-bet="5" onclick="selectBet(this)">$5</div>
+                        <div class="bet-chip selected" data-bet="10" onclick="selectBet(this)">$10</div>
+                        <div class="bet-chip" data-bet="25" onclick="selectBet(this)">$25</div>
+                        <div class="bet-chip" data-bet="50" onclick="selectBet(this)">$50</div>
+                        <div class="bet-chip" data-bet="100" onclick="selectBet(this)">$100</div>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px">
+                    <a href="lobby.html" class="btn btn-outline">返回大厅</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="win-popup" id="winPopup">
+        <div class="win-title" id="winTitle">恭喜!</div>
+        <div class="win-amount" id="winAmount">$0</div>
+        <button class="btn btn-gold" onclick="closeWin()">继续游戏</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        let user, currentBet = 10, isSpinning = false, totalRotation = 0;
+        const SEGMENTS = [2, 5, 1, 10, 0, 3, 0.5, 50]; // multipliers for each segment
+
+        async function init() {
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balanceDisplay').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('currentBet').textContent = '$' + currentBet;
+        }
+
+        function selectBet(el) {
+            document.querySelectorAll('.bet-chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            currentBet = parseInt(el.dataset.bet);
+            document.getElementById('currentBet').textContent = '$' + currentBet;
+        }
+
+        async function spin() {
+            if (isSpinning) return;
+
+            const balance = parseFloat(user?.balance || 0);
+            if (balance < currentBet) {
+                Auth.showNotification('余额不足！', 'error');
+                return;
+            }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').style.pointerEvents = 'none';
+
+            // Deduct bet
+            await Wallet.updateBalance(user.id, -currentBet);
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            // Random result
+            const resultIdx = Math.floor(Math.random() * 8);
+            const multiplier = SEGMENTS[resultIdx];
+
+            // Calculate rotation
+            const segmentAngle = 360 / 8;
+            const targetAngle = (resultIdx * segmentAngle) + (segmentAngle / 2);
+            const spins = 5 + Math.floor(Math.random() * 3);
+            totalRotation = spins * 360 + (360 - targetAngle);
+
+            const wheel = document.getElementById('wheel');
+            wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+            // Wait for animation
+            setTimeout(async () => {
+                const win = currentBet * multiplier;
+
+                if (win > 0) {
+                    await Wallet.updateBalance(user.id, win);
+                    document.getElementById('lastWin').textContent = '$' + win.toLocaleString();
+
+                    if (multiplier >= 10) {
+                        document.getElementById('winTitle').textContent = multiplier >= 50 ? '🎉 超级大奖!' : '🎊 大奖!';
+                        document.getElementById('winAmount').textContent = '$' + win.toLocaleString();
+                        document.getElementById('winPopup').classList.add('active');
+                    } else {
+                        Auth.showNotification(`🎉 恭喜赢得 $${win}！(${multiplier}x)`, 'success');
+                    }
+                } else {
+                    document.getElementById('lastWin').textContent = '$0';
+                    Auth.showNotification('没有中奖，再试一次！', 'info');
+                }
+
+                user = await Auth.getCurrentUser();
+                updateDisplay();
+                isSpinning = false;
+                document.getElementById('spinBtn').style.pointerEvents = 'auto';
+            }, 4000);
+        }
+
+        function closeWin() {
+            document.getElementById('winPopup').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/admin-pro.css">
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo"><span class="logo-icon">🐉</span><span class="logo-text">LuckyDragon</span><span
+                    class="badge">ADMIN</span></div>
+            <div class="admin-info">
+                <div class="admin-avatar">A</div>
+                <div><strong id="adminName">Admin</strong><br><small>超级管理员</small></div>
+            </div>
+            <nav class="nav">
+                <a class="nav-item active" data-section="dashboard"><span>📊</span>仪表盘</a>
+                <a class="nav-item" data-section="players"><span>👥</span>玩家管理</a>
+                <a class="nav-item" data-section="rtp"><span>🎯</span>RTP控制</a>
+                <a class="nav-item" data-section="finance"><span>💰</span>财务管理</a>
+                <a class="nav-item" data-section="games"><span>🎮</span>游戏管理</a>
+                <a class="nav-item" data-section="promos"><span>🎁</span>优惠活动</a>
+                <a class="nav-item" data-section="reports"><span>📈</span>数据报表</a>
+                <a class="nav-item" data-section="logs"><span>📝</span>操作日志</a>
+                <a class="nav-item" data-section="settings"><span>⚙️</span>系统设置</a>
+            </nav>
+            <div class="nav-bottom">
+                <a class="nav-item" href="lobby.html"><span>🏠</span>返回平台</a>
+                <a class="nav-item" onclick="logout()"><span>🚪</span>退出登录</a>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="header">
+                <h1 class="page-title" id="pageTitle">📊 仪表盘</h1>
+                <div class="header-right">
+                    <span class="server-status">🟢 服务器正常</span>
+                    <span id="clock"></span>
+                </div>
+            </header>
+
+            <!-- Dashboard -->
+            <section id="dashboard" class="section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info"><span class="stat-value" id="totalPlayers">0</span><span
+                                class="stat-label">总玩家</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🟢</div>
+                        <div class="stat-info"><span class="stat-value" id="onlinePlayers">0</span><span
+                                class="stat-label">在线玩家</span></div>
+                    </div>
+                    <div class="stat-card gold">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info"><span class="stat-value" id="totalBalance">$0</span><span
+                                class="stat-label">平台总余额</span></div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-info"><span class="stat-value" id="todayBets">$0</span><span
+                                class="stat-label">今日投注</span></div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-icon">💵</div>
+                        <div class="stat-info"><span class="stat-value" id="todayProfit">$0</span><span
+                                class="stat-label">今日盈利</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎮</div>
+                        <div class="stat-info"><span class="stat-value">18</span><span class="stat-label">游戏数量</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card flex-2">
+                        <div class="card-header">
+                            <h3>📈 最近交易</h3><button class="btn btn-sm" onclick="refreshDashboard()">🔄 刷新</button>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>玩家</th>
+                                    <th>类型</th>
+                                    <th>金额</th>
+                                    <th>游戏</th>
+                                    <th>时间</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentTx"></tbody>
+                        </table>
+                    </div>
+                    <div class="card flex-1">
+                        <div class="card-header">
+                            <h3>⚡ 快捷操作</h3>
+                        </div>
+                        <div class="quick-actions">
+                            <button class="quick-btn" onclick="showModal('bonusModal')">🎁 发放奖励</button>
+                            <button class="quick-btn" onclick="showModal('broadcastModal')">📢 发送公告</button>
+                            <button class="quick-btn" onclick="exportData('players')">📤 导出玩家</button>
+                            <button class="quick-btn" onclick="exportData('finance')">📊 导出报表</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Players -->
+            <section id="players" class="section">
+                <div class="toolbar">
+                    <div class="filters">
+                        <button class="filter-btn active" onclick="filterPlayers('all')">全部</button>
+                        <button class="filter-btn" onclick="filterPlayers('vip')">VIP</button>
+                        <button class="filter-btn" onclick="filterPlayers('new')">新玩家</button>
+                        <button class="filter-btn" onclick="filterPlayers('active')">活跃</button>
+                    </div>
+                    <div class="search-box"><input type="text" id="playerSearch" placeholder="搜索玩家..."
+                            onkeyup="searchPlayers()"></div>
+                    <button class="btn btn-gold" onclick="refreshPlayers()">🔄 刷新</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👥 玩家列表</h3><span id="playerCount" class="badge">0人</span>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>玩家</th>
+                                <th>余额</th>
+                                <th>VIP</th>
+                                <th>RTP</th>
+                                <th>积分</th>
+                                <th>注册</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="playersTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- RTP Control -->
+            <section id="rtp" class="section">
+                <div class="row">
+                    <div class="card flex-1">
+                        <div class="card-header">
+                            <h3>🎯 全局RTP设置</h3>
+                        </div>
+                        <div class="rtp-global">
+                            <div class="rtp-display"><span class="rtp-value" id="globalRtpValue">95%</span><span
+                                    class="rtp-label">全局返奖率</span></div>
+                            <input type="range" class="rtp-slider" min="70" max="99" value="95" id="globalRtpSlider"
+                                oninput="updateGlobalRtp(this.value)">
+                            <div class="rtp-range"><span>70% (低)</span><span>99% (高)</span></div>
+                            <button class="btn btn-gold" onclick="saveGlobalRtp()">💾 保存全局RTP</button>
+                        </div>
+                    </div>
+                    <div class="card flex-1">
+                        <div class="card-header">
+                            <h3>👤 玩家专属RTP</h3>
+                        </div>
+                        <div class="form-group"><label>选择玩家</label><select class="form-select" id="rtpPlayerSelect"
+                                onchange="loadPlayerRtp()">
+                                <option value="">-- 选择玩家 --</option>
+                            </select></div>
+                        <div id="playerRtpCtrl" style="display:none;">
+                            <div class="rtp-display small"><span class="rtp-value" id="playerRtpValue">95%</span></div>
+                            <input type="range" class="rtp-slider" min="70" max="99" value="95" id="playerRtpSlider"
+                                oninput="document.getElementById('playerRtpValue').textContent=this.value+'%'">
+                            <button class="btn btn-gold" onclick="savePlayerRtp()">💾 保存玩家RTP</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🎮 游戏RTP设置</h3><button class="btn btn-gold" onclick="saveAllGameRtp()">💾 保存全部</button>
+                    </div>
+                    <div class="games-rtp-grid" id="gamesRtpGrid"></div>
+                </div>
+            </section>
+
+            <!-- Finance -->
+            <section id="finance" class="section">
+                <div class="stats-grid small">
+                    <div class="stat-card">
+                        <div class="stat-info"><span class="stat-value green">$125,680</span><span
+                                class="stat-label">今日充值</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info"><span class="stat-value red">$45,230</span><span
+                                class="stat-label">今日提现</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info"><span class="stat-value green">$80,450</span><span
+                                class="stat-label">净收入</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info"><span class="stat-value">$2,340</span><span
+                                class="stat-label">返水支出</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>💰 交易记录</h3><button class="btn btn-sm" onclick="exportData('finance')">📤 导出</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>玩家</th>
+                                <th>类型</th>
+                                <th>金额</th>
+                                <th>游戏</th>
+                                <th>时间</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="financeTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Games -->
+            <section id="games" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🎮 游戏管理</h3>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>游戏</th>
+                                <th>分类</th>
+                                <th>RTP</th>
+                                <th>投注额</th>
+                                <th>派彩</th>
+                                <th>盈利</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gamesTable"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Promotions -->
+            <section id="promos" class="section">
+                <div class="toolbar"><button class="btn btn-gold" onclick="showModal('promoModal')">➕ 创建活动</button>
+                </div>
+                <div class="promos-grid" id="promosGrid"></div>
+            </section>
+
+            <!-- Reports -->
+            <section id="reports" class="section">
+                <div class="row">
+                    <div class="card flex-1">
+                        <div class="card-header">
+                            <h3>🏆 游戏排行</h3>
+                        </div>
+                        <div id="topGames"></div>
+                    </div>
+                    <div class="card flex-1">
+                        <div class="card-header">
+                            <h3>👑 玩家排行</h3>
+                        </div>
+                        <div id="topPlayers"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Logs -->
+            <section id="logs" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📝 操作日志</h3><button class="btn btn-sm" onclick="clearLogs()">🗑 清空</button>
+                    </div>
+                    <div class="logs-list" id="logsList"></div>
+                </div>
+            </section>
+
+            <!-- Settings -->
+            <section id="settings" class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>⚙️ 系统设置</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group"><label>平台名称</label><input type="text" class="form-input"
+                                value="LuckyDragon Casino"></div>
+                        <div class="form-group"><label>新用户注册奖励</label><input type="number" class="form-input"
+                                value="10000"></div>
+                        <div class="form-group"><label>每日签到奖励</label><input type="number" class="form-input"
+                                value="100"></div>
+                        <div class="form-group"><label>最低充值</label><input type="number" class="form-input" value="50">
+                        </div>
+                        <div class="form-group"><label>最低提现</label><input type="number" class="form-input" value="100">
+                        </div>
+                        <button class="btn btn-gold" onclick="saveSettings()">💾 保存设置</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="editPlayerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>✏️ 编辑玩家</h3><button class="close-btn" onclick="closeModal('editPlayerModal')">×</button>
+            </div>
+            <div class="modal-body" id="editPlayerForm"></div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="bonusModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🎁 发放奖励</h3><button class="close-btn" onclick="closeModal('bonusModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label>目标</label><select class="form-select" id="bonusTarget">
+                        <option value="all">全部玩家</option>
+                        <option value="vip">VIP玩家</option>
+                        <option value="active">活跃玩家</option>
+                    </select></div>
+                <div class="form-group"><label>金额</label><input type="number" class="form-input" id="bonusAmount"
+                        value="100"></div>
+                <div class="form-group"><label>说明</label><input type="text" class="form-input" id="bonusReason"
+                        value="平台福利"></div><button class="btn btn-gold" onclick="sendBonus()">发放</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="broadcastModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>📢 发送公告</h3><button class="close-btn" onclick="closeModal('broadcastModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label>标题</label><input type="text" class="form-input" id="bcTitle"></div>
+                <div class="form-group"><label>内容</label><textarea class="form-textarea" id="bcContent"></textarea>
+                </div><button class="btn btn-gold" onclick="sendBroadcast()">发送</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="promoModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>🎁 创建优惠活动</h3><button class="close-btn" onclick="closeModal('promoModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label>活动类型</label><select class="form-select" id="promoType">
+                        <option value="rebate">返水活动</option>
+                        <option value="deposit">首充奖励</option>
+                        <option value="weekly">周周送</option>
+                        <option value="rescue">救援金</option>
+                        <option value="birthday">生日礼金</option>
+                        <option value="vip">VIP专属</option>
+                    </select></div>
+                <div class="form-group"><label>活动名称</label><input type="text" class="form-input" id="promoName"></div>
+                <div class="form-group"><label>活动描述</label><textarea class="form-textarea" id="promoDesc"></textarea>
+                </div>
+                <div class="form-group"><label>奖励比例/金额</label><input type="text" class="form-input" id="promoValue"
+                        placeholder="如: 0.5% 或 $100"></div><button class="btn btn-gold"
+                    onclick="createPromo()">创建活动</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/admin-pro.js"></script>
+</body>
+
+</html>

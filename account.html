@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 账户中心</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <a href="lobby.html" class="btn btn-sm btn-outline">返回大厅</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Account Layout -->
+    <div class="account-layout">
+        <!-- Sidebar -->
+        <aside class="account-sidebar">
+            <!-- User Card -->
+            <div class="user-card glass-card">
+                <div class="user-avatar-large" id="userAvatarLarge">U</div>
+                <h3 class="user-name" id="userName">用户名</h3>
+                <div class="user-vip" id="userVipBadge">
+                    <span class="vip-icon">🥉</span>
+                    <span>Bronze</span>
+                </div>
+                <div class="balance-display">
+                    <div class="balance-label">账户余额</div>
+                    <div class="balance-amount" id="balanceAmount">$0.00</div>
+                </div>
+                <div class="quick-actions">
+                    <button class="btn btn-gold btn-sm" onclick="location.href='deposit.html'">充值</button>
+                    <button class="btn btn-outline btn-sm" onclick="location.href='withdraw.html'">提现</button>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="account-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">💰 资金管理</div>
+                    <a href="deposit.html" class="nav-item">
+                        <span class="nav-icon">💳</span>
+                        <span>充值</span>
+                    </a>
+                    <a href="transfer.html" class="nav-item">
+                        <span class="nav-icon">🔄</span>
+                        <span>转账</span>
+                    </a>
+                    <a href="withdraw.html" class="nav-item">
+                        <span class="nav-icon">📤</span>
+                        <span>提现</span>
+                    </a>
+                    <a href="history.html" class="nav-item">
+                        <span class="nav-icon">📜</span>
+                        <span>交易记录</span>
+                    </a>
+                    <a href="turnover.html" class="nav-item">
+                        <span class="nav-icon">💎</span>
+                        <span>流水记录</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">👤 账户管理</div>
+                    <a href="account.html" class="nav-item active">
+                        <span class="nav-icon">👤</span>
+                        <span>账户总览</span>
+                    </a>
+                    <a href="profile.html" class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        <span>个人资料</span>
+                    </a>
+                    <a href="bank.html" class="nav-item">
+                        <span class="nav-icon">🏦</span>
+                        <span>银行信息</span>
+                    </a>
+                    <a href="messages.html" class="nav-item">
+                        <span class="nav-icon">💬</span>
+                        <span>消息中心</span>
+                        <span class="nav-badge">3</span>
+                    </a>
+                    <a href="referral.html" class="nav-item">
+                        <span class="nav-icon">👥</span>
+                        <span>推荐好友</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">✅ 身份验证</div>
+                    <a href="verify.html" class="nav-item">
+                        <span class="nav-icon">📱</span>
+                        <span>手机验证</span>
+                        <span class="status-badge verified">已验证</span>
+                    </a>
+                    <a href="verify.html" class="nav-item">
+                        <span class="nav-icon">📧</span>
+                        <span>邮箱验证</span>
+                        <span class="status-badge pending">待验证</span>
+                    </a>
+                    <a href="verify.html" class="nav-item">
+                        <span class="nav-icon">🪪</span>
+                        <span>身份验证</span>
+                        <span class="status-badge pending">待验证</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="account-main">
+            <!-- Balance Overview -->
+            <section class="balance-overview glass-card">
+                <div class="overview-header">
+                    <h2>💰 账户概览</h2>
+                    <button class="btn btn-sm btn-outline" onclick="restoreWallet()">
+                        🔄 恢复钱包
+                    </button>
+                </div>
+
+                <div class="balance-cards">
+                    <div class="balance-card">
+                        <div class="balance-card-icon">💰</div>
+                        <div class="balance-card-info">
+                            <div class="balance-card-label">总余额 (USD)</div>
+                            <div class="balance-card-value" id="totalBalance">$0.00</div>
+                        </div>
+                    </div>
+                    <div class="balance-card">
+                        <div class="balance-card-icon">✅</div>
+                        <div class="balance-card-info">
+                            <div class="balance-card-label">可提现</div>
+                            <div class="balance-card-value text-green" id="withdrawable">$0.00</div>
+                        </div>
+                    </div>
+                    <div class="balance-card">
+                        <div class="balance-card-icon">🔒</div>
+                        <div class="balance-card-info">
+                            <div class="balance-card-label">不可提现</div>
+                            <div class="balance-card-value text-red" id="nonWithdrawable">$0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIP Progress -->
+                <div class="vip-progress-section">
+                    <div class="vip-header">
+                        <div class="vip-current">
+                            <span class="vip-icon-large" id="currentVipIcon">🥉</span>
+                            <span class="vip-name" id="currentVipName">Bronze</span>
+                        </div>
+                        <div class="vip-next">
+                            下一等级: <strong id="nextVipName">Silver</strong>
+                        </div>
+                    </div>
+                    <div class="vip-progress-bar">
+                        <div class="progress-fill" id="vipProgressFill" style="width: 30%"></div>
+                    </div>
+                    <div class="vip-progress-info">
+                        <span>存款进度: <strong id="depositProgress">$0 / $5,000</strong></span>
+                        <span class="text-gold">升级可获得更多优惠!</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Deposit -->
+            <section class="quick-deposit glass-card">
+                <h2>💳 快速充值</h2>
+                <div class="deposit-tabs">
+                    <button class="deposit-tab active" data-method="quickpay">Quick Pay</button>
+                    <button class="deposit-tab" data-method="bank">银行转账</button>
+                    <button class="deposit-tab" data-method="qr">QR Pay</button>
+                    <button class="deposit-tab" data-method="crypto">加密货币</button>
+                    <button class="deposit-tab" data-method="ewallet">电子钱包</button>
+                </div>
+
+                <div class="payment-methods" id="paymentMethods">
+                    <div class="method-card" onclick="selectMethod('paypal')">
+                        <div class="method-icon">💳</div>
+                        <div class="method-name">PayPal</div>
+                    </div>
+                    <div class="method-card" onclick="selectMethod('directpay')">
+                        <div class="method-icon">🏦</div>
+                        <div class="method-name">DirectPay</div>
+                    </div>
+                    <div class="method-card" onclick="selectMethod('ttypay')">
+                        <div class="method-icon">💰</div>
+                        <div class="method-name">TTYPay</div>
+                    </div>
+                    <div class="method-card" onclick="selectMethod('easypay')">
+                        <div class="method-icon">⚡</div>
+                        <div class="method-name">EasyPay</div>
+                    </div>
+                </div>
+
+                <div class="bank-list" id="bankList">
+                    <h4>选择银行</h4>
+                    <div class="banks-grid">
+                        <div class="bank-item" onclick="selectBank('maybank')">
+                            <span class="bank-icon">🏦</span>
+                            <span>Maybank</span>
+                            <span class="status online">在线</span>
+                        </div>
+                        <div class="bank-item" onclick="selectBank('cimb')">
+                            <span class="bank-icon">🏦</span>
+                            <span>CIMB Bank</span>
+                            <span class="status online">在线</span>
+                        </div>
+                        <div class="bank-item" onclick="selectBank('public')">
+                            <span class="bank-icon">🏦</span>
+                            <span>Public Bank</span>
+                            <span class="status online">在线</span>
+                        </div>
+                        <div class="bank-item" onclick="selectBank('rhb')">
+                            <span class="bank-icon">🏦</span>
+                            <span>RHB Bank</span>
+                            <span class="status offline">离线</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deposit-form" id="depositForm">
+                    <div class="input-group">
+                        <label>充值金额 (USD)</label>
+                        <div class="amount-input">
+                            <input type="number" class="input-field" id="depositAmount" placeholder="最低 $20" min="20">
+                            <div class="amount-presets">
+                                <button onclick="setAmount(50)">$50</button>
+                                <button onclick="setAmount(100)">$100</button>
+                                <button onclick="setAmount(200)">$200</button>
+                                <button onclick="setAmount(500)">$500</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-gold btn-lg" onclick="processDeposit()">立即充值</button>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="recent-activity glass-card">
+                <h2>📊 最近活动</h2>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-icon win">🎉</div>
+                        <div class="activity-info">
+                            <div class="activity-title">游戏获胜</div>
+                            <div class="activity-desc">龙之财富 Megaways</div>
+                        </div>
+                        <div class="activity-amount text-green">+$250.00</div>
+                        <div class="activity-time">2分钟前</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon bet">🎰</div>
+                        <div class="activity-info">
+                            <div class="activity-title">游戏投注</div>
+                            <div class="activity-desc">幸运777</div>
+                        </div>
+                        <div class="activity-amount text-red">-$50.00</div>
+                        <div class="activity-time">5分钟前</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon deposit">💳</div>
+                        <div class="activity-info">
+                            <div class="activity-title">充值成功</div>
+                            <div class="activity-desc">Quick Pay</div>
+                        </div>
+                        <div class="activity-amount text-green">+$500.00</div>
+                        <div class="activity-time">1小时前</div>
+                    </div>
+                </div>
+                <a href="history.html" class="view-all-link">查看全部记录 →</a>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/account.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+
+</html>

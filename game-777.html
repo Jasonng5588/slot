@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky 777 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/games.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="user-info">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="balanceDisplay">$0</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top:100px;padding-bottom:40px">
+        <div class="container">
+            <div class="slot-machine classic-777">
+                <div class="game-header">
+                    <h1 class="game-title">7️⃣ Lucky 777</h1>
+                    <div class="game-actions">
+                        <a href="lobby.html" class="game-action-btn">✖</a>
+                    </div>
+                </div>
+
+                <div class="reels-container" id="reelsContainer">
+                    <div class="reel" id="reel0">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel1">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel2">
+                        <div class="reel-inner"></div>
+                    </div>
+                </div>
+
+                <div class="paylines-indicator">
+                    <span class="payline active">─── 1 ───</span>
+                    <span class="payline">─── 2 ───</span>
+                    <span class="payline">─── 3 ───</span>
+                </div>
+
+                <div class="game-info-panel">
+                    <div class="info-box">
+                        <div class="info-label">余额</div>
+                        <div class="info-value balance" id="gameBalance">$0</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">本次赢取</div>
+                        <div class="info-value win" id="winDisplay">$0</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">下注</div>
+                        <div class="info-value" id="betDisplay">$10</div>
+                    </div>
+                </div>
+
+                <div class="game-controls">
+                    <div class="bet-control">
+                        <span class="bet-label">下注</span>
+                        <div class="bet-adjuster">
+                            <button class="bet-btn" id="betDown">−</button>
+                            <span class="bet-amount" id="betAmount">$10</span>
+                            <button class="bet-btn" id="betUp">+</button>
+                        </div>
+                    </div>
+
+                    <button class="spin-btn" id="spinBtn">
+                        <span class="spin-btn-text">SPIN</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="big-win-overlay" id="bigWinOverlay">
+        <div class="big-win-title">BIG WIN!</div>
+        <div class="big-win-amount" id="bigWinAmount">$0</div>
+        <button class="btn btn-gold" onclick="closeBigWin()">继续</button>
+    </div>
+
+    <style>
+        .classic-777 .reels-container {
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .classic-777 .reel {
+            width: 120px;
+            height: 320px;
+        }
+
+        .classic-777 .symbol {
+            width: 120px;
+            height: 106px;
+            font-size: 3.5rem;
+        }
+
+        .paylines-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 15px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .payline.active {
+            color: var(--color-gold);
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/loyalty.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script src="js/slots.js"></script>
+    <script src="js/classic777.js"></script>
+</body>
+
+</html>

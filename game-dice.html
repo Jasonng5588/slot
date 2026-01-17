@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>骰宝 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/games.css">
+    <style>
+        .dice-game {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .dice {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(145deg, #fff, #e0e0e0);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s;
+        }
+
+        .dice.rolling {
+            animation: roll 0.3s ease-in-out infinite;
+        }
+
+        @keyframes roll {
+
+            0%,
+            100% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(180deg) scale(0.8);
+            }
+        }
+
+        .bet-table {
+            background: linear-gradient(180deg, #1e5631, #0d2818);
+            border: 3px solid var(--color-gold);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .bet-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .bet-option {
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .bet-option:hover {
+            border-color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .bet-option.selected {
+            border-color: var(--color-gold);
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .bet-option.winning {
+            background: rgba(0, 210, 106, 0.3);
+            border-color: var(--color-green);
+        }
+
+        .bet-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .bet-odds {
+            font-size: 0.8rem;
+            color: var(--color-gold);
+        }
+
+        .bet-chip-display {
+            font-size: 0.85rem;
+            color: var(--color-cyan);
+            margin-top: 5px;
+        }
+
+        .chips-section {
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .chips {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .chip {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 4px dashed rgba(255, 255, 255, 0.5);
+        }
+
+        .chip:hover {
+            transform: scale(1.15);
+        }
+
+        .chip.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .chip-1 {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        .chip-5 {
+            background: #f44336;
+            color: #fff;
+        }
+
+        .chip-10 {
+            background: #2196f3;
+            color: #fff;
+        }
+
+        .chip-25 {
+            background: #9c27b0;
+            color: #fff;
+        }
+
+        .chip-50 {
+            background: #ff9800;
+            color: #fff;
+        }
+
+        .chip-100 {
+            background: linear-gradient(145deg, #ffd700, #b8860b);
+            color: #000;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .total-bet {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+
+        .total-bet span {
+            color: var(--color-gold);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .history {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .history-title {
+            margin-bottom: 15px;
+        }
+
+        .history-item {
+            display: inline-flex;
+            gap: 5px;
+            margin: 5px;
+            padding: 8px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="lobby.html" class="logo"><span class="logo-icon">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="user-info">
+                <div class="wallet-display"><span class="wallet-icon">💰</span><span class="wallet-amount"
+                        id="balanceDisplay">$0</span></div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top:100px;padding-bottom:40px">
+        <div class="container">
+            <div class="dice-game">
+                <h1
+                    style="text-align:center;background:var(--gradient-gold);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+                    🎲 骰宝</h1>
+
+                <div class="dice-container">
+                    <div class="dice" id="dice1">⚀</div>
+                    <div class="dice" id="dice2">⚁</div>
+                    <div class="dice" id="dice3">⚂</div>
+                </div>
+
+                <div class="bet-table">
+                    <div class="bet-row">
+                        <div class="bet-option" data-bet="big" data-odds="2" onclick="placeBet(this)">
+                            <div class="bet-name">大 (11-17)</div>
+                            <div class="bet-odds">1:1</div>
+                            <div class="bet-chip-display" id="bet-big">$0</div>
+                        </div>
+                        <div class="bet-option" data-bet="small" data-odds="2" onclick="placeBet(this)">
+                            <div class="bet-name">小 (4-10)</div>
+                            <div class="bet-odds">1:1</div>
+                            <div class="bet-chip-display" id="bet-small">$0</div>
+                        </div>
+                        <div class="bet-option" data-bet="odd" data-odds="2" onclick="placeBet(this)">
+                            <div class="bet-name">单</div>
+                            <div class="bet-odds">1:1</div>
+                            <div class="bet-chip-display" id="bet-odd">$0</div>
+                        </div>
+                        <div class="bet-option" data-bet="even" data-odds="2" onclick="placeBet(this)">
+                            <div class="bet-name">双</div>
+                            <div class="bet-odds">1:1</div>
+                            <div class="bet-chip-display" id="bet-even">$0</div>
+                        </div>
+                    </div>
+                    <div class="bet-row">
+                        <div class="bet-option" data-bet="triple" data-odds="180" onclick="placeBet(this)">
+                            <div class="bet-name">任意豹子</div>
+                            <div class="bet-odds">1:30</div>
+                            <div class="bet-chip-display" id="bet-triple">$0</div>
+                        </div>
+                        <div class="bet-option" data-bet="sum4" data-odds="60" onclick="placeBet(this)">
+                            <div class="bet-name">和=4/17</div>
+                            <div class="bet-odds">1:60</div>
+                            <div class="bet-chip-display" id="bet-sum4">$0</div>
+                        </div>
+                        <div class="bet-option" data-bet="sum9" data-odds="6" onclick="placeBet(this)">
+                            <div class="bet-name">和=9/12</div>
+                            <div class="bet-odds">1:6</div>
+                            <div class="bet-chip-display" id="bet-sum9">$0</div>
+                        </div>
+                        <div class="bet-option" data-bet="sum10" data-odds="6" onclick="placeBet(this)">
+                            <div class="bet-name">和=10/11</div>
+                            <div class="bet-odds">1:6</div>
+                            <div class="bet-chip-display" id="bet-sum10">$0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chips-section">
+                    <div>选择筹码</div>
+                    <div class="chips">
+                        <div class="chip chip-1" data-value="1" onclick="selectChip(this)">$1</div>
+                        <div class="chip chip-5" data-value="5" onclick="selectChip(this)">$5</div>
+                        <div class="chip chip-10 selected" data-value="10" onclick="selectChip(this)">$10</div>
+                        <div class="chip chip-25" data-value="25" onclick="selectChip(this)">$25</div>
+                        <div class="chip chip-50" data-value="50" onclick="selectChip(this)">$50</div>
+                        <div class="chip chip-100" data-value="100" onclick="selectChip(this)">$100</div>
+                    </div>
+                </div>
+
+                <div class="total-bet">总下注: <span id="totalBet">$0</span></div>
+
+                <div class="controls">
+                    <button class="btn btn-gold btn-lg" onclick="roll()">🎲 摇骰子</button>
+                    <button class="btn btn-outline" onclick="clearBets()">清除下注</button>
+                    <a href="lobby.html" class="btn btn-outline">返回大厅</a>
+                </div>
+
+                <div class="history">
+                    <div class="history-title">📜 历史记录</div>
+                    <div id="historyContainer"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        const DICE_FACES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+        let user, currentChip = 10, bets = {}, isRolling = false, history = [];
+
+        async function init() {
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balanceDisplay').textContent = '$' + bal.toLocaleString();
+            let total = Object.values(bets).reduce((a, b) => a + b, 0);
+            document.getElementById('totalBet').textContent = '$' + total;
+        }
+
+        function selectChip(el) {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            currentChip = parseInt(el.dataset.value);
+        }
+
+        function placeBet(el) {
+            if (isRolling) return;
+            const betType = el.dataset.bet;
+            const balance = parseFloat(user?.balance || 0);
+            const totalBets = Object.values(bets).reduce((a, b) => a + b, 0);
+
+            if (totalBets + currentChip > balance) {
+                Auth.showNotification('余额不足！', 'error');
+                return;
+            }
+
+            bets[betType] = (bets[betType] || 0) + currentChip;
+            el.classList.add('selected');
+            document.getElementById('bet-' + betType).textContent = '$' + bets[betType];
+            updateDisplay();
+        }
+
+        function clearBets() {
+            bets = {};
+            document.querySelectorAll('.bet-option').forEach(el => {
+                el.classList.remove('selected', 'winning');
+                const betType = el.dataset.bet;
+                document.getElementById('bet-' + betType).textContent = '$0';
+            });
+            updateDisplay();
+        }
+
+        async function roll() {
+            if (isRolling) return;
+            const totalBet = Object.values(bets).reduce((a, b) => a + b, 0);
+            if (totalBet === 0) { Auth.showNotification('请先下注！', 'error'); return; }
+
+            isRolling = true;
+
+            // Deduct bets
+            await Wallet.updateBalance(user.id, -totalBet);
+            user = await Auth.getCurrentUser();
+
+            // Roll animation
+            const dices = [document.getElementById('dice1'), document.getElementById('dice2'), document.getElementById('dice3')];
+            dices.forEach(d => d.classList.add('rolling'));
+
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                dices.forEach(d => { d.textContent = DICE_FACES[Math.floor(Math.random() * 6)]; });
+                rollCount++;
+                if (rollCount >= 15) {
+                    clearInterval(rollInterval);
+                    dices.forEach(d => d.classList.remove('rolling'));
+                    finishRoll(dices);
+                }
+            }, 100);
+        }
+
+        async function finishRoll(dices) {
+            // Final result
+            const results = [1, 2, 3].map(() => Math.floor(Math.random() * 6) + 1);
+            dices.forEach((d, i) => { d.textContent = DICE_FACES[results[i] - 1]; });
+
+            const sum = results.reduce((a, b) => a + b, 0);
+            const isTriple = results[0] === results[1] && results[1] === results[2];
+
+            // Calculate winnings
+            let totalWin = 0;
+            document.querySelectorAll('.bet-option').forEach(el => el.classList.remove('winning'));
+
+            for (const [betType, amount] of Object.entries(bets)) {
+                let won = false;
+                const odds = parseInt(document.querySelector(`[data-bet="${betType}"]`).dataset.odds);
+
+                switch (betType) {
+                    case 'big': won = !isTriple && sum >= 11 && sum <= 17; break;
+                    case 'small': won = !isTriple && sum >= 4 && sum <= 10; break;
+                    case 'odd': won = sum % 2 === 1; break;
+                    case 'even': won = sum % 2 === 0; break;
+                    case 'triple': won = isTriple; break;
+                    case 'sum4': won = sum === 4 || sum === 17; break;
+                    case 'sum9': won = sum === 9 || sum === 12; break;
+                    case 'sum10': won = sum === 10 || sum === 11; break;
+                }
+
+                if (won) {
+                    totalWin += amount * odds;
+                    document.querySelector(`[data-bet="${betType}"]`).classList.add('winning');
+                }
+            }
+
+            if (totalWin > 0) {
+                await Wallet.updateBalance(user.id, totalWin);
+                Auth.showNotification(`🎉 赢得 $${totalWin.toLocaleString()}！`, 'success');
+            } else {
+                Auth.showNotification(`骰子: ${results.join('-')} = ${sum}，未中奖`, 'info');
+            }
+
+            // Add to history
+            history.unshift({ results, sum });
+            if (history.length > 10) history.pop();
+            renderHistory();
+
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+            clearBets();
+            isRolling = false;
+        }
+
+        function renderHistory() {
+            document.getElementById('historyContainer').innerHTML = history.map(h => `
+                <div class="history-item">
+                    ${h.results.map(r => `<span>${DICE_FACES[r - 1]}</span>`).join('')}
+                    <span style="color:var(--color-gold)">${h.sum}</span>
+                </div>
+            `).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

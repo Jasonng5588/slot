@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - VIP中心</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/vip.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="lobby.html" class="btn btn-sm btn-outline">返回大厅</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- VIP Header -->
+    <section class="vip-header">
+        <div class="container">
+            <div class="vip-hero">
+                <div class="vip-hero-content">
+                    <h1 class="vip-title">👑 VIP 尊享俱乐部</h1>
+                    <p class="vip-subtitle">专属权益，无限荣耀</p>
+                    <div class="current-vip-status glass-card">
+                        <div class="vip-avatar" id="vipAvatar">🥉</div>
+                        <div class="vip-info">
+                            <div class="vip-level-name" id="vipLevelName">Bronze 青铜会员</div>
+                            <div class="vip-points">VIP积分: <strong id="vipPoints">0</strong></div>
+                        </div>
+                        <div class="vip-progress-mini">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="vipProgress" style="width: 30%"></div>
+                            </div>
+                            <div class="progress-text">距离升级还需: <span id="pointsNeeded">5,000</span> 积分</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIP Levels -->
+    <section class="vip-levels">
+        <div class="container">
+            <h2 class="section-title text-center">💎 VIP 等级体系</h2>
+            <div class="levels-grid">
+                <div class="level-card" data-level="bronze">
+                    <div class="level-icon">🥉</div>
+                    <h3 class="level-name">Bronze</h3>
+                    <div class="level-label">青铜会员</div>
+                    <div class="level-requirement">累计存款 $0+</div>
+                    <ul class="level-benefits">
+                        <li>✓ 0.5% 返水</li>
+                        <li>✓ 每日签到奖励</li>
+                        <li>✓ 基础客服支持</li>
+                    </ul>
+                </div>
+
+                <div class="level-card" data-level="silver">
+                    <div class="level-icon">🥈</div>
+                    <h3 class="level-name">Silver</h3>
+                    <div class="level-label">白银会员</div>
+                    <div class="level-requirement">累计存款 $5,000+</div>
+                    <ul class="level-benefits">
+                        <li>✓ 1% 返水</li>
+                        <li>✓ 每周红包</li>
+                        <li>✓ 专属活动</li>
+                        <li>✓ 优先客服</li>
+                    </ul>
+                </div>
+
+                <div class="level-card featured" data-level="gold">
+                    <div class="level-badge">热门</div>
+                    <div class="level-icon">🥇</div>
+                    <h3 class="level-name">Gold</h3>
+                    <div class="level-label">黄金会员</div>
+                    <div class="level-requirement">累计存款 $20,000+</div>
+                    <ul class="level-benefits">
+                        <li>✓ 1.5% 返水</li>
+                        <li>✓ 生日礼金 $188</li>
+                        <li>✓ 每月红包</li>
+                        <li>✓ VIP专属游戏</li>
+                        <li>✓ 1对1客服</li>
+                    </ul>
+                </div>
+
+                <div class="level-card" data-level="platinum">
+                    <div class="level-icon">💎</div>
+                    <h3 class="level-name">Platinum</h3>
+                    <div class="level-label">铂金会员</div>
+                    <div class="level-requirement">累计存款 $50,000+</div>
+                    <ul class="level-benefits">
+                        <li>✓ 2% 返水</li>
+                        <li>✓ 生日礼金 $388</li>
+                        <li>✓ 专属礼品</li>
+                        <li>✓ 活动优先权</li>
+                        <li>✓ 快速提款</li>
+                    </ul>
+                </div>
+
+                <div class="level-card premium" data-level="diamond">
+                    <div class="level-badge">至尊</div>
+                    <div class="level-icon">👑</div>
+                    <h3 class="level-name">Diamond</h3>
+                    <div class="level-label">钻石会员</div>
+                    <div class="level-requirement">累计存款 $100,000+</div>
+                    <ul class="level-benefits">
+                        <li>✓ 3% 无限返水</li>
+                        <li>✓ 生日礼金 $888</li>
+                        <li>✓ 专属礼遇</li>
+                        <li>✓ 线下活动邀请</li>
+                        <li>✓ 私人客户经理</li>
+                        <li>✓ 定制化服务</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIP Benefits Comparison -->
+    <section class="vip-comparison">
+        <div class="container">
+            <h2 class="section-title text-center">📊 权益对比</h2>
+            <div class="comparison-table glass-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>权益</th>
+                            <th>🥉 Bronze</th>
+                            <th>🥈 Silver</th>
+                            <th>🥇 Gold</th>
+                            <th>💎 Platinum</th>
+                            <th>👑 Diamond</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>返水比例</td>
+                            <td>0.5%</td>
+                            <td>1%</td>
+                            <td>1.5%</td>
+                            <td>2%</td>
+                            <td class="highlight">3%</td>
+                        </tr>
+                        <tr>
+                            <td>生日礼金</td>
+                            <td>$18</td>
+                            <td>$88</td>
+                            <td>$188</td>
+                            <td>$388</td>
+                            <td class="highlight">$888</td>
+                        </tr>
+                        <tr>
+                            <td>每日签到</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>每周红包</td>
+                            <td>-</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                        </tr>
+                        <tr>
+                            <td>专属客服</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td class="highlight">私人经理</td>
+                        </tr>
+                        <tr>
+                            <td>提款速度</td>
+                            <td>标准</td>
+                            <td>标准</td>
+                            <td>优先</td>
+                            <td>快速</td>
+                            <td class="highlight">即时</td>
+                        </tr>
+                        <tr>
+                            <td>专属活动</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>✓</td>
+                            <td>✓</td>
+                            <td class="highlight">VIP专场</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Daily Check-in -->
+    <section class="daily-checkin">
+        <div class="container">
+            <div class="checkin-card glass-card">
+                <h2>🎁 每日签到</h2>
+                <p>连续签到获得更多奖励！</p>
+                <div class="checkin-days">
+                    <div class="checkin-day completed">
+                        <div class="day-num">1</div>
+                        <div class="day-reward">$100</div>
+                        <div class="day-status">✓</div>
+                    </div>
+                    <div class="checkin-day completed">
+                        <div class="day-num">2</div>
+                        <div class="day-reward">$200</div>
+                        <div class="day-status">✓</div>
+                    </div>
+                    <div class="checkin-day current">
+                        <div class="day-num">3</div>
+                        <div class="day-reward">$500</div>
+                        <div class="day-status">领取</div>
+                    </div>
+                    <div class="checkin-day">
+                        <div class="day-num">4</div>
+                        <div class="day-reward">$800</div>
+                    </div>
+                    <div class="checkin-day">
+                        <div class="day-num">5</div>
+                        <div class="day-reward">$1,000</div>
+                    </div>
+                    <div class="checkin-day">
+                        <div class="day-num">6</div>
+                        <div class="day-reward">$1,500</div>
+                    </div>
+                    <div class="checkin-day special">
+                        <div class="day-num">7</div>
+                        <div class="day-reward">$3,000</div>
+                        <div class="day-icon">🎉</div>
+                    </div>
+                </div>
+                <button class="btn btn-gold btn-lg" onclick="claimDaily()">立即签到</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 LuckyDragon Casino. 保留所有权利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script src="js/supabase-config.js"></script>
+
+
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/loyalty.js"></script>
+    <script src="js/vip.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+
+</html>

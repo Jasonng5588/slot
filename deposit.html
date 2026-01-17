@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 充值</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="account.html" class="btn btn-sm btn-outline">返回账户</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Deposit Page -->
+    <div class="deposit-page">
+        <div class="container">
+            <div class="deposit-layout">
+                <!-- Crypto Banner -->
+                <div class="crypto-banner glass-card">
+                    <div class="banner-content">
+                        <span class="banner-icon">₿</span>
+                        <div class="banner-text">
+                            <h3>We Accept <span class="text-gold">CRYPTOCURRENCY</span></h3>
+                            <p>支持 Bitcoin, USDT, ETH 等加密货币快速充值</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deposit-main glass-card">
+                    <!-- Balance Display -->
+                    <div class="deposit-balance">
+                        <div class="balance-info">
+                            <span class="balance-icon">💰</span>
+                            <div>
+                                <div class="balance-label">Total Balance (USD)</div>
+                                <div class="balance-value" id="totalBalance">$0.00</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="refreshBalance()">🔄 恢复钱包</button>
+                        <div class="vip-status">
+                            <span class="vip-icon" id="vipIcon">🥉</span>
+                            <span id="vipLevel">Normal</span>
+                            <div class="vip-progress">
+                                <span>Next level: <strong>Rose Gold</strong></span>
+                                <div class="progress-bar small">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text">Deposit status: 0 / 50000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="deposit-form-section">
+                        <div class="balance-split">
+                            <div class="split-item">
+                                <span class="split-icon">✅</span>
+                                <div>
+                                    <div class="split-label">Withdrawable</div>
+                                    <div class="split-value" id="withdrawable">$0.00</div>
+                                </div>
+                            </div>
+                            <div class="split-item">
+                                <span class="split-icon">🔒</span>
+                                <div>
+                                    <div class="split-label">Non-Withdrawable</div>
+                                    <div class="split-value text-red" id="nonWithdrawable">$0.00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method Tabs -->
+                        <div class="payment-tabs">
+                            <button class="payment-tab active" data-method="quickpay">Quick Pay</button>
+                            <button class="payment-tab" data-method="bank">Bank Transfer</button>
+                            <button class="payment-tab" data-method="qr">QR Pay</button>
+                            <button class="payment-tab" data-method="crypto">Crypto</button>
+                            <button class="payment-tab" data-method="ewallet">E-Wallet Apps</button>
+                        </div>
+
+                        <!-- Payment Methods -->
+                        <div class="method-section">
+                            <h4>Method *</h4>
+                            <div class="method-grid">
+                                <div class="method-option selected" onclick="selectPaymentMethod(this, 'paypal')">
+                                    <div class="method-icon">💳</div>
+                                    <div class="method-name">PayPal</div>
+                                    <div class="method-check">✓</div>
+                                </div>
+                                <div class="method-option" onclick="selectPaymentMethod(this, 'directpay')">
+                                    <div class="method-icon">🏦</div>
+                                    <div class="method-name">DirectPay</div>
+                                </div>
+                                <div class="method-option" onclick="selectPaymentMethod(this, 'ttypay')">
+                                    <div class="method-icon">💰</div>
+                                    <div class="method-name">TTYPay</div>
+                                </div>
+                                <div class="method-option" onclick="selectPaymentMethod(this, 'easypay')">
+                                    <div class="method-icon">⚡</div>
+                                    <div class="method-name">EasyPay</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bank Selection -->
+                        <div class="bank-section">
+                            <h4>Bank *</h4>
+                            <div class="bank-grid">
+                                <div class="bank-option" onclick="selectBank(this, 'maybank')">
+                                    <div class="bank-icon">🏦</div>
+                                    <span>Maybank</span>
+                                    <span class="bank-status online">ONLINE</span>
+                                </div>
+                                <div class="bank-option" onclick="selectBank(this, 'cimb')">
+                                    <div class="bank-icon">🏦</div>
+                                    <span>CIMB Bank</span>
+                                    <span class="bank-status online">ONLINE</span>
+                                </div>
+                                <div class="bank-option" onclick="selectBank(this, 'public')">
+                                    <div class="bank-icon">🏦</div>
+                                    <span>Public Bank</span>
+                                    <span class="bank-status online">ONLINE</span>
+                                </div>
+                                <div class="bank-option" onclick="selectBank(this, 'rhb')">
+                                    <div class="bank-icon">🏦</div>
+                                    <span>RHB Bank</span>
+                                    <span class="bank-status offline">OFFLINE</span>
+                                </div>
+                                <div class="bank-option" onclick="selectBank(this, 'hong')">
+                                    <div class="bank-icon">🏦</div>
+                                    <span>Hong Leong</span>
+                                    <span class="bank-status online">ONLINE</span>
+                                </div>
+                                <div class="bank-option" onclick="selectBank(this, 'ambank')">
+                                    <div class="bank-icon">🏦</div>
+                                    <span>AmBank</span>
+                                    <span class="bank-status online">ONLINE</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Amount Input -->
+                        <div class="amount-section">
+                            <h4>Amount (USD) *</h4>
+                            <div class="amount-input-wrapper">
+                                <input type="number" class="input-field amount-input" id="depositAmount"
+                                    placeholder="Min: $20" min="20">
+                                <div class="amount-buttons">
+                                    <button onclick="setDepositAmount(50)">$50</button>
+                                    <button onclick="setDepositAmount(100)">$100</button>
+                                    <button onclick="setDepositAmount(200)">$200</button>
+                                    <button onclick="setDepositAmount(500)">$500</button>
+                                    <button onclick="setDepositAmount(1000)">$1000</button>
+                                </div>
+                            </div>
+                            <p class="amount-note">* 最低充值: $20 | 最高充值: $50,000</p>
+                        </div>
+
+                        <!-- Submit -->
+                        <button class="btn btn-gold btn-lg submit-btn" onclick="submitDeposit()">
+                            立即充值
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .deposit-page {
+            padding: 30px 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .deposit-layout {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .crypto-banner {
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+            border-color: #1976d2;
+        }
+
+        .banner-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .banner-icon {
+            font-size: 3rem;
+        }
+
+        .banner-text h3 {
+            margin-bottom: 5px;
+        }
+
+        .banner-text p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .deposit-main {
+            padding: 30px;
+        }
+
+        .deposit-balance {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .balance-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .balance-icon {
+            font-size: 2.5rem;
+        }
+
+        .balance-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .balance-value {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--color-gold);
+        }
+
+        .vip-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+            padding: 15px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .vip-progress {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar.small {
+            height: 6px;
+            margin: 5px 0;
+        }
+
+        .balance-split {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .split-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .split-icon {
+            font-size: 1.5rem;
+        }
+
+        .split-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .split-value {
+            font-family: var(--font-display);
+            font-weight: 700;
+        }
+
+        .payment-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 2px;
+        }
+
+        .payment-tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .payment-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .payment-tab.active {
+            color: var(--color-gold);
+        }
+
+        .payment-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--color-gold);
+        }
+
+        .method-section,
+        .bank-section,
+        .amount-section {
+            margin-bottom: 25px;
+        }
+
+        .method-section h4,
+        .bank-section h4,
+        .amount-section h4 {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .method-option {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .method-option:hover,
+        .method-option.selected {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: var(--color-gold);
+        }
+
+        .method-option .method-icon {
+            font-size: 2rem;
+        }
+
+        .method-option .method-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .method-check {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 20px;
+            height: 20px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #000;
+            font-weight: 700;
+        }
+
+        .method-option.selected .method-check {
+            display: flex;
+        }
+
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .bank-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bank-option:hover,
+        .bank-option.selected {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: var(--color-gold);
+        }
+
+        .bank-icon {
+            font-size: 1.5rem;
+        }
+
+        .bank-status {
+            margin-left: auto;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .bank-status.online {
+            background: rgba(0, 210, 106, 0.2);
+            color: var(--color-green);
+        }
+
+        .bank-status.offline {
+            background: rgba(255, 68, 68, 0.2);
+            color: #ff4444;
+        }
+
+        .amount-input-wrapper {
+            margin-bottom: 10px;
+        }
+
+        .amount-input {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .amount-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .amount-buttons button {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .amount-buttons button:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+        }
+
+        .amount-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .method-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bank-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .deposit-balance {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .vip-status {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script>
+        let selectedMethod = 'paypal';
+        let selectedBank = null;
+
+        async function initPage() {
+            const user = await Auth.getCurrentUser();
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const balance = parseFloat(user.balance || 0);
+            document.getElementById('navBalance').textContent = '$' + balance.toLocaleString();
+            document.getElementById('totalBalance').textContent = '$' + balance.toLocaleString(undefined, { minimumFractionDigits: 2 });
+            document.getElementById('withdrawable').textContent = '$' + (balance * 0.8).toLocaleString(undefined, { minimumFractionDigits: 2 });
+            document.getElementById('nonWithdrawable').textContent = '$' + (balance * 0.2).toLocaleString(undefined, { minimumFractionDigits: 2 });
+        }
+
+        function selectPaymentMethod(el, method) {
+            document.querySelectorAll('.method-option').forEach(m => m.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedMethod = method;
+        }
+
+        function selectBank(el, bank) {
+            if (el.querySelector('.bank-status.offline')) {
+                Auth.showNotification('该银行暂时离线', 'error');
+                return;
+            }
+            document.querySelectorAll('.bank-option').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedBank = bank;
+        }
+
+        function setDepositAmount(amount) {
+            document.getElementById('depositAmount').value = amount;
+        }
+
+        function refreshBalance() {
+            initPage();
+            Auth.showNotification('钱包已刷新', 'success');
+        }
+
+        async function submitDeposit() {
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+
+            if (!amount || amount < 20) {
+                Auth.showNotification('最低充值金额为 $20', 'error');
+                return;
+            }
+
+            if (!selectedBank) {
+                Auth.showNotification('请选择银行', 'error');
+                return;
+            }
+
+            Auth.showNotification('🎉 充值请求已提交！', 'success');
+
+            // Demo: Add to balance
+            setTimeout(async () => {
+                const user = await Auth.getCurrentUser();
+                await Wallet.updateBalance(user.id, amount);
+                await initPage();
+                Auth.showNotification('✅ 充值成功！$' + amount + ' 已到账', 'success');
+            }, 2000);
+        }
+
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,337 @@
+/* ============================================
+   LuckyDragon - VIP Page Styles
+   ============================================ */
+
+/* VIP Header */
+.vip-header {
+    padding: 60px 0;
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.1), transparent);
+}
+
+.vip-hero {
+    text-align: center;
+}
+
+.vip-title {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.vip-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+}
+
+.current-vip-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 25px;
+    padding: 25px 40px;
+}
+
+.vip-avatar {
+    font-size: 4rem;
+}
+
+.vip-info {
+    text-align: left;
+}
+
+.vip-level-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.vip-points {
+    color: var(--text-secondary);
+}
+
+.vip-points strong {
+    color: var(--color-gold);
+}
+
+.vip-progress-mini {
+    min-width: 200px;
+}
+
+.vip-progress-mini .progress-bar {
+    height: 8px;
+    margin-bottom: 8px;
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* VIP Levels */
+.vip-levels {
+    padding: 60px 0;
+}
+
+.levels-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.level-card {
+    position: relative;
+    background: var(--color-bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.level-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.level-card.featured {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+}
+
+.level-card.premium {
+    background: linear-gradient(135deg, rgba(185, 242, 255, 0.1), rgba(0, 191, 255, 0.05));
+    border-color: #00bfff;
+    box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+}
+
+.level-badge {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 15px;
+    background: var(--gradient-gold);
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.level-card.premium .level-badge {
+    background: linear-gradient(135deg, #b9f2ff, #00bfff);
+}
+
+.level-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.level-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.level-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.level-requirement {
+    display: inline-block;
+    padding: 5px 15px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--color-gold);
+    margin-bottom: 20px;
+}
+
+.level-benefits {
+    list-style: none;
+    text-align: left;
+}
+
+.level-benefits li {
+    padding: 8px 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.level-benefits li:last-child {
+    border-bottom: none;
+}
+
+/* Comparison Table */
+.vip-comparison {
+    padding: 60px 0;
+    background: linear-gradient(180deg, transparent, rgba(255, 215, 0, 0.02), transparent);
+}
+
+.comparison-table {
+    padding: 30px;
+    overflow-x: auto;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-table th {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+    text-align: left;
+}
+
+.comparison-table .highlight {
+    color: var(--color-gold);
+    font-weight: 700;
+}
+
+/* Daily Check-in */
+.daily-checkin {
+    padding: 60px 0;
+}
+
+.checkin-card {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    text-align: center;
+}
+
+.checkin-card h2 {
+    margin-bottom: 10px;
+}
+
+.checkin-card>p {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+.checkin-days {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.checkin-day {
+    width: 100px;
+    padding: 20px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.checkin-day.completed {
+    background: rgba(0, 210, 106, 0.1);
+    border-color: var(--color-green);
+}
+
+.checkin-day.current {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--color-gold);
+    transform: scale(1.1);
+}
+
+.checkin-day.special {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(220, 20, 60, 0.1));
+    border-color: var(--color-gold);
+}
+
+.day-num {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+}
+
+.day-reward {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    margin-bottom: 5px;
+}
+
+.day-status {
+    font-size: 0.75rem;
+    color: var(--color-green);
+}
+
+.checkin-day.current .day-status {
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+.day-icon {
+    font-size: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .levels-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .levels-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .level-card.featured,
+    .level-card.premium {
+        order: -1;
+    }
+
+    .current-vip-status {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .vip-info {
+        text-align: center;
+    }
+
+    .checkin-days {
+        flex-wrap: wrap;
+    }
+
+    .checkin-day {
+        width: calc(33% - 10px);
+    }
+
+    .comparison-table {
+        padding: 15px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+}

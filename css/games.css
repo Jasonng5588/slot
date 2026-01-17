@@ -1,0 +1,383 @@
+/* LuckyDragon - Games CSS */
+
+.slot-machine {
+    background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
+    border: 3px solid var(--color-gold);
+    border-radius: var(--radius-xl);
+    padding: 30px;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
+    position: relative;
+}
+
+.reels-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: var(--radius-lg);
+    margin: 20px 0;
+}
+
+.reel {
+    width: 100px;
+    height: 300px;
+    background: linear-gradient(180deg, #1a1a2e, #0a0a15);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+}
+
+.reel::before,
+.reel::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.reel::before {
+    top: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent);
+}
+
+.reel::after {
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), transparent);
+}
+
+.reel-inner {
+    display: flex;
+    flex-direction: column;
+}
+
+.reel.spinning .reel-inner {
+    animation: reelSpin 0.1s linear infinite;
+}
+
+@keyframes reelSpin {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-100px);
+    }
+}
+
+.symbol {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.symbol.themed-slot-symbol {
+    background: linear-gradient(180deg, rgba(40, 40, 70, 0.9), rgba(20, 20, 40, 0.9));
+    border: 1px solid var(--symbol-color, rgba(255, 215, 0, 0.3));
+}
+
+.symbol-content {
+    font-weight: 900;
+    font-family: var(--font-display);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.symbol-content.glow {
+    text-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 2px 4px rgba(0, 0, 0, 0.5);
+    animation: symbolGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes symbolGlow {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.symbol.winning {
+    animation: symbolWin 0.5s ease infinite;
+    background: rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes symbolWin {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Megaways */
+.megaways-container {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.megaways-reel {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.megaways-symbol {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: rgba(30, 30, 50, 0.9);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.megaways-symbol.themed-symbol {
+    background: linear-gradient(145deg, rgba(40, 40, 70, 0.95), rgba(20, 20, 40, 0.95));
+    border: 2px solid var(--symbol-color, rgba(255, 215, 0, 0.3));
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.megaways-symbol .symbol-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+}
+
+.megaways-symbol .symbol-char {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px currentColor, 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.megaways-symbol.winning {
+    animation: symbolWin 0.5s ease infinite;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.ways-number {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 900;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Controls */
+.game-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 25px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-lg);
+    margin-top: 20px;
+}
+
+.bet-control {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.bet-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.bet-adjuster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bet-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.bet-btn:hover {
+    background: var(--color-gold);
+    color: #000;
+}
+
+.bet-amount {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    min-width: 80px;
+    text-align: center;
+}
+
+.spin-btn {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffd700, #b8860b);
+    border: 4px solid #fff;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    cursor: pointer;
+    position: relative;
+}
+
+.spin-btn-text {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.spin-btn:hover {
+    transform: scale(1.05);
+}
+
+.spin-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Info Panel */
+.game-info-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.info-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-align: center;
+}
+
+.info-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.info-value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.info-value.balance {
+    color: var(--color-gold);
+}
+
+.info-value.win {
+    color: var(--color-green);
+}
+
+/* Win Effects */
+.big-win-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.big-win-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.big-win-title {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 900;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.big-win-amount {
+    font-family: var(--font-display);
+    font-size: 6rem;
+    font-weight: 900;
+    color: #fff;
+    margin: 30px 0;
+}
+
+.game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-lg);
+    margin-bottom: 20px;
+}
+
+.game-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 768px) {
+    .reel {
+        width: 70px;
+        height: 210px;
+    }
+
+    .symbol {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .spin-btn {
+        width: 90px;
+        height: 90px;
+    }
+
+    .game-info-panel {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 游戏大厅</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-left">
+                <span class="current-time" id="currentTime">2026/01/17 02:40:00 (GMT+8)</span>
+            </div>
+            <div class="top-bar-right">
+                <a href="#" class="top-link">忘记密码?</a>
+                <span class="divider">|</span>
+                <span class="language-selector">
+                    <span class="flag">🇨🇳</span> 中文
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+
+            <div class="nav-center">
+                <div class="wallet-display" id="walletDisplay">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                    <button class="wallet-refresh" onclick="refreshBalance()">🔄</button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <span class="user-greeting">欢迎, <strong id="navUsername">用户</strong></span>
+                <div class="vip-badge-small" id="navVipBadge">
+                    <span class="vip-icon">🥉</span>
+                    <span class="vip-text">Bronze</span>
+                </div>
+                <button class="btn btn-sm btn-gold" onclick="location.href='deposit.html'">充值</button>
+                <div class="user-menu">
+                    <button class="user-avatar" id="userAvatar" onclick="toggleUserMenu()">U</button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="account.html"><span>👤</span> 账户中心</a>
+                        <a href="profile.html"><span>⚙️</span> 个人设置</a>
+                        <a href="history.html"><span>📜</span> 交易记录</a>
+                        <a href="messages.html"><span>💬</span> 消息中心</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" onclick="Auth.logout()"><span>🚪</span> 退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Category Navigation -->
+    <nav class="category-nav">
+        <div class="container">
+            <div class="category-tabs">
+                <a href="lobby.html" class="category-tab active">
+                    <span class="tab-icon">🏠</span>
+                    <span>首页</span>
+                </a>
+
+                <a href="#slots" class="category-tab" onclick="goToCategory('slots'); return false;"
+                    data-category="slots">
+                    <span class="tab-icon">🍒</span>
+                    <span>老虎机</span>
+                </a>
+                <a href="#fishing" class="category-tab" onclick="goToCategory('fishing'); return false;"
+                    data-category="fishing">
+                    <span class="tab-icon">🐟</span>
+                    <span>捕鱼</span>
+                </a>
+                <a href="#lottery" class="category-tab" onclick="goToCategory('lottery'); return false;"
+                    data-category="lottery">
+                    <span class="tab-icon">🎱</span>
+                    <span>4D彩票</span>
+                </a>
+                <a href="#lottery" class="category-tab" onclick="goToCategory('lottery'); return false;"
+                    data-category="lottery">
+                    <span class="tab-icon">🎫</span>
+                    <span>彩票</span>
+                </a>
+                <a href="#fast" class="category-tab" onclick="goToCategory('fast'); return false;" data-category="fast">
+                    <span class="tab-icon">⚡</span>
+                    <span>快速游戏</span>
+                </a>
+                <a href="promotions.html" class="category-tab hot">
+                    <span class="tab-icon">🎁</span>
+                    <span>促销活动</span>
+                    <span class="hot-badge">HOT</span>
+                </a>
+                <a href="vip.html" class="category-tab">
+                    <span class="tab-icon">💎</span>
+                    <span>VIP</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Slider -->
+    <section class="hero-slider">
+        <div class="slider-container">
+            <div class="slide active" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);">
+                <div class="slide-content">
+                    <div class="slide-badge">🔥 限时优惠</div>
+                    <h1 class="slide-title">288% <span class="text-gold">超级欢迎礼金</span></h1>
+                    <p class="slide-subtitle">首存最高可获得 $28,800 奖励!</p>
+                    <a href="promotions.html" class="btn btn-gold btn-lg">立即领取</a>
+                </div>
+                <div class="slide-image">
+                    <div class="promo-visual">🎰💰🎰</div>
+                </div>
+            </div>
+            <div class="slide" style="background: linear-gradient(135deg, #b71c1c 0%, #c62828 100%);">
+                <div class="slide-content">
+                    <div class="slide-badge">🎉 新会员</div>
+                    <h1 class="slide-title"><span class="text-gold">396</span> 免费旋转</h1>
+                    <p class="slide-subtitle">注册即送免费旋转，赢取大奖!</p>
+                    <a href="promotions.html" class="btn btn-gold btn-lg">了解更多</a>
+                </div>
+                <div class="slide-image">
+                    <div class="promo-visual">🐉✨🐉</div>
+                </div>
+            </div>
+            <div class="slide" style="background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);">
+                <div class="slide-content">
+                    <div class="slide-badge">💎 VIP专属</div>
+                    <h1 class="slide-title">每周 <span class="text-gold">3%</span> 返水</h1>
+                    <p class="slide-subtitle">VIP会员专享超高返水比例!</p>
+                    <a href="vip.html" class="btn btn-gold btn-lg">升级VIP</a>
+                </div>
+                <div class="slide-image">
+                    <div class="promo-visual">👑💎👑</div>
+                </div>
+            </div>
+        </div>
+        <div class="slider-dots">
+            <button class="dot active" data-slide="0"></button>
+            <button class="dot" data-slide="1"></button>
+            <button class="dot" data-slide="2"></button>
+        </div>
+        <button class="slider-arrow prev" onclick="changeSlide(-1)">❮</button>
+        <button class="slider-arrow next" onclick="changeSlide(1)">❯</button>
+    </section>
+
+    <!-- Security Notice -->
+    <div class="security-notice">
+        <div class="container">
+            <div class="notice-content">
+                <span class="notice-icon">🔒</span>
+                <span class="notice-text">为了保护您的账户安全，请勿将密码分享给任何人。LuckyDragon 绝不会向您索取密码。</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Games Section -->
+    <section class="games-section" id="slots">
+        <div class="container">
+            <!-- Game Category Tabs -->
+            <div class="game-category-header">
+                <h2 class="section-title">
+                    <span class="title-icon">🎰</span>
+                    热门游戏
+                </h2>
+                <div class="game-tabs">
+                    <button class="game-tab active" data-category="recommended">全部游戏</button>
+                    <button class="game-tab" data-category="slots">🎰 老虎机</button>
+                    <button class="game-tab" data-category="fishing">🐟 捕鱼游戏</button>
+                    <button class="game-tab" data-category="lottery">🎫 彩票</button>
+                    <button class="game-tab" data-category="fast">⚡ 快速游戏</button>
+                </div>
+            </div>
+
+            <!-- Game Grid -->
+            <div class="game-grid" id="gameGrid">
+                <!-- Games will be loaded dynamically -->
+            </div>
+
+            <div class="load-more-container">
+                <button class="btn btn-outline" onclick="loadMoreGames()">查看更多游戏</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-value" id="onlineUsers">12,847</div>
+                    <div class="stat-label">在线玩家</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value">$2.5M</div>
+                    <div class="stat-label">今日派彩</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">🎰</div>
+                    <div class="stat-value">500+</div>
+                    <div class="stat-label">精选游戏</div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-value">24/7</div>
+                    <div class="stat-label">客户服务</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Providers Section -->
+    <section class="providers-section">
+        <div class="container">
+            <h2 class="section-title text-center">
+                <span class="title-icon">🎮</span>
+                游戏供应商
+            </h2>
+            <div class="providers-grid">
+                <!-- Providers loaded dynamically by lobby.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo footer-logo">
+                        <span class="logo-icon">🐉</span>
+                        <span class="logo-text">LuckyDragon</span>
+                    </div>
+                    <p class="footer-desc">亚洲顶级在线娱乐平台，提供最优质的游戏体验和最安全的交易保障。</p>
+                </div>
+                <div class="footer-col">
+                    <h4>游戏</h4>
+                    <ul>
+                        <li><a href="#slots">老虎机</a></li>
+                        <li><a href="#slots">捕鱼游戏</a></li>
+                        <li><a href="#slots">彩票</a></li>
+                        <li><a href="#slots">快速游戏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>支持</h4>
+                    <ul>
+                        <li><a href="#">帮助中心</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="#">责任博彩</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>关于</h4>
+                    <ul>
+                        <li><a href="#">关于我们</a></li>
+                        <li><a href="#">条款与条件</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">合作伙伴</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 LuckyDragon Casino. 保留所有权利。</p>
+                <div class="payment-methods">
+                    <span>支持支付:</span>
+                    <span class="payment-icon">💳</span>
+                    <span class="payment-icon">🏦</span>
+                    <span class="payment-icon">₿</span>
+                    <span class="payment-icon">💰</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Live Chat Button -->
+    <button class="live-chat-btn" onclick="openChat()">
+        <span class="chat-icon">💬</span>
+        <span class="chat-pulse"></span>
+    </button>
+
+    <!-- Contact Sidebar -->
+    <div class="contact-sidebar">
+        <a href="#" class="contact-item" title="在线客服">💬</a>
+        <a href="#" class="contact-item" title="WhatsApp">📱</a>
+        <a href="#" class="contact-item" title="Telegram">✈️</a>
+        <a href="#" class="contact-item" title="回到顶部" onclick="scrollToTop()">⬆️</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/lobby.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+
+</html>

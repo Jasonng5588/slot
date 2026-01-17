@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuckyDragon Casino - 欢迎</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+
+<body>
+  <div class="bg-animated"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="login-page">
+    <div class="login-container glass-card">
+      <div class="login-header">
+        <div class="logo">
+          <span class="logo-icon">🐉</span>
+          <span class="logo-text">LuckyDragon</span>
+        </div>
+        <p class="login-subtitle">尊享豪华赌场体验</p>
+      </div>
+
+      <div class="login-tabs">
+        <button class="tab-btn active" data-tab="login">登录</button>
+        <button class="tab-btn" data-tab="register">注册</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form active">
+        <div class="input-group">
+          <label>用户名</label>
+          <input type="text" class="input-field" id="loginUsername" placeholder="请输入用户名" required>
+        </div>
+        <div class="input-group">
+          <label>密码</label>
+          <input type="password" class="input-field" id="loginPassword" placeholder="请输入密码" required>
+        </div>
+        <button type="submit" class="btn btn-gold btn-lg" style="width:100%">立即登录</button>
+        <p class="demo-hint">演示账号: demo / demo123</p>
+      </form>
+
+      <!-- Register Form -->
+      <form id="registerForm" class="auth-form">
+        <div class="input-group">
+          <label>用户名</label>
+          <input type="text" class="input-field" id="regUsername" placeholder="3-20个字符" required>
+        </div>
+        <div class="input-group">
+          <label>密码</label>
+          <input type="password" class="input-field" id="regPassword" placeholder="至少6个字符" required>
+        </div>
+        <div class="input-group">
+          <label>确认密码</label>
+          <input type="password" class="input-field" id="regConfirm" placeholder="再次输入密码" required>
+        </div>
+        <button type="submit" class="btn btn-gold btn-lg" style="width:100%">立即注册</button>
+      </form>
+
+      <div class="welcome-bonus">
+        <span class="bonus-icon">🎁</span>
+        <span>新用户注册即送 <strong class="neon-text">$10,000</strong> 体验金!</span>
+      </div>
+    </div>
+
+    <div class="promo-cards">
+      <div class="promo-card glass-card">
+        <span class="promo-icon">🎰</span>
+        <h3>100+ 热门游戏</h3>
+        <p>Megaways, 777经典老虎机</p>
+      </div>
+      <div class="promo-card glass-card">
+        <span class="promo-icon">💎</span>
+        <h3>VIP 忠诚计划</h3>
+        <p>享受专属返水和优惠</p>
+      </div>
+      <div class="promo-card glass-card">
+        <span class="promo-icon">⚡</span>
+        <h3>即时到账</h3>
+        <p>快速充值，安全可靠</p>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-header .logo {
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .login-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .login-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-fast);
+    }
+
+    .tab-btn.active {
+      background: var(--color-gold);
+      border-color: var(--color-gold);
+      color: #000;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .demo-hint {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .welcome-bonus {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+    }
+
+    .bonus-icon {
+      font-size: 1.5rem;
+    }
+
+    .promo-cards {
+      display: flex;
+      gap: 20px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .promo-card {
+      padding: 25px;
+      text-align: center;
+      min-width: 180px;
+    }
+
+    .promo-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    .promo-card h3 {
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .promo-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 600px) {
+      .promo-cards {
+        flex-direction: column;
+      }
+
+      .promo-card {
+        min-width: 100%;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab + 'Form').classList.add('active');
+      });
+    });
+
+    // Create particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 8 + 's';
+      particle.style.animationDuration = (5 + Math.random() * 5) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  </script>
+  <script src="js/footer.js"></script>
+</body>
+
+</html>

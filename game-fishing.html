@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海王捕鱼 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/games.css">
+    <style>
+        .fishing-game {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .ocean-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(180deg, #0077be 0%, #005a8d 50%, #003d5c 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--color-gold);
+        }
+
+        .fish {
+            position: absolute;
+            font-size: 2.5rem;
+            cursor: crosshair;
+            transition: transform 0.3s;
+            animation: swim 8s linear infinite;
+        }
+
+        .fish:hover {
+            transform: scale(1.2);
+        }
+
+        .fish.caught {
+            animation: caught 0.5s forwards;
+        }
+
+        @keyframes swim {
+            0% {
+                transform: translateX(-100px);
+            }
+
+            100% {
+                transform: translateX(calc(100% + 100px));
+            }
+        }
+
+        @keyframes caught {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(360deg);
+            }
+        }
+
+        .cannon {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 100px;
+            background: linear-gradient(180deg, #ffd700, #b8860b);
+            border-radius: 10px 10px 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            border: 3px solid #fff;
+        }
+
+        .cannon:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .bullet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(#ffd700, #ff6b35);
+            border-radius: 50%;
+            animation: shoot 0.5s linear forwards;
+        }
+
+        @keyframes shoot {
+            0% {
+                bottom: 120px;
+                opacity: 1;
+            }
+
+            100% {
+                bottom: 100%;
+                opacity: 0;
+            }
+        }
+
+        .fishing-hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .hud-item {
+            text-align: center;
+        }
+
+        .hud-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .hud-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+
+        .fish-types {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .fish-type {
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .fish-type-icon {
+            font-size: 1.5rem;
+        }
+
+        .fish-type-mult {
+            font-size: 0.8rem;
+            color: var(--color-gold);
+        }
+
+        .bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: rise 4s infinite;
+        }
+
+        @keyframes rise {
+            0% {
+                bottom: -20px;
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                bottom: 100%;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="lobby.html" class="logo"><span class="logo-icon">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="user-info">
+                <div class="wallet-display"><span class="wallet-icon">💰</span><span class="wallet-amount"
+                        id="balanceDisplay">$0</span></div>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top:100px;padding-bottom:40px">
+        <div class="container">
+            <div class="fishing-game">
+                <div class="fishing-hud">
+                    <div class="hud-item">
+                        <div class="hud-label">余额</div>
+                        <div class="hud-value" id="gameBalance">$0</div>
+                    </div>
+                    <div class="hud-item">
+                        <div class="hud-label">炮弹费用</div>
+                        <div class="hud-value" id="bulletCost">$1</div>
+                    </div>
+                    <div class="hud-item">
+                        <div class="hud-label">本轮赢取</div>
+                        <div class="hud-value text-green" id="winAmount">$0</div>
+                    </div>
+                    <div class="hud-item">
+                        <button class="btn btn-gold btn-sm" onclick="changeBullet(-1)">−</button>
+                        <span style="margin: 0 10px; font-weight: 700;">炮弹等级</span>
+                        <button class="btn btn-gold btn-sm" onclick="changeBullet(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="ocean-container" id="ocean" onclick="shoot(event)">
+                    <div class="bubbles" id="bubbles"></div>
+                    <div class="cannon" id="cannon">🔫</div>
+                </div>
+
+                <div class="fish-types">
+                    <div class="fish-type">
+                        <div class="fish-type-icon">🐟</div>
+                        <div class="fish-type-mult">×2</div>
+                    </div>
+                    <div class="fish-type">
+                        <div class="fish-type-icon">🐠</div>
+                        <div class="fish-type-mult">×5</div>
+                    </div>
+                    <div class="fish-type">
+                        <div class="fish-type-icon">🦈</div>
+                        <div class="fish-type-mult">×20</div>
+                    </div>
+                    <div class="fish-type">
+                        <div class="fish-type-icon">🐙</div>
+                        <div class="fish-type-mult">×30</div>
+                    </div>
+                    <div class="fish-type">
+                        <div class="fish-type-icon">🦑</div>
+                        <div class="fish-type-mult">×50</div>
+                    </div>
+                    <div class="fish-type">
+                        <div class="fish-type-icon">🐋</div>
+                        <div class="fish-type-mult">×100</div>
+                    </div>
+                    <div class="fish-type">
+                        <div class="fish-type-icon">🧜‍♀️</div>
+                        <div class="fish-type-mult">×200</div>
+                    </div>
+                </div>
+
+                <div style="text-align:center;margin-top:20px">
+                    <a href="lobby.html" class="btn btn-outline">返回大厅</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        const FISH = [
+            { emoji: '🐟', mult: 2, speed: 6, chance: 0.4 },
+            { emoji: '🐠', mult: 5, speed: 5, chance: 0.25 },
+            { emoji: '🦈', mult: 20, speed: 4, chance: 0.15 },
+            { emoji: '🐙', mult: 30, speed: 7, chance: 0.1 },
+            { emoji: '🦑', mult: 50, speed: 8, chance: 0.06 },
+            { emoji: '🐋', mult: 100, speed: 10, chance: 0.03 },
+            { emoji: '🧜‍♀️', mult: 200, speed: 12, chance: 0.01 }
+        ];
+
+        let user, bulletLevel = 1, bulletCosts = [1, 2, 5, 10, 20, 50], totalWin = 0;
+
+        async function init() {
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay();
+            createBubbles();
+            spawnFish();
+            setInterval(spawnFish, 2000);
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balanceDisplay').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('bulletCost').textContent = '$' + bulletCosts[bulletLevel - 1];
+            document.getElementById('winAmount').textContent = '$' + totalWin.toLocaleString();
+        }
+
+        function changeBullet(dir) {
+            bulletLevel = Math.max(1, Math.min(bulletCosts.length, bulletLevel + dir));
+            document.getElementById('bulletCost').textContent = '$' + bulletCosts[bulletLevel - 1];
+        }
+
+        function createBubbles() {
+            const container = document.getElementById('bubbles');
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.width = bubble.style.height = (5 + Math.random() * 15) + 'px';
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.animationDelay = Math.random() * 4 + 's';
+                container.appendChild(bubble);
+            }
+        }
+
+        function spawnFish() {
+            const ocean = document.getElementById('ocean');
+            const r = Math.random();
+            let cumulative = 0;
+            let fishType = FISH[0];
+            for (const f of FISH) {
+                cumulative += f.chance;
+                if (r <= cumulative) { fishType = f; break; }
+            }
+
+            const fish = document.createElement('div');
+            fish.className = 'fish';
+            fish.textContent = fishType.emoji;
+            fish.dataset.mult = fishType.mult;
+            fish.style.top = (50 + Math.random() * 350) + 'px';
+            fish.style.animationDuration = fishType.speed + 's';
+            fish.onclick = (e) => { e.stopPropagation(); catchFish(fish, fishType); };
+            ocean.appendChild(fish);
+
+            setTimeout(() => fish.remove(), fishType.speed * 1000);
+        }
+
+        async function shoot(e) {
+            const cost = bulletCosts[bulletLevel - 1];
+            const balance = parseFloat(user?.balance || 0);
+            if (balance < cost) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            await Wallet.updateBalance(user.id, -cost);
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            const ocean = document.getElementById('ocean');
+            const bullet = document.createElement('div');
+            bullet.className = 'bullet';
+            bullet.style.left = (e.offsetX - 10) + 'px';
+            ocean.appendChild(bullet);
+            setTimeout(() => bullet.remove(), 500);
+        }
+
+        async function catchFish(fish, fishType) {
+            const cost = bulletCosts[bulletLevel - 1];
+            const balance = parseFloat(user?.balance || 0);
+            if (balance < cost) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            await Wallet.updateBalance(user.id, -cost);
+
+            // Random catch chance based on fish type
+            const catchChance = 0.7 - (fishType.mult / 500);
+            if (Math.random() < catchChance) {
+                fish.classList.add('caught');
+                const win = cost * fishType.mult;
+                totalWin += win;
+                await Wallet.updateBalance(user.id, win);
+                Auth.showNotification(`🎣 捕获 ${fishType.emoji}！赢得 $${win}`, 'success');
+            }
+
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冰龙觉醒 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000510;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 冰雪主题 - 蓝白色调 */
+        .ice-container {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #000a1a 0%, #001030 40%, #000a1a 100%);
+            position: relative;
+        }
+
+        .ice-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(0, 191, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(135, 206, 235, 0.1) 0%, transparent 40%);
+        }
+
+        /* 雪花动画 */
+        .snowflakes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+
+        /* 冰晶装饰 */
+        .crystal-left,
+        .crystal-right {
+            position: fixed;
+            bottom: 0;
+            width: 150px;
+            height: 400px;
+            z-index: 1;
+            background: linear-gradient(180deg, transparent, rgba(135, 206, 235, 0.3));
+            clip-path: polygon(50% 0%, 80% 30%, 100% 100%, 0% 100%, 20% 30%);
+        }
+
+        .crystal-left {
+            left: 20px;
+        }
+
+        .crystal-right {
+            right: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(180deg, rgba(0, 191, 255, 0.2), transparent);
+            border-bottom: 2px solid rgba(135, 206, 235, 0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #87ceeb;
+        }
+
+        .balance-display {
+            background: rgba(0, 30, 60, 0.8);
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: 2px solid #00bfff;
+        }
+
+        .balance-amount {
+            color: #00bfff;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .title-section {
+            text-align: center;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #fff, #87ceeb, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(0, 191, 255, 0.8);
+            letter-spacing: 5px;
+        }
+
+        .sub-title {
+            color: #87ceeb;
+            font-size: 1rem;
+            letter-spacing: 8px;
+            margin-top: 10px;
+        }
+
+        .slot-main {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slot-frame {
+            background: linear-gradient(180deg, rgba(0, 30, 60, 0.9), rgba(0, 15, 30, 0.95));
+            border: 4px solid #00bfff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 60px rgba(0, 191, 255, 0.4), inset 0 0 30px rgba(0, 191, 255, 0.1);
+        }
+
+        .reels-area {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(180deg, rgba(0, 10, 20, 0.9), rgba(0, 20, 40, 0.9));
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #4169e1;
+        }
+
+        .reel {
+            width: 105px;
+            height: 290px;
+            background: linear-gradient(180deg, rgba(0, 15, 30, 0.95), rgba(0, 30, 60, 0.9));
+            border: 2px solid rgba(135, 206, 235, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reel::before,
+        .reel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 50px;
+            z-index: 5;
+        }
+
+        .reel::before {
+            top: 0;
+            background: linear-gradient(180deg, rgba(0, 10, 30, 1), transparent);
+        }
+
+        .reel::after {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(0, 10, 30, 1), transparent);
+        }
+
+        .reel-inner {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reel.spinning .reel-inner {
+            animation: iceSpin 0.1s linear infinite;
+        }
+
+        @keyframes iceSpin {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-96px);
+            }
+        }
+
+        /* 冰龙主题符号 */
+        .symbol {
+            width: 105px;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .symbol-inner {
+            width: 78px;
+            height: 78px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.3);
+        }
+
+        /* 冰雪符号样式 */
+        .sym-icedragon {
+            background: linear-gradient(145deg, #00bfff, #0077be);
+            border: 3px solid #e0ffff;
+            font-size: 1.8rem;
+            color: #fff;
+            animation: dragonGlow 2s infinite;
+        }
+
+        @keyframes dragonGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px #00bfff;
+            }
+
+            50% {
+                box-shadow: 0 0 40px #87ceeb;
+            }
+        }
+
+        .sym-frozen {
+            background: linear-gradient(145deg, #e0ffff, #b0e0e6);
+            border: 3px solid #fff;
+            color: #4169e1;
+            font-size: 2rem;
+        }
+
+        .sym-crystal {
+            background: linear-gradient(145deg, #87ceeb, #4169e1);
+            border: 3px solid #e0ffff;
+        }
+
+        .sym-crystal::after {
+            content: '💎';
+            font-size: 2rem;
+        }
+
+        .sym-snowflake {
+            background: linear-gradient(145deg, #fff, #e0ffff);
+            border: 3px solid #87ceeb;
+            color: #4169e1;
+            font-size: 2.5rem;
+        }
+
+        .sym-aurora {
+            background: linear-gradient(145deg, #9370db, #00bfff, #00ff7f);
+            border: 3px solid #fff;
+        }
+
+        .sym-aurora::after {
+            content: '✨';
+            font-size: 2rem;
+        }
+
+        .sym-icegem-blue {
+            background: linear-gradient(145deg, #1e90ff, #0000cd);
+            border: 3px solid #87ceeb;
+            border-radius: 12px;
+        }
+
+        .sym-icegem-blue::after {
+            content: '◆';
+            font-size: 2.5rem;
+            color: #e0ffff;
+        }
+
+        .sym-icegem-white {
+            background: linear-gradient(145deg, #f0f8ff, #b0c4de);
+            border: 3px solid #fff;
+            border-radius: 12px;
+        }
+
+        .sym-icegem-white::after {
+            content: '◆';
+            font-size: 2.5rem;
+            color: #4169e1;
+        }
+
+        .sym-icegem-purple {
+            background: linear-gradient(145deg, #9370db, #4b0082);
+            border: 3px solid #dda0dd;
+            border-radius: 12px;
+        }
+
+        .sym-icegem-purple::after {
+            content: '◆';
+            font-size: 2.5rem;
+            color: #e0e0ff;
+        }
+
+        .symbol.winning .symbol-inner {
+            animation: iceWin 0.4s ease infinite;
+            box-shadow: 0 0 40px #00bfff, 0 0 80px rgba(135, 206, 235, 0.5);
+        }
+
+        @keyframes iceWin {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.12);
+            }
+        }
+
+        /* 控制面板 */
+        .controls-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(0, 20, 40, 0.8);
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 2px solid rgba(135, 206, 235, 0.3);
+        }
+
+        .info-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 12px 20px;
+            background: rgba(0, 30, 60, 0.8);
+            border: 1px solid #4169e1;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            color: #87ceeb;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #00bfff;
+        }
+
+        .info-value.win {
+            color: #00ff7f;
+        }
+
+        .bet-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bet-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #00bfff, #0077be);
+            border: 2px solid #e0ffff;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .bet-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #00bfff;
+        }
+
+        .bet-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #e0ffff;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .spin-btn {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: linear-gradient(145deg, #e0ffff, #87ceeb, #00bfff);
+            border: 5px solid #fff;
+            box-shadow: 0 0 40px rgba(0, 191, 255, 0.6);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #001030;
+            letter-spacing: 2px;
+        }
+
+        .spin-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(135, 206, 235, 0.8);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+        }
+
+        .auto-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            background: rgba(0, 30, 60, 0.8);
+            border: 2px solid #00bfff;
+            color: #87ceeb;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .auto-btn.active {
+            background: linear-gradient(145deg, #00bfff, #0077be);
+            color: #fff;
+        }
+
+        .paytable {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pay-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(0, 30, 60, 0.6);
+            border: 1px solid rgba(135, 206, 235, 0.3);
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        .win-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 10, 30, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .win-overlay.active {
+            display: flex;
+        }
+
+        .win-title {
+            font-size: 4rem;
+            letter-spacing: 8px;
+            background: linear-gradient(180deg, #fff, #87ceeb, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: icePulse 0.5s infinite;
+        }
+
+        @keyframes icePulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        .win-amount {
+            font-size: 5rem;
+            color: #00bfff;
+            margin: 30px 0;
+            text-shadow: 0 0 40px rgba(0, 191, 255, 0.8);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            padding: 10px 20px;
+            background: rgba(0, 30, 60, 0.8);
+            border: 1px solid #00bfff;
+            border-radius: 20px;
+            color: #87ceeb;
+            text-decoration: none;
+            z-index: 20;
+        }
+
+        /* Buy Feature Panel */
+        .buy-panel {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: linear-gradient(90deg, rgba(0, 191, 255, 0.2), rgba(135, 206, 235, 0.3), rgba(0, 191, 255, 0.2));
+            border-radius: 15px;
+            border: 2px solid #00bfff;
+        }
+
+        .buy-btn {
+            padding: 12px 25px;
+            background: linear-gradient(145deg, #00bfff, #0077be);
+            border: 2px solid #e0ffff;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .buy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 191, 255, 0.6);
+        }
+
+        .buy-btn .price {
+            display: block;
+            font-size: 1.2rem;
+            color: #e0ffff;
+        }
+
+        .buy-btn .label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .freespins-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 10, 30, 0.98);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 200;
+        }
+
+        .freespins-overlay.active {
+            display: flex;
+        }
+
+        .fs-title {
+            font-size: 3rem;
+            color: #00bfff;
+            animation: pulse 0.5s infinite;
+        }
+
+        .fs-count {
+            font-size: 5rem;
+            color: #e0ffff;
+            margin: 20px 0;
+        }
+
+        .fs-info {
+            font-size: 1.2rem;
+            color: #87ceeb;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ice-container">
+        <div class="ice-bg"></div>
+        <div class="snowflakes" id="snowflakes"></div>
+        <div class="crystal-left"></div>
+        <div class="crystal-right"></div>
+
+        <header class="game-header">
+            <a href="lobby.html" class="logo"><span style="font-size:2rem">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="balance-display"><span>💰</span><span class="balance-amount" id="balance">$0</span></div>
+        </header>
+        <a href="lobby.html" class="back-btn">返回大厅</a>
+
+        <div class="title-section">
+            <h1 class="main-title">❄ ICE DRAGON ❄</h1>
+            <div class="sub-title">冰 龙 觉 醒</div>
+        </div>
+
+        <main class="slot-main">
+            <div class="slot-frame">
+                <div class="buy-panel">
+                    <button class="buy-btn" onclick="buyFeature(10)">
+                        <span class="label">❄️ BUY FREE SPINS</span>
+                        <span class="price" id="buyPrice">$100</span>
+                    </button>
+                    <button class="buy-btn" onclick="buyFeature(15)">
+                        <span class="label">🐲 BUY ICE SPINS</span>
+                        <span class="price" id="buyMegaPrice">$150</span>
+                    </button>
+                </div>
+                <div class="reels-area">
+                    <div class="reel" id="reel0">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel1">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel2">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel3">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel4">
+                        <div class="reel-inner"></div>
+                    </div>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="info-group">
+                        <div class="info-box">
+                            <div class="info-label">CREDIT</div>
+                            <div class="info-value" id="gameBalance">$0</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">WIN</div>
+                            <div class="info-value win" id="winAmount">$0</div>
+                        </div>
+                    </div>
+                    <div class="bet-control">
+                        <button class="bet-btn" onclick="changeBet(-1)">−</button>
+                        <div class="bet-amount" id="betAmount">$10</div>
+                        <button class="bet-btn" onclick="changeBet(1)">+</button>
+                    </div>
+                    <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN</button>
+                    <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">AUTO ×10</button>
+                </div>
+
+                <div class="paytable">
+                    <div class="pay-item" style="color:#00bfff">🐲 ×150</div>
+                    <div class="pay-item" style="color:#e0ffff">❆ ×80</div>
+                    <div class="pay-item">💎 ×50</div>
+                    <div class="pay-item" style="color:#fff">❄ ×30</div>
+                    <div class="pay-item">✨ ×25</div>
+                    <div class="pay-item" style="color:#1e90ff">◆ ×15</div>
+                    <div class="pay-item" style="color:#fff">◆ ×10</div>
+                    <div class="pay-item" style="color:#9370db">◆ ×5</div>
+                </div>
+            </div>
+        </main>
+
+        <div class="win-overlay" id="winOverlay">
+            <div class="win-title">ICE DRAGON AWAKENS!</div>
+            <div class="win-amount" id="bigWinAmount">$0</div>
+            <button class="spin-btn" onclick="closeWin()">继续</button>
+        </div>
+        <div class="freespins-overlay" id="freeSpinsOverlay">
+            <div class="fs-title">❄️ FREE SPINS TRIGGERED! ❄️</div>
+            <div class="fs-count" id="freeSpinsCount">8</div>
+            <div class="fs-info">ICE DRAGON FREE SPINS</div>
+            <button class="spin-btn" onclick="startFreeSpins()" style="margin-top:30px">开始</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        // Create snowflakes
+        function createSnowflakes() {
+            const container = document.getElementById('snowflakes');
+            for (let i = 0; i < 30; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = ['❄', '❆', '✻', '❅'][Math.floor(Math.random() * 4)];
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.animationDuration = (5 + Math.random() * 10) + 's';
+                flake.style.animationDelay = Math.random() * 5 + 's';
+                flake.style.fontSize = (0.5 + Math.random()) + 'rem';
+                container.appendChild(flake);
+            }
+        }
+
+        const SYMBOLS = [
+            { id: 'icedragon', class: 'sym-icedragon', char: '🐲', value: 150, weight: 2, isHigh: true },
+            { id: 'scatter', class: 'sym-frozen', char: '❆', value: 0, weight: 3, isScatter: true },
+            { id: 'frozen', class: 'sym-frozen', char: '❆', value: 80, weight: 4, isHigh: true },
+            { id: 'crystal', class: 'sym-crystal', char: '', value: 50, weight: 6, isHigh: true },
+            { id: 'snowflake', class: 'sym-snowflake', char: '❄', value: 30, weight: 10 },
+            { id: 'aurora', class: 'sym-aurora', char: '', value: 25, weight: 12 },
+            { id: 'gemblue', class: 'sym-icegem-blue', char: '', value: 15, weight: 18 },
+            { id: 'gemwhite', class: 'sym-icegem-white', char: '', value: 10, weight: 22 },
+            { id: 'gempurple', class: 'sym-icegem-purple', char: '', value: 5, weight: 26 }
+        ];
+
+        const NUM_REELS = 5;
+        let user, bet = 10, betOptions = [5, 10, 20, 50, 100], betIndex = 1;
+        let isSpinning = false, autoCount = 0, reels = [];
+        let freeSpinsRemaining = 0, inFreeSpins = false, totalFreeSpinWin = 0;
+        let playerRtp = 95;
+
+        async function init() {
+            createSnowflakes();
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+
+            await RTPManager.init();
+            playerRtp = RTPManager.getEffectiveRtp();
+
+            updateDisplay();
+            updateBuyPrices();
+            generateReels();
+            renderReels();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+        }
+
+        function updateBuyPrices() {
+            document.getElementById('buyPrice').textContent = '$' + (bet * 10);
+            document.getElementById('buyMegaPrice').textContent = '$' + (bet * 15);
+        }
+
+        function getRandomSymbol() {
+            const rtp = playerRtp;
+            let adjustedSymbols = SYMBOLS.map(s => {
+                let weight = s.weight;
+                if (s.isHigh) weight = s.weight * (1 + (rtp - 70) / 100);
+                else if (s.isScatter) weight = s.weight * (1 + (rtp - 80) / 200);
+                else weight = s.weight * (1 - (rtp - 70) / 200);
+                return { ...s, adjustedWeight: Math.max(1, weight) };
+            });
+            const total = adjustedSymbols.reduce((a, s) => a + s.adjustedWeight, 0);
+            let r = Math.random() * total;
+            for (const sym of adjustedSymbols) { r -= sym.adjustedWeight; if (r <= 0) return sym; }
+            return SYMBOLS[SYMBOLS.length - 1];
+        }
+
+        function generateReels() {
+            reels = [];
+            for (let r = 0; r < NUM_REELS; r++) {
+                const reel = [];
+                for (let i = 0; i < 20; i++) reel.push(getRandomSymbol());
+                reels.push(reel);
+            }
+        }
+
+        function renderReels() {
+            for (let r = 0; r < NUM_REELS; r++) {
+                const inner = document.querySelector(`#reel${r} .reel-inner`);
+                inner.innerHTML = reels[r].map(sym => `
+                    <div class="symbol" data-id="${sym.id}">
+                        <div class="symbol-inner ${sym.class}">${sym.char}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function changeBet(dir) {
+            if (inFreeSpins) return;
+            betIndex = Math.max(0, Math.min(betOptions.length - 1, betIndex + dir));
+            bet = betOptions[betIndex];
+            document.getElementById('betAmount').textContent = '$' + bet;
+            updateBuyPrices();
+        }
+
+        async function buyFeature(spins) {
+            if (isSpinning || inFreeSpins) return;
+            const cost = bet * (spins === 15 ? 15 : 10);
+            user = await Auth.getCurrentUser();
+            if (parseFloat(user?.balance || 0) < cost) {
+                Auth.showNotification('余额不足！需要 $' + cost, 'error');
+                return;
+            }
+            await Wallet.updateBalance(user.id, -cost);
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+            freeSpinsRemaining = spins;
+            document.getElementById('freeSpinsCount').textContent = spins;
+            document.getElementById('freeSpinsOverlay').classList.add('active');
+        }
+
+        function startFreeSpins() {
+            document.getElementById('freeSpinsOverlay').classList.remove('active');
+            inFreeSpins = true;
+            totalFreeSpinWin = 0;
+            Auth.showNotification(`❄️ 开始 ${freeSpinsRemaining} 次冰龙免费旋转！`, 'success');
+            spin();
+        }
+
+        async function spin() {
+            if (isSpinning) return;
+            if (!inFreeSpins) {
+                user = await Auth.getCurrentUser();
+                if (parseFloat(user?.balance || 0) < bet) { Auth.showNotification('余额不足！', 'error'); return; }
+            }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('winAmount').textContent = '$0';
+
+            if (!inFreeSpins) {
+                await Wallet.updateBalance(user.id, -bet);
+                await Wallet.addVipPoints(user.id, Math.floor(bet));
+                user = await Auth.getCurrentUser();
+                updateDisplay();
+            }
+
+            document.querySelectorAll('.reel').forEach(r => r.classList.add('spinning'));
+
+            let spins = 0;
+            const interval = setInterval(() => {
+                generateReels(); renderReels(); spins++;
+                if (spins >= 15) { clearInterval(interval); document.querySelectorAll('.reel').forEach(r => r.classList.remove('spinning')); checkWins(); }
+            }, 100);
+        }
+
+        async function checkWins() {
+            const middleSymbols = [];
+            for (let r = 0; r < NUM_REELS; r++) middleSymbols.push(reels[r][1]);
+
+            // Check scatter
+            let scatterCount = middleSymbols.filter(s => s.isScatter).length;
+            if (scatterCount >= 3 && !inFreeSpins) {
+                const spins = scatterCount >= 5 ? 15 : scatterCount >= 4 ? 12 : 8;
+                freeSpinsRemaining = spins;
+                setTimeout(() => {
+                    document.getElementById('freeSpinsCount').textContent = spins;
+                    document.getElementById('freeSpinsOverlay').classList.add('active');
+                }, 1000);
+            }
+
+            let totalWin = 0;
+            for (const sym of SYMBOLS) {
+                if (sym.isScatter) continue;
+                let count = 0;
+                for (let i = 0; i < middleSymbols.length; i++) {
+                    if (middleSymbols[i].id === sym.id) count++; else break;
+                }
+                if (count >= 3) {
+                    const rtpMultiplier = playerRtp / 95;
+                    totalWin = Math.floor(bet * (sym.value / 10) * (count - 2) * rtpMultiplier);
+                    document.querySelectorAll('.reel').forEach((reel, idx) => {
+                        if (idx < count) reel.querySelectorAll('.symbol')[1]?.classList.add('winning');
+                    });
+                    break;
+                }
+            }
+
+            if (totalWin > 0) {
+                await Wallet.updateBalance(user.id, totalWin);
+                document.getElementById('winAmount').textContent = '$' + totalWin.toLocaleString();
+                if (inFreeSpins) totalFreeSpinWin += totalWin;
+                if (totalWin >= bet * 20) {
+                    document.getElementById('bigWinAmount').textContent = '$' + totalWin.toLocaleString();
+                    document.getElementById('winOverlay').classList.add('active');
+                } else Auth.showNotification(`❄ 冰龙赐福 $${totalWin}！`, 'success');
+            }
+
+            user = await Auth.getCurrentUser(); updateDisplay();
+            isSpinning = false; document.getElementById('spinBtn').disabled = false;
+
+            if (inFreeSpins) {
+                freeSpinsRemaining--;
+                if (freeSpinsRemaining > 0) {
+                    Auth.showNotification(`剩余 ${freeSpinsRemaining} 次免费旋转`, 'info');
+                    setTimeout(spin, 800);
+                } else {
+                    inFreeSpins = false;
+                    if (totalFreeSpinWin > 0) {
+                        Auth.showNotification(`🎉 免费旋转结束！总计赢得 $${totalFreeSpinWin.toLocaleString()}`, 'success');
+                    }
+                }
+                return;
+            }
+
+            if (autoCount > 0) {
+                autoCount--; if (autoCount > 0) setTimeout(spin, 500);
+                else { document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = 'AUTO ×10'; }
+            }
+        }
+
+        function toggleAuto() {
+            if (inFreeSpins) return;
+            if (autoCount > 0) { autoCount = 0; document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = 'AUTO ×10'; }
+            else { autoCount = 10; document.getElementById('autoBtn').classList.add('active'); document.getElementById('autoBtn').textContent = 'STOP'; if (!isSpinning) spin(); }
+        }
+        function closeWin() { document.getElementById('winOverlay').classList.remove('active'); }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

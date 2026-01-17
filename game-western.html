@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>西部淘金 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a0f00;
+            color: #fff;
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+        }
+
+        /* 西部牛仔主题 - 棕黄沙漠风格 */
+        .western-container {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #2d1a00 0%, #4a2800 30%, #3d2000 60%, #1a0f00 100%);
+            position: relative;
+        }
+
+        .western-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(255, 140, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(139, 69, 19, 0.3) 0%, transparent 40%);
+        }
+
+        /* 沙漠仙人掌装饰 */
+        .cactus-left,
+        .cactus-right {
+            position: fixed;
+            bottom: 0;
+            font-size: 5rem;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .cactus-left {
+            left: 30px;
+        }
+
+        .cactus-right {
+            right: 30px;
+        }
+
+        /* 尘土飘动 */
+        .dust {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .dust-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(210, 180, 140, 0.4);
+            border-radius: 50%;
+            animation: dustFloat 8s linear infinite;
+        }
+
+        @keyframes dustFloat {
+            0% {
+                transform: translateX(-100px) translateY(100vh);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: translateX(100vw) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(180deg, rgba(139, 69, 19, 0.8), transparent);
+            border-bottom: 4px solid #8b4513;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #deb887;
+            font-family: 'Georgia', serif;
+        }
+
+        .balance-display {
+            background: rgba(30, 15, 0, 0.9);
+            padding: 10px 25px;
+            border-radius: 10px;
+            border: 3px solid #8b4513;
+        }
+
+        .balance-amount {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .title-section {
+            text-align: center;
+            padding: 25px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #ffd700, #cd853f, #8b4513);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            font-family: 'Georgia', serif;
+            letter-spacing: 3px;
+        }
+
+        .sub-title {
+            color: #deb887;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
+            margin-top: 10px;
+        }
+
+        .slot-main {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slot-frame {
+            background: linear-gradient(180deg, #3d2000, #2d1500, #1a0f00);
+            border: 6px solid #8b4513;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 50px rgba(139, 69, 19, 0.5);
+            position: relative;
+        }
+
+        .slot-frame::before {
+            content: '🤠';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5rem;
+        }
+
+        .reels-area {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(180deg, #1a0f00, #2d1500);
+            border-radius: 10px;
+            padding: 15px;
+            border: 3px solid #654321;
+        }
+
+        .reel {
+            width: 105px;
+            height: 290px;
+            background: linear-gradient(180deg, rgba(30, 15, 0, 0.95), rgba(60, 30, 0, 0.9));
+            border: 2px solid #654321;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reel::before,
+        .reel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 50px;
+            z-index: 5;
+        }
+
+        .reel::before {
+            top: 0;
+            background: linear-gradient(180deg, rgba(30, 15, 0, 1), transparent);
+        }
+
+        .reel::after {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(30, 15, 0, 1), transparent);
+        }
+
+        .reel-inner {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reel.spinning .reel-inner {
+            animation: westernSpin 0.12s linear infinite;
+        }
+
+        @keyframes westernSpin {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-96px);
+            }
+        }
+
+        /* 西部主题符号 */
+        .symbol {
+            width: 105px;
+            height: 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .symbol-inner {
+            width: 78px;
+            height: 78px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .sym-sheriff {
+            background: linear-gradient(145deg, #ffd700, #daa520);
+            border: 3px solid #fff;
+        }
+
+        .sym-sheriff::after {
+            content: '⭐';
+            color: #8b4513;
+        }
+
+        .sym-cowboy {
+            background: linear-gradient(145deg, #8b4513, #654321);
+            border: 3px solid #deb887;
+        }
+
+        .sym-cowboy::after {
+            content: '🤠';
+        }
+
+        .sym-horse {
+            background: linear-gradient(145deg, #a0522d, #8b4513);
+            border: 3px solid #deb887;
+        }
+
+        .sym-horse::after {
+            content: '🐴';
+        }
+
+        .sym-gun {
+            background: linear-gradient(145deg, #696969, #2f4f4f);
+            border: 3px solid #c0c0c0;
+        }
+
+        .sym-gun::after {
+            content: '🔫';
+        }
+
+        .sym-wanted {
+            background: linear-gradient(145deg, #f4a460, #d2691e);
+            border: 3px solid #8b4513;
+            font-size: 1rem;
+            color: #000;
+            font-weight: 900;
+        }
+
+        .sym-cactus {
+            background: linear-gradient(145deg, #228b22, #006400);
+            border: 3px solid #90ee90;
+        }
+
+        .sym-cactus::after {
+            content: '🌵';
+        }
+
+        .sym-gold {
+            background: linear-gradient(145deg, #ffd700, #b8860b);
+            border: 3px solid #fff;
+            border-radius: 50%;
+        }
+
+        .sym-gold::after {
+            content: '🪙';
+        }
+
+        .sym-boot {
+            background: linear-gradient(145deg, #8b4513, #5d2e0c);
+            border: 3px solid #deb887;
+        }
+
+        .sym-boot::after {
+            content: '👢';
+        }
+
+        .symbol.winning .symbol-inner {
+            animation: westernWin 0.4s ease infinite;
+            box-shadow: 0 0 30px #ffd700;
+        }
+
+        @keyframes westernWin {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.12);
+            }
+        }
+
+        .controls-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #3d2000, #2d1500);
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 3px solid #654321;
+        }
+
+        .info-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 12px 20px;
+            background: rgba(30, 15, 0, 0.8);
+            border: 2px solid #654321;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            color: #deb887;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffd700;
+        }
+
+        .info-value.win {
+            color: #00ff00;
+        }
+
+        .bet-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bet-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #8b4513, #654321);
+            border: 2px solid #deb887;
+            color: #ffd700;
+            font-size: 1.5rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .bet-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .bet-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffd700;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .spin-btn {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: linear-gradient(145deg, #ffd700, #cd853f, #8b4513);
+            border: 5px solid #fff;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #3d2000;
+            letter-spacing: 2px;
+        }
+
+        .spin-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+        }
+
+        .auto-btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            background: rgba(30, 15, 0, 0.8);
+            border: 2px solid #8b4513;
+            color: #deb887;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .auto-btn.active {
+            background: linear-gradient(145deg, #8b4513, #654321);
+            color: #fff;
+        }
+
+        .paytable {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pay-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(30, 15, 0, 0.8);
+            border: 1px solid #654321;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        .win-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 15, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .win-overlay.active {
+            display: flex;
+        }
+
+        .win-title {
+            font-size: 4rem;
+            background: linear-gradient(180deg, #ffd700, #cd853f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: westernPulse 0.5s infinite;
+        }
+
+        @keyframes westernPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .win-amount {
+            font-size: 5rem;
+            color: #ffd700;
+            margin: 30px 0;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            padding: 10px 20px;
+            background: rgba(30, 15, 0, 0.8);
+            border: 1px solid #8b4513;
+            border-radius: 20px;
+            color: #deb887;
+            text-decoration: none;
+            z-index: 20;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="western-container">
+        <div class="western-bg"></div>
+        <div class="dust" id="dust"></div>
+        <div class="cactus-left">🌵</div>
+        <div class="cactus-right">🌵</div>
+
+        <header class="game-header">
+            <a href="lobby.html" class="logo"><span style="font-size:2rem">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="balance-display"><span>💰</span><span class="balance-amount" id="balance">$0</span></div>
+        </header>
+        <a href="lobby.html" class="back-btn">返回大厅</a>
+
+        <div class="title-section">
+            <h1 class="main-title">🤠 WILD WEST GOLD 🤠</h1>
+            <div class="sub-title">西 部 淘 金</div>
+        </div>
+
+        <main class="slot-main">
+            <div class="slot-frame">
+                <div class="reels-area">
+                    <div class="reel" id="reel0">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel1">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel2">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel3">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel4">
+                        <div class="reel-inner"></div>
+                    </div>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="info-group">
+                        <div class="info-box">
+                            <div class="info-label">GOLD</div>
+                            <div class="info-value" id="gameBalance">$0</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">BOUNTY</div>
+                            <div class="info-value win" id="winAmount">$0</div>
+                        </div>
+                    </div>
+                    <div class="bet-control">
+                        <button class="bet-btn" onclick="changeBet(-1)">−</button>
+                        <div class="bet-amount" id="betAmount">$10</div>
+                        <button class="bet-btn" onclick="changeBet(1)">+</button>
+                    </div>
+                    <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN</button>
+                    <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">AUTO ×10</button>
+                </div>
+
+                <div class="paytable">
+                    <div class="pay-item">⭐ ×100</div>
+                    <div class="pay-item">🤠 ×70</div>
+                    <div class="pay-item">🐴 ×50</div>
+                    <div class="pay-item">🔫 ×35</div>
+                    <div class="pay-item">📜 ×25</div>
+                    <div class="pay-item">🌵 ×15</div>
+                    <div class="pay-item">🪙 ×10</div>
+                    <div class="pay-item">👢 ×5</div>
+                </div>
+            </div>
+        </main>
+
+        <div class="win-overlay" id="winOverlay">
+            <div class="win-title">JACKPOT PARTNER!</div>
+            <div class="win-amount" id="bigWinAmount">$0</div>
+            <button class="spin-btn" onclick="closeWin()">继续</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        // Create dust particles
+        function createDust() {
+            const container = document.getElementById('dust');
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.className = 'dust-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.animationDuration = (6 + Math.random() * 8) + 's';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(p);
+            }
+        }
+
+        const SYMBOLS = [
+            { id: 'sheriff', class: 'sym-sheriff', char: '', value: 100, weight: 3 },
+            { id: 'cowboy', class: 'sym-cowboy', char: '', value: 70, weight: 5 },
+            { id: 'horse', class: 'sym-horse', char: '', value: 50, weight: 7 },
+            { id: 'gun', class: 'sym-gun', char: '', value: 35, weight: 10 },
+            { id: 'wanted', class: 'sym-wanted', char: 'WANTED', value: 25, weight: 14 },
+            { id: 'cactus', class: 'sym-cactus', char: '', value: 15, weight: 18 },
+            { id: 'gold', class: 'sym-gold', char: '', value: 10, weight: 20 },
+            { id: 'boot', class: 'sym-boot', char: '', value: 5, weight: 23 }
+        ];
+
+        const NUM_REELS = 5;
+        let user, bet = 10, betOptions = [5, 10, 20, 50, 100], betIndex = 1;
+        let isSpinning = false, autoCount = 0, reels = [];
+
+        async function init() {
+            createDust();
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay(); generateReels(); renderReels();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+        }
+
+        function getRandomSymbol() {
+            const total = SYMBOLS.reduce((a, s) => a + s.weight, 0);
+            let r = Math.random() * total;
+            for (const sym of SYMBOLS) { r -= sym.weight; if (r <= 0) return sym; }
+            return SYMBOLS[SYMBOLS.length - 1];
+        }
+
+        function generateReels() {
+            reels = [];
+            for (let r = 0; r < NUM_REELS; r++) {
+                const reel = [];
+                for (let i = 0; i < 20; i++) reel.push(getRandomSymbol());
+                reels.push(reel);
+            }
+        }
+
+        function renderReels() {
+            for (let r = 0; r < NUM_REELS; r++) {
+                const inner = document.querySelector(`#reel${r} .reel-inner`);
+                inner.innerHTML = reels[r].map(sym => `
+                    <div class="symbol" data-id="${sym.id}">
+                        <div class="symbol-inner ${sym.class}">${sym.char}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function changeBet(dir) {
+            betIndex = Math.max(0, Math.min(betOptions.length - 1, betIndex + dir));
+            bet = betOptions[betIndex];
+            document.getElementById('betAmount').textContent = '$' + bet;
+        }
+
+        async function spin() {
+            if (isSpinning) return;
+            user = await Auth.getCurrentUser();
+            if (parseFloat(user?.balance || 0) < bet) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('winAmount').textContent = '$0';
+
+            await Wallet.updateBalance(user.id, -bet);
+            await Wallet.addVipPoints(user.id, Math.floor(bet));
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            document.querySelectorAll('.reel').forEach(r => r.classList.add('spinning'));
+
+            let spins = 0;
+            const interval = setInterval(() => {
+                generateReels(); renderReels(); spins++;
+                if (spins >= 15) { clearInterval(interval); document.querySelectorAll('.reel').forEach(r => r.classList.remove('spinning')); checkWins(); }
+            }, 100);
+        }
+
+        async function checkWins() {
+            const middleSymbols = [];
+            for (let r = 0; r < NUM_REELS; r++) middleSymbols.push(reels[r][1]);
+
+            let totalWin = 0;
+            for (const sym of SYMBOLS) {
+                let count = 0;
+                for (let i = 0; i < middleSymbols.length; i++) {
+                    if (middleSymbols[i].id === sym.id) count++; else break;
+                }
+                if (count >= 3) {
+                    totalWin = bet * (sym.value / 10) * (count - 2);
+                    document.querySelectorAll('.reel').forEach((reel, idx) => {
+                        if (idx < count) reel.querySelectorAll('.symbol')[1]?.classList.add('winning');
+                    });
+                    break;
+                }
+            }
+
+            if (totalWin > 0) {
+                await Wallet.updateBalance(user.id, totalWin);
+                document.getElementById('winAmount').textContent = '$' + totalWin.toLocaleString();
+                if (totalWin >= bet * 20) {
+                    document.getElementById('bigWinAmount').textContent = '$' + totalWin.toLocaleString();
+                    document.getElementById('winOverlay').classList.add('active');
+                } else Auth.showNotification(`🤠 西部赏金 $${totalWin}！`, 'success');
+            }
+
+            user = await Auth.getCurrentUser(); updateDisplay();
+            isSpinning = false; document.getElementById('spinBtn').disabled = false;
+
+            if (autoCount > 0) {
+                autoCount--; if (autoCount > 0) setTimeout(spin, 500);
+                else { document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = 'AUTO ×10'; }
+            }
+        }
+
+        function toggleAuto() {
+            if (autoCount > 0) { autoCount = 0; document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = 'AUTO ×10'; }
+            else { autoCount = 10; document.getElementById('autoBtn').classList.add('active'); document.getElementById('autoBtn').textContent = 'STOP'; if (!isSpinning) spin(); }
+        }
+        function closeWin() { document.getElementById('winOverlay').classList.remove('active'); }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

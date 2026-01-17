@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>招财猫 - LuckyDragon Casino</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fff5ee;
+            color: #333;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 日式可爱风格 - 温暖红金色调 */
+        .neko-container {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #fff5ee 0%, #ffe4d0 50%, #ffd4b8 100%);
+            position: relative;
+        }
+
+        .neko-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(255, 215, 0, 0.2) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b6b' fill-opacity='0.05'%3E%3Cpath d='M30 30c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10-10-4.5-10-10zM10 10c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10-10-4.5-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* 招财猫装饰 */
+        .neko-left,
+        .neko-right {
+            position: fixed;
+            bottom: 20px;
+            font-size: 8rem;
+            z-index: 1;
+            opacity: 0.3;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        .neko-left {
+            left: 20px;
+        }
+
+        .neko-right {
+            right: 20px;
+            transform: scaleX(-1);
+            animation-delay: 0.5s;
+        }
+
+        @keyframes wave {
+
+            0%,
+            100% {
+                transform: rotate(-5deg);
+            }
+
+            50% {
+                transform: rotate(5deg);
+            }
+        }
+
+        /* 金币飘落动画 */
+        .coins {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .coin {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: coinFall linear infinite;
+        }
+
+        @keyframes coinFall {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(180deg, #ff6b6b, #ff8787);
+            border-bottom: 4px solid #ffd700;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .balance-display {
+            background: #fff;
+            padding: 10px 25px;
+            border-radius: 30px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .balance-amount {
+            color: #ff6b6b;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .title-section {
+            text-align: center;
+            padding: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #ffd700, #ff8c00, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .sub-title {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .slot-main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .slot-frame {
+            background: linear-gradient(180deg, #ff6b6b, #ff8787);
+            border: 6px solid #ffd700;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(255, 107, 107, 0.4);
+        }
+
+        .reels-area {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(180deg, #fff, #fff5ee);
+            border-radius: 20px;
+            padding: 20px;
+            border: 4px solid #ffd700;
+        }
+
+        .reel {
+            width: 100px;
+            height: 280px;
+            background: linear-gradient(180deg, #fffaf0, #fff);
+            border: 3px solid #ffb6c1;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reel::before,
+        .reel::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            z-index: 5;
+        }
+
+        .reel::before {
+            top: 0;
+            background: linear-gradient(180deg, rgba(255, 250, 240, 1), transparent);
+        }
+
+        .reel::after {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(255, 250, 240, 1), transparent);
+        }
+
+        .reel-inner {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reel.spinning .reel-inner {
+            animation: nekoSpin 0.1s linear infinite;
+        }
+
+        @keyframes nekoSpin {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-93px);
+            }
+        }
+
+        /* 招财猫主题符号 - 可爱风格 */
+        .symbol {
+            width: 100px;
+            height: 93px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .symbol-inner {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 招财猫符号 */
+        .sym-maneki {
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            border: 4px solid #fff;
+        }
+
+        .sym-maneki::after {
+            content: '🐱';
+        }
+
+        .sym-koban {
+            background: linear-gradient(145deg, #ffd700, #daa520);
+            border: 4px solid #fff;
+        }
+
+        .sym-koban::after {
+            content: '🪙';
+        }
+
+        .sym-daruma {
+            background: linear-gradient(145deg, #ff6b6b, #ff4444);
+            border: 4px solid #fff;
+        }
+
+        .sym-daruma::after {
+            content: '🎎';
+        }
+
+        .sym-sakura {
+            background: linear-gradient(145deg, #ffb6c1, #ff69b4);
+            border: 4px solid #fff;
+        }
+
+        .sym-sakura::after {
+            content: '🌸';
+        }
+
+        .sym-koi {
+            background: linear-gradient(145deg, #ff8c00, #ff4500);
+            border: 4px solid #fff;
+        }
+
+        .sym-koi::after {
+            content: '🐟';
+        }
+
+        .sym-fan {
+            background: linear-gradient(145deg, #ff1744, #c62828);
+            border: 4px solid #fff;
+        }
+
+        .sym-fan::after {
+            content: '🪭';
+        }
+
+        .sym-bell {
+            background: linear-gradient(145deg, #ffc107, #ff9800);
+            border: 4px solid #fff;
+        }
+
+        .sym-bell::after {
+            content: '🔔';
+        }
+
+        .sym-lantern {
+            background: linear-gradient(145deg, #ff5722, #e64a19);
+            border: 4px solid #fff;
+        }
+
+        .sym-lantern::after {
+            content: '🏮';
+        }
+
+        .symbol.winning .symbol-inner {
+            animation: nekoWin 0.3s ease infinite;
+            box-shadow: 0 0 30px #ffd700;
+        }
+
+        @keyframes nekoWin {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+        }
+
+        /* 控制面板 - 可爱风格 */
+        .controls-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 20px;
+            margin-top: 15px;
+            border: 4px solid #ffd700;
+        }
+
+        .info-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 12px 18px;
+            background: linear-gradient(180deg, #fff5ee, #ffe4d0);
+            border: 3px solid #ffb6c1;
+            border-radius: 15px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #ff6b6b;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .info-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ff4444;
+        }
+
+        .info-value.win {
+            color: #00c853;
+        }
+
+        .bet-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bet-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ff6b6b, #ff4444);
+            border: 3px solid #ffd700;
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .bet-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .bet-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff4444;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .spin-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            border: 5px solid #ff6b6b;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #ff4444;
+        }
+
+        .spin-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+        }
+
+        .auto-btn {
+            padding: 12px 25px;
+            border-radius: 30px;
+            background: linear-gradient(145deg, #fff, #fff5ee);
+            border: 3px solid #ff6b6b;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .auto-btn.active {
+            background: linear-gradient(145deg, #ff6b6b, #ff4444);
+            color: #fff;
+        }
+
+        .paytable {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .pay-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #fff;
+            border: 2px solid #ffb6c1;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ff4444;
+        }
+
+        .win-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 107, 107, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .win-overlay.active {
+            display: flex;
+        }
+
+        .win-title {
+            font-size: 3.5rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: nekoPulse 0.4s infinite;
+        }
+
+        @keyframes nekoPulse {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(-5deg);
+            }
+
+            50% {
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
+
+        .win-amount {
+            font-size: 5rem;
+            color: #ffd700;
+            margin: 30px 0;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            right: 30px;
+            padding: 10px 20px;
+            background: #fff;
+            border: 2px solid #ff6b6b;
+            border-radius: 25px;
+            color: #ff6b6b;
+            text-decoration: none;
+            z-index: 20;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="neko-container">
+        <div class="neko-bg"></div>
+        <div class="coins" id="coins"></div>
+        <div class="neko-left">🐱</div>
+        <div class="neko-right">🐱</div>
+
+        <header class="game-header">
+            <a href="lobby.html" class="logo"><span style="font-size:2rem">🐉</span><span
+                    class="logo-text">LuckyDragon</span></a>
+            <div class="balance-display"><span>💰</span><span class="balance-amount" id="balance">$0</span></div>
+        </header>
+        <a href="lobby.html" class="back-btn">返回大厅</a>
+
+        <div class="title-section">
+            <h1 class="main-title">🐱 招財貓 🐱</h1>
+            <div class="sub-title">LUCKY MANEKI NEKO</div>
+        </div>
+
+        <main class="slot-main">
+            <div class="slot-frame">
+                <div class="reels-area">
+                    <div class="reel" id="reel0">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel1">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel2">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel3">
+                        <div class="reel-inner"></div>
+                    </div>
+                    <div class="reel" id="reel4">
+                        <div class="reel-inner"></div>
+                    </div>
+                </div>
+
+                <div class="controls-panel">
+                    <div class="info-group">
+                        <div class="info-box">
+                            <div class="info-label">余额</div>
+                            <div class="info-value" id="gameBalance">$0</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">赢取</div>
+                            <div class="info-value win" id="winAmount">$0</div>
+                        </div>
+                    </div>
+                    <div class="bet-control">
+                        <button class="bet-btn" onclick="changeBet(-1)">−</button>
+                        <div class="bet-amount" id="betAmount">$10</div>
+                        <button class="bet-btn" onclick="changeBet(1)">+</button>
+                    </div>
+                    <button class="spin-btn" id="spinBtn" onclick="spin()">SPIN</button>
+                    <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">自动 ×10</button>
+                </div>
+
+                <div class="paytable">
+                    <div class="pay-item">🐱 ×120</div>
+                    <div class="pay-item">🪙 ×80</div>
+                    <div class="pay-item">🎎 ×50</div>
+                    <div class="pay-item">🌸 ×30</div>
+                    <div class="pay-item">🐟 ×20</div>
+                    <div class="pay-item">🪭 ×15</div>
+                    <div class="pay-item">🔔 ×10</div>
+                    <div class="pay-item">🏮 ×5</div>
+                </div>
+            </div>
+        </main>
+
+        <div class="win-overlay" id="winOverlay">
+            <div class="win-title">🐱 招財進寶 🐱</div>
+            <div class="win-amount" id="bigWinAmount">$0</div>
+            <button class="spin-btn" onclick="closeWin()">继续</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rtp-manager.js"></script>
+    <script>
+        // Create floating coins
+        function createCoins() {
+            const container = document.getElementById('coins');
+            for (let i = 0; i < 15; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin';
+                coin.textContent = ['🪙', '💰', '✨'][Math.floor(Math.random() * 3)];
+                coin.style.left = Math.random() * 100 + '%';
+                coin.style.animationDuration = (6 + Math.random() * 8) + 's';
+                coin.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(coin);
+            }
+        }
+
+        const SYMBOLS = [
+            { id: 'maneki', class: 'sym-maneki', char: '', value: 120, weight: 2 },
+            { id: 'koban', class: 'sym-koban', char: '', value: 80, weight: 4 },
+            { id: 'daruma', class: 'sym-daruma', char: '', value: 50, weight: 7 },
+            { id: 'sakura', class: 'sym-sakura', char: '', value: 30, weight: 12 },
+            { id: 'koi', class: 'sym-koi', char: '', value: 20, weight: 15 },
+            { id: 'fan', class: 'sym-fan', char: '', value: 15, weight: 18 },
+            { id: 'bell', class: 'sym-bell', char: '', value: 10, weight: 20 },
+            { id: 'lantern', class: 'sym-lantern', char: '', value: 5, weight: 22 }
+        ];
+
+        const NUM_REELS = 5;
+        let user, bet = 10, betOptions = [5, 10, 20, 50, 100], betIndex = 1;
+        let isSpinning = false, autoCount = 0, reels = [];
+
+        async function init() {
+            createCoins();
+            user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            updateDisplay(); generateReels(); renderReels();
+        }
+
+        function updateDisplay() {
+            const bal = parseFloat(user?.balance || 0);
+            document.getElementById('balance').textContent = '$' + bal.toLocaleString();
+            document.getElementById('gameBalance').textContent = '$' + bal.toLocaleString();
+        }
+
+        function getRandomSymbol() {
+            const total = SYMBOLS.reduce((a, s) => a + s.weight, 0);
+            let r = Math.random() * total;
+            for (const sym of SYMBOLS) { r -= sym.weight; if (r <= 0) return sym; }
+            return SYMBOLS[SYMBOLS.length - 1];
+        }
+
+        function generateReels() {
+            reels = [];
+            for (let r = 0; r < NUM_REELS; r++) {
+                const reel = [];
+                for (let i = 0; i < 20; i++) reel.push(getRandomSymbol());
+                reels.push(reel);
+            }
+        }
+
+        function renderReels() {
+            for (let r = 0; r < NUM_REELS; r++) {
+                const inner = document.querySelector(`#reel${r} .reel-inner`);
+                inner.innerHTML = reels[r].map(sym => `
+                    <div class="symbol" data-id="${sym.id}">
+                        <div class="symbol-inner ${sym.class}">${sym.char}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function changeBet(dir) {
+            betIndex = Math.max(0, Math.min(betOptions.length - 1, betIndex + dir));
+            bet = betOptions[betIndex];
+            document.getElementById('betAmount').textContent = '$' + bet;
+        }
+
+        async function spin() {
+            if (isSpinning) return;
+            user = await Auth.getCurrentUser();
+            if (parseFloat(user?.balance || 0) < bet) { Auth.showNotification('余额不足！', 'error'); return; }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('winAmount').textContent = '$0';
+
+            await Wallet.updateBalance(user.id, -bet);
+            await Wallet.addVipPoints(user.id, Math.floor(bet));
+            user = await Auth.getCurrentUser();
+            updateDisplay();
+
+            document.querySelectorAll('.reel').forEach(r => r.classList.add('spinning'));
+
+            let spins = 0;
+            const interval = setInterval(() => {
+                generateReels(); renderReels(); spins++;
+                if (spins >= 15) { clearInterval(interval); document.querySelectorAll('.reel').forEach(r => r.classList.remove('spinning')); checkWins(); }
+            }, 100);
+        }
+
+        async function checkWins() {
+            const middleSymbols = [];
+            for (let r = 0; r < NUM_REELS; r++) middleSymbols.push(reels[r][1]);
+
+            let totalWin = 0;
+            for (const sym of SYMBOLS) {
+                let count = 0;
+                for (let i = 0; i < middleSymbols.length; i++) {
+                    if (middleSymbols[i].id === sym.id) count++; else break;
+                }
+                if (count >= 3) {
+                    totalWin = bet * (sym.value / 10) * (count - 2);
+                    document.querySelectorAll('.reel').forEach((reel, idx) => {
+                        if (idx < count) reel.querySelectorAll('.symbol')[1]?.classList.add('winning');
+                    });
+                    break;
+                }
+            }
+
+            if (totalWin > 0) {
+                await Wallet.updateBalance(user.id, totalWin);
+                document.getElementById('winAmount').textContent = '$' + totalWin.toLocaleString();
+                if (totalWin >= bet * 20) {
+                    document.getElementById('bigWinAmount').textContent = '$' + totalWin.toLocaleString();
+                    document.getElementById('winOverlay').classList.add('active');
+                } else Auth.showNotification(`🐱 招財進寶 $${totalWin}！`, 'success');
+            }
+
+            user = await Auth.getCurrentUser(); updateDisplay();
+            isSpinning = false; document.getElementById('spinBtn').disabled = false;
+
+            if (autoCount > 0) {
+                autoCount--; if (autoCount > 0) setTimeout(spin, 500);
+                else { document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = '自动 ×10'; }
+            }
+        }
+
+        function toggleAuto() {
+            if (autoCount > 0) { autoCount = 0; document.getElementById('autoBtn').classList.remove('active'); document.getElementById('autoBtn').textContent = '自动 ×10'; }
+            else { autoCount = 10; document.getElementById('autoBtn').classList.add('active'); document.getElementById('autoBtn').textContent = '停止'; if (!isSpinning) spin(); }
+        }
+        function closeWin() { document.getElementById('winOverlay').classList.remove('active'); }
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>

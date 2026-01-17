@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuckyDragon Casino - 银行信息</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/lobby.css">
+    <link rel="stylesheet" href="css/account.css">
+</head>
+
+<body>
+    <div class="bg-animated"></div>
+
+    <nav class="main-nav">
+        <div class="container nav-content">
+            <a href="lobby.html" class="logo">
+                <span class="logo-icon">🐉</span>
+                <span class="logo-text">LuckyDragon</span>
+            </a>
+            <div class="nav-center">
+                <div class="wallet-display">
+                    <span class="wallet-icon">💰</span>
+                    <span class="wallet-amount" id="navBalance">$0</span>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="account.html" class="btn btn-sm btn-outline">返回账户</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bank-page">
+        <div class="container">
+            <div class="bank-layout">
+                <div class="bank-main glass-card">
+                    <div class="bank-header">
+                        <h2>🏦 银行信息管理</h2>
+                        <button class="btn btn-gold btn-sm" onclick="showAddModal()">+ 添加银行卡</button>
+                    </div>
+
+                    <div class="bank-list" id="bankList">
+                        <div class="bank-card">
+                            <div class="bank-logo">🏦</div>
+                            <div class="bank-details">
+                                <div class="bank-name">Maybank</div>
+                                <div class="bank-number">**** **** **** 1234</div>
+                                <div class="bank-holder">DEMO USER</div>
+                            </div>
+                            <div class="bank-actions">
+                                <span class="default-badge">默认</span>
+                                <button class="btn btn-sm btn-outline" onclick="editBank(1)">编辑</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteBank(1)">删除</button>
+                            </div>
+                        </div>
+
+                        <div class="bank-card">
+                            <div class="bank-logo">🏦</div>
+                            <div class="bank-details">
+                                <div class="bank-name">CIMB Bank</div>
+                                <div class="bank-number">**** **** **** 5678</div>
+                                <div class="bank-holder">DEMO USER</div>
+                            </div>
+                            <div class="bank-actions">
+                                <button class="btn btn-sm btn-outline" onclick="setDefault(2)">设为默认</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteBank(2)">删除</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bank-note">
+                        <h4>⚠️ 重要提示</h4>
+                        <ul>
+                            <li>绑定的银行卡必须是本人名下账户</li>
+                            <li>提现时将自动使用默认银行卡</li>
+                            <li>最多可绑定5张银行卡</li>
+                            <li>修改银行信息需要客服审核</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bank-sidebar">
+                    <div class="supported-banks glass-card">
+                        <h3>💳 支持银行</h3>
+                        <div class="bank-icons">
+                            <div class="supported-bank">🏦 Maybank</div>
+                            <div class="supported-bank">🏦 CIMB Bank</div>
+                            <div class="supported-bank">🏦 Public Bank</div>
+                            <div class="supported-bank">🏦 RHB Bank</div>
+                            <div class="supported-bank">🏦 Hong Leong</div>
+                            <div class="supported-bank">🏦 AmBank</div>
+                            <div class="supported-bank">🏦 Bank Islam</div>
+                            <div class="supported-bank">🏦 OCBC Bank</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Bank Modal -->
+    <div class="modal-overlay" id="addBankModal">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h3>添加银行卡</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <form id="addBankForm" onsubmit="submitBank(event)">
+                <div class="form-group">
+                    <label>选择银行</label>
+                    <select class="input-field" required>
+                        <option value="">请选择银行</option>
+                        <option value="maybank">Maybank</option>
+                        <option value="cimb">CIMB Bank</option>
+                        <option value="public">Public Bank</option>
+                        <option value="rhb">RHB Bank</option>
+                        <option value="hong">Hong Leong Bank</option>
+                        <option value="am">AmBank</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>银行卡号</label>
+                    <input type="text" class="input-field" placeholder="请输入银行卡号" maxlength="19" required>
+                </div>
+                <div class="form-group">
+                    <label>持卡人姓名</label>
+                    <input type="text" class="input-field" placeholder="请输入与银行卡一致的姓名" required>
+                </div>
+                <button type="submit" class="btn btn-gold">确认添加</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .bank-page {
+            padding: 30px 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .bank-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .bank-main {
+            padding: 30px;
+        }
+
+        .bank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .bank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .bank-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bank-logo {
+            font-size: 2.5rem;
+        }
+
+        .bank-details {
+            flex: 1;
+        }
+
+        .bank-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .bank-number {
+            font-family: monospace;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .bank-holder {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .bank-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .default-badge {
+            padding: 4px 12px;
+            background: var(--color-gold);
+            color: #000;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .btn-danger {
+            background: rgba(255, 68, 68, 0.2);
+            border-color: #ff4444;
+            color: #ff4444;
+        }
+
+        .btn-danger:hover {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .bank-note {
+            padding: 20px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            border-radius: 12px;
+        }
+
+        .bank-note h4 {
+            margin-bottom: 10px;
+            color: var(--color-gold);
+        }
+
+        .bank-note ul {
+            list-style: none;
+        }
+
+        .bank-note li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .bank-note li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--color-gold);
+        }
+
+        .bank-sidebar .glass-card {
+            padding: 25px;
+        }
+
+        .bank-sidebar h3 {
+            margin-bottom: 15px;
+        }
+
+        .bank-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .supported-bank {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 900px) {
+            .bank-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        async function initPage() {
+            const user = await Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            document.getElementById('navBalance').textContent = '$' + parseFloat(user.balance || 0).toLocaleString();
+        }
+
+        function showAddModal() { document.getElementById('addBankModal').classList.add('active'); }
+        function closeModal() { document.getElementById('addBankModal').classList.remove('active'); }
+
+        function submitBank(e) {
+            e.preventDefault();
+            Auth.showNotification('✅ 银行卡添加成功！', 'success');
+            closeModal();
+        }
+
+        function editBank(id) { Auth.showNotification('编辑功能即将上线', 'info'); }
+        function deleteBank(id) { if (confirm('确定要删除此银行卡吗？')) Auth.showNotification('银行卡已删除', 'success'); }
+        function setDefault(id) { Auth.showNotification('已设为默认银行卡', 'success'); }
+
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+    <script src="js/footer.js"></script>
+</body>
+
+</html>
