@@ -525,28 +525,69 @@
 @media (max-width: 1024px) {
     .account-layout {
         grid-template-columns: 1fr;
+        padding: 20px 15px;
+        gap: 20px;
     }
 
     .account-sidebar {
-        order: 2;
+        order: -1;
     }
 
     .balance-cards {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
 }
 
 @media (max-width: 768px) {
+    .account-layout {
+        padding: 15px 10px;
+        gap: 15px;
+    }
+
+    /* Sidebar */
+    .user-card {
+        padding: 20px 15px;
+    }
+
+    .user-avatar-large {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .user-name {
+        font-size: 1.1rem;
+    }
+
+    .balance-display {
+        padding: 15px;
+    }
+
+    .balance-amount {
+        font-size: 1.4rem;
+    }
+
+    .quick-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .quick-actions .btn {
+        width: 100%;
+    }
+
+    /* Navigation */
     .account-nav {
-        display: flex;
         overflow-x: auto;
-        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
     }
 
     .nav-section {
         display: flex;
         padding: 0;
         border: none;
+        flex-wrap: nowrap;
     }
 
     .nav-section-title {
@@ -555,13 +596,229 @@
 
     .nav-item {
         flex-direction: column;
-        gap: 5px;
+        gap: 4px;
         white-space: nowrap;
-        padding: 15px;
+        padding: 12px 15px;
         border-left: none !important;
+        font-size: 0.8rem;
+        text-align: center;
+        min-width: 80px;
+    }
+
+    .nav-icon {
+        font-size: 1.2rem;
     }
 
     .nav-item.active {
         border-bottom: 3px solid var(--color-gold);
+        border-left: none !important;
+    }
+
+    /* Balance Overview */
+    .balance-overview {
+        padding: 15px;
+    }
+
+    .overview-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .overview-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .balance-card {
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .balance-card-icon {
+        font-size: 1.5rem;
+    }
+
+    .balance-card-value {
+        font-size: 1.2rem;
+    }
+
+    .balance-card-label {
+        font-size: 0.75rem;
+    }
+
+    /* VIP Progress */
+    .vip-progress-section {
+        padding: 15px;
+    }
+
+    .vip-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .vip-icon-large {
+        font-size: 1.5rem;
+    }
+
+    .vip-name {
+        font-size: 1rem;
+    }
+
+    .vip-next {
+        font-size: 0.8rem;
+    }
+
+    /* Quick Deposit */
+    .quick-deposit {
+        padding: 15px;
+    }
+
+    .deposit-tabs {
+        gap: 5px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .deposit-tab {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    .payment-methods {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .method-card {
+        padding: 15px 10px;
+    }
+
+    .method-icon {
+        font-size: 1.5rem;
+    }
+
+    .method-name {
+        font-size: 0.75rem;
+    }
+
+    .banks-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .bank-item {
+        padding: 12px;
+    }
+
+    .deposit-form {
+        max-width: 100%;
+    }
+
+    .amount-presets {
+        flex-wrap: wrap;
+    }
+
+    .amount-presets button {
+        flex: 1 1 calc(50% - 5px);
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Recent Activity */
+    .recent-activity {
+        padding: 15px;
+    }
+
+    .activity-item {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .activity-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .activity-title {
+        font-size: 0.9rem;
+    }
+
+    .activity-desc {
+        font-size: 0.75rem;
+    }
+
+    .activity-amount {
+        font-size: 0.9rem;
+    }
+
+    .activity-time {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .account-layout {
+        padding: 10px 8px;
+        gap: 12px;
+    }
+
+    .user-card {
+        padding: 15px 10px;
+    }
+
+    .user-avatar-large {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .user-name {
+        font-size: 1rem;
+    }
+
+    .user-vip {
+        font-size: 0.7rem;
+        padding: 4px 12px;
+    }
+
+    .balance-amount {
+        font-size: 1.2rem;
+    }
+
+    .balance-label {
+        font-size: 0.75rem;
+    }
+
+    .nav-item {
+        padding: 10px 12px;
+        font-size: 0.7rem;
+        min-width: 70px;
+    }
+
+    .nav-icon {
+        font-size: 1.1rem;
+    }
+
+    .balance-card-value {
+        font-size: 1rem;
+    }
+
+    .payment-methods {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .method-card {
+        padding: 12px 8px;
+    }
+
+    .method-icon {
+        font-size: 1.3rem;
+    }
+
+    .amount-presets button {
+        padding: 8px;
+        font-size: 0.8rem;
     }
 }
